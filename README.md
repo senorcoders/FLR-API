@@ -8,10 +8,10 @@ API for FLR senorcoders app
 Current endpoints:
 
 ```
-http://138.68.19.227:3030/api/user
-http://138.68.19.227:3030/api/operator
-http://138.68.19.227:3030/api/pricing
-http://138.68.19.227:3030/api/product
+http://server_address/api/user
+http://server_address/api/operator
+http://server_address/api/pricing
+http://server_address/api/product
 ```
 
 ### Prerequisites
