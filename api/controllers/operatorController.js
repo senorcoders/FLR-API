@@ -61,12 +61,13 @@ exports.create = function(req, res, callback){
           console.log(req.params);
           console.log('--------------req----------------');
           console.log(req);
-         new con.Request("insert into [operator] (operator_name, operator_type, time_zone, currency ) " +
-                         "values( @operator_name, @operator_type, @time_zone, @currency); select * from [operator] where id = scope_identity();") 
+         new con.Request("insert into [operator] (operator_name, operator_type, time_zone, currency, business_type ) " +
+                         "values( @operator_name, @operator_type, @time_zone, @currency, @business_type); select * from [operator] where id = scope_identity();") 
             .addParam("operator_name", TYPES.VarChar, req.body.operator_name)  
             .addParam("operator_type", TYPES.VarChar, req.body.operator_type) 
             .addParam("time_zone", TYPES.VarChar, req.body.time_zone) 
             .addParam("currency", TYPES.VarChar, req.body.currency)             
+			 			.addParam("business_type", TYPES.VarChar, req.body.business_type)             
             .onComplate(function (count, data) {                  
                 res.send(data);
                 console.log(data);
@@ -97,12 +98,14 @@ exports.update = function(req, res, callback){
                           "operator_type=@operator_type, "+
                           "time_zone=@time_zone, "+
                           "currency=@currency "+
+													"business_type=@business_type "+
                         "where id = @id; select * from [operator] where id = @id;") 
         .addParam("id", TYPES.Int, Number(req.params.id)  )
         .addParam("operator_name", TYPES.VarChar, req.body.operator_name) 
         .addParam("operator_type", TYPES.VarChar, req.body.operator_type) 
         .addParam("time_zone", TYPES.VarChar, req.body.time_zone) 
-        .addParam("currency", TYPES.VarChar, req.body.currency) 
+        .addParam("currency", TYPES.VarChar, req.body.currency)
+				.addParam("business_type", TYPES.VarChar, req.body.business_type)   
         .onComplate(function (count, data) {                  
             res.send(data);
 						con.close();
