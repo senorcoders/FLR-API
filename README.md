@@ -18,6 +18,7 @@ delete http://server_address/api/user/:id
 post   http://server_address/api/user/:id/email-confirmation/:verification_code
 
 put   http://server_address/api/user/:id/change-location
+//just need to send the params id, lat, lon
  
 get    http://server_address/api/user/azure_id/:id
 
