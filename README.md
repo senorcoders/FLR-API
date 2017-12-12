@@ -8,19 +8,19 @@ API for FLR senorcoders app
 
 #### Users
 ```
-get    http://server_address/api/user
-post   http://server_address/api/user
+get    http://server_address/api/user       //get all users 
+post   http://server_address/api/user       //create new user
 
-get    http://server_address/api/user/:id
-put    http://server_address/api/user/:id
-delete http://server_address/api/user/:id
+get    http://server_address/api/user/:id   //get one user
+put    http://server_address/api/user/:id   //update one user
+delete http://server_address/api/user/:id   //delete one user
 
-post   http://server_address/api/user/:id/email-confirmation/:verification_code
+get    http://server_address/api/user/:id/email-confirmation/:verification_code //verificate account clicking in the email link
 
-put   http://server_address/api/user/:id/change-location
+put   http://server_address/api/user/:id/change-location  //change location params in the user table
 //just need to send the params id, lat, lon
  
-get    http://server_address/api/user/azure_id/:id
+get    http://server_address/api/user/azure_id/:id  //get azure id of the user
 
 ```
 ##### User Params
@@ -39,8 +39,8 @@ get    http://server_address/api/user/azure_id/:id
 ```
 #### Operator
 ```
-get  http://server_address/api/operator
-post http://server_address/api/operator
+get  http://server_address/api/operator //get all operators
+post http://server_address/api/operator //create all operators
 ```
 ##### Operator params
 ```
@@ -52,10 +52,10 @@ post http://server_address/api/operator
 ```
 #### Location
 ```
-get  http://server_address/api/location
-post http://server_address/api/location
+get  http://server_address/api/location  //get all locations
+post http://server_address/api/location  //create a new location
 
-get  http://server_address/api/location/by_distance/:lat/:lon/:distance'
+get  http://server_address/api/location/by_distance/:lat/:lon/:distance  //get all locations in a radious of :distance from the :lat, :lon point
     
 ```
 ##### Location params
@@ -68,8 +68,8 @@ get  http://server_address/api/location/by_distance/:lat/:lon/:distance'
 ```
 #### Product
 ```
-get  http://server_address/api/product 
-post http://server_address/api/product
+get  http://server_address/api/product  //get all products
+post http://server_address/api/product  //create a product
 ```
 ##### Product params
 ```
@@ -82,12 +82,12 @@ post http://server_address/api/product
 ```
 #### Pricing
 ```
-get  http://server_address/api/pricing
-post http://server_address/api/pricing
+get  http://server_address/api/pricing  //get all the prices
+post http://server_address/api/pricing  //create a new price
 
-get    http://server_address/api/pricing/:id
-put    http://server_address/api/pricing/:id
-delete http://server_address/api/pricing/:id
+get    http://server_address/api/pricing/:id  //get a price by id
+put    http://server_address/api/pricing/:id  //update a price by id
+delete http://server_address/api/pricing/:id  //delete a price by id
 ```
 ##### Pricing params
 ```
