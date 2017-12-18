@@ -10,6 +10,9 @@ module.exports = function(app) {
   app.route(endpoint + '/by_distance/:lat/:lon/:distance')
     .get(location.by_distance)
   
+  app.route(endpoint + '/with_prod')
+    .get(location.get_locations_with_operator)
+  
   app.route(endpoint + '/:id')
     .get(location.get_one)
 };
