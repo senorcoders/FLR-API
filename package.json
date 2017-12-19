@@ -4,7 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
   },
   "author": "senorcoders",
   "license": "ISC",
@@ -20,6 +21,7 @@
     "mssql": "^4.1.0",
     "nodemailer": "^4.4.0",
     "randomatic": "^2.0.0",
+    "sequelize": "^4.28.6",
     "tedious": "^2.1.1",
     "winston": "^2.4.0"
   }

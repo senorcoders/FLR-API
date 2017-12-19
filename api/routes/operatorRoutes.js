@@ -12,4 +12,3 @@ module.exports = function(app) {
     .put(location.update)
     .delete(location.delete);
 };
-
