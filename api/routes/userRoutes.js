@@ -13,7 +13,7 @@ module.exports = function(app) {
     .delete(user.delete);
 
   app.route(endpoint + '/azure_id/:id')
-	.get(user.get_by_azure);
+		.get(user.get_by_azure);
   
   app.route(endpoint + '/:userId/email-confirmation/:verfication_code')
     .get(user.verificate_email);
