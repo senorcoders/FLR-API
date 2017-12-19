@@ -107,7 +107,7 @@ mailer.js
 ```
 #### Favorites Operatores
 ```
-post  http://server_address/api/favorite-operator  //create operator
+post  http://server_address/api/favorite-operator //create operator
 post http://server_address/api/favorite-operator/:operator_id/delete //delete operator
 ```
 ##### Favorites Operatores params
