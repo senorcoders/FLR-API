@@ -2,11 +2,16 @@
  * Created by Erick Nunez on 18/12/2017.
  */
 
+"use strict"
+
 module.exports = function(app){
     const controller = require("./../controllers/withorm/favoriteOperatorController")
-    const path = "api/favoriteoperator/"
+    const endpoint = "/api/favorite-operator"
 
-    app.route(path)
-        .get(controller.add)
-        .delete(controller.delete)
+    app.route(endpoint)
+        .get(controller.getAll)
+        .post(controller.add)
+
+        app.route(endpoint+ "/:operator_id/delete")
+        .post(controller.delete)
 }
