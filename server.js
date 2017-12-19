@@ -30,6 +30,6 @@ operatorRoutes(app);
 productRoutes(app);
 pricingRoutes(app);
 favoriteOperatorRoutes(app);
-app.listen(port);
-
-console.log('Find local rentals RESTful API server started on: ' + port);
+app.listen(port, function(){
+    console.log('Find local rentals RESTful API server started on: ' + port);
+});

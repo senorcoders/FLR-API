@@ -2,6 +2,7 @@
 module.exports = function(app) {
   var user = require('../controllers/userController');
   const endpoint = '/api/user';
+  const controllerFavoriteOperator = require("./../controllers/withorm/favoriteOperatorController")
   // User Routes
   app.route(endpoint)
     .post(user.create)
@@ -20,4 +21,9 @@ module.exports = function(app) {
 
   app.route(endpoint + '/:userId/change-location')
     .put(user.update_location);
+
+  //get favorites por usuario
+    app.route(endpoint+ "/:id/favorites-operatores")
+        .put(controllerFavoriteOperator.getAllXUser)
+
 };

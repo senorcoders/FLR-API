@@ -5,15 +5,19 @@
 "use strict"
 
 const Sequelize = require("sequelize")
+const config = require("./../../dbConfig").config
 
-const bd = new Sequelize('find-local-rentals-api', 'senorcoders', 'Helium33', {
-    host: 'find-local-rentals.database.windows.net',
+const bd = new Sequelize(config.options.database, config.userName, config.password, {
+    host: config.server,
     dialect: 'mssql',
     dialectOptions : {
-        encrypt: true
+        encrypt: config.options.encrypt
     },
     // http://docs.sequelizejs.com/manual/tutorial/querying.html#operators
-    operatorsAliases: true
+    operatorsAliases: true,
+    define: {
+        timestamps: false
+    }
 });
 
 bd

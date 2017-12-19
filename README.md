@@ -22,6 +22,8 @@ put   http://server_address/api/user/:id/change-location  //change location para
  
 get    http://server_address/api/user/azure_id/:id  //get azure id of the user
 
+get http://server_address/api/user/:id/favorites-operatores //get all favorites operatores 
+
 ```
 ##### User Params
 ```
@@ -102,6 +104,16 @@ delete http://server_address/api/pricing/:id  //delete a price by id
 ```
 dbconfig.js
 mailer.js
+```
+#### Favorites Operatores
+```
+post  http://server_address/api/favorite-operator //create operator
+post http://server_address/api/favorite-operator/:operator_id/delete //delete operator
+```
+##### Favorites Operatores params
+```
+-user_id
+-operator_id
 ```
 
 ### Installing
