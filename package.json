@@ -6,12 +6,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rimraf dist/ && babel ./ --out-dir dist/ --ignore ./node_modules,./.babelrc,./package.json,./npm-debug.log --copy-files",
-    "start": "npm run build && node dist/server.js"
+    "start": "npm run build && nodemon dist/server.js"
   },
   "author": "senorcoders",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^1.12.1"
+    "nodemon": "^1.13.3"
   },
   "dependencies": {
     "bluebird": "^3.5.1",
