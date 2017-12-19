@@ -11,12 +11,31 @@ exports.get_all = function(req, res, callback){
             .onComplate(function (count, datas) { 
                 console.log(count);
                 console.log(datas);
-                res.send(datas);
+								//res.send(datas);
 								con.close();
+								var con2 = new msSqlConnecter.msSqlConnecter(dbConfig.config); 
+									con2.connect().then(function () { 
+										new con2.Request("select * from [locations]") 
+												.onComplate(function (countLocation, locations) { 
+														console.log(countLocation);
+														console.log(locations);														
+														for (let i = 0; i < datas.length ; i++) {
+															datas[i].locations = locations;
+														}														
+														res.send(datas);											
+												}) 
+												.onError(function (err) { 
+														console.log(err); 
+														res.send(err);
+												}).Run(); 
+								}).catch(function (ex) { 
+										console.log(ex); 
+								});	
+					
             }) 
             .onError(function (err) { 
                 console.log(err); 
-		res.send(err);
+								res.send(err);
             }).Run(); 
     }).catch(function (ex) { 
         console.log(ex); 
