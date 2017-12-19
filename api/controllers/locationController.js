@@ -119,213 +119,27 @@ exports.get_one = function(req, res){
     }); 
 }
 
-exports.get_locations_with_operator_old = function(req, res){
-	var TYPES = require("tedious").TYPES; 
-	var msSqlConnecter = require("../../sqlhelper"); 
-	var dbConfig = require('../../dbConfig');
-	var con = new msSqlConnecter.msSqlConnecter(dbConfig.config);
-	var conOperator = new msSqlConnecter.msSqlConnecter(dbConfig.config);
-	var Promise = require('bluebird');
-	var async = require('asyncawait/async');
-	var await = require('asyncawait/await');
-
-	// A function that returns a promise.
-	function delay(milliseconds) {
-			return Promise.delay(milliseconds);
-	}
-	// A slow asynchronous function, written in async/await style.
-	var get_locations = async (function () {
-		var resultado;
-			con.connect().then(function () { 
+exports.get_locations_with_operator = function(req, res){
+		var TYPES = require("tedious").TYPES; 
+    var msSqlConnecter = require("../../sqlhelper"); 
+    var dbConfig = require('../../dbConfig');
+    var con = new msSqlConnecter.msSqlConnecter(dbConfig.config); 
+    console.log(req.params.userId);
+    con.connect().then(function () { 
         new con.Request("SELECT loc.id,loc.name, loc_type.id as type_id, loc_type.name as type, loc_type.image_url, geo.Lat as lat, geo.Long as lon " +                        
                         " FROM locations loc" +
-                        " inner join location_type loc_type on ( loc.location_type_id = loc_type.id ) ")                         
-            .onComplate(function (count, datas) { 
-                console.log(count);					
-								con.close();          			
-								console.log("end");
-								resultado = datas;
-								
-                return datas;
-            }) 
-            .onError(function (err) { 
-                console.log(err); 
-							resultado = err;
-							}).Run(); 
-			}).catch(function (ex) { 
-					console.log(ex); 
-			});
-	});
-	
-	var get_operators = async (function (locations) {
-		var resultadoOperator;
-		
-		locations.forEach(function(element) {
-										console.log(element.name);
-										new conOperator.connect().then(function () {
-											console.log("operator connect");
-											new conOperator.Request("SELECT *  FROM operator" )                         
-											.onComplate(function (countOperator, dataOperator) { 
-												console.log("operator complete");
-												console.log(dataOperator);
-												//element['operator'] = dataOperator;													
-												conOperator.close();
-												resultadoOperator = dataOperator;
-											})	
-										});
-										
-								});		
-			
-		return resultadoOperator;
-	});
-
-var program = async (function () {
-    try  {
-        console.log('zero...');
-
-        var locations = await(get_locations());
-			delay(4000);
-        console.log(locations);
-
-        //var loc_with_operator = await(get_operators(locations));
-        //console.log(loc_with_operator);
-
-				
-				res.send(locations);
-			
-    } catch (ex) {
-        console.log('Caught an error');
-    }
-    return 'Finished!';
-});
-	// Execute program() and print the result.
-program().then(function (result) {
-    console.log(result);
-});
-}
-
-exports.get_locations_with_operator_old2 = function(req, res){
-  var TYPES = require("tedious").TYPES; 
-	var msSqlConnecter = require("../../sqlhelper"); 
-	var dbConfig = require('../../dbConfig');
-	var con = new msSqlConnecter.msSqlConnecter(dbConfig.config);
-	var conOperator = new msSqlConnecter.msSqlConnecter(dbConfig.config); 
-	var Promise = require('bluebird');
-	
-	// A function that returns a promise.
-	function delay(milliseconds) {
-			return Promise.delay(milliseconds);
-	}
-	
-			con.connect().then(function () { 
-        new con.Request("SELECT loc.id,loc.name, loc_type.id as type_id, loc_type.name as type, loc_type.image_url, geo.Lat as lat, geo.Long as lon " +                        
-                        " FROM locations loc" +
-                        " inner join location_type loc_type on ( loc.location_type_id = loc_type.id ) ")                         
+                        " inner join location_type loc_type on ( loc.location_type_id = loc_type.id )")            
             .onComplate(function (count, datas) { 
                 console.log(count);
-					     			
-								console.log("end");
-								datas.forEach(function(element) {
-										console.log(element.name);
-										new con.connect().then(function () {
-											console.log("operator connect");
-											new con.Request("SELECT *  FROM operator" )                         
-											.onComplate(function (countOperator, dataOperator) { 
-												console.log("operator complete");
-												console.log(dataOperator);
-												element['operator'] = dataOperator;													
-												conOperator.close();
-												res.send({status: 'okl'});
-											})	
-										});
-										
-								});		
-								delay(5000);
-								
+                console.log(datas);
+                res.send(datas);
+								con.close();
             }) 
             .onError(function (err) { 
-                console.log(err); 
-							res.send(err);
-							}).Run(); 
-			}).catch(function (ex) { 
-					console.log(ex); 
-			});		
-			console.log('funcion 22');
-			//return true;
-		};
-   
-			/**/
-			exports.get_locations_with_operator = function(req, res){
-				var TYPES = require("tedious").TYPES; 
-				var msSqlConnecter = require("../../sqlhelper"); 
-				var dbConfig = require('../../dbConfig');
-				var ConnectionPool = require('tedious-connection-pool');
-				var Request = require('tedious').Request;
-
-				var poolConfig = {
-						min: 2,
-						max: 4,
-						log: true
-				};
-
-				var connectionConfig = {
-						userName: 'flrdev2016',
-						password: 'kC4!@uJTfC',
-						server: 'find-local-rentals-api.database.windows.net',
-						options: {
-							database: 'find-local-rentals',
-							encrypt: true,
-						}
-
-					};
-				
-
-				//create the pool
-				var pool = new ConnectionPool(poolConfig, connectionConfig);
-
-				pool.on('error', function(err) {
-						console.error(err);
-				});
-
-				//acquire a connection
-				pool.acquire(function (err, connection) {
-						if (err) {
-								console.error(err);
-								return;
-						}
-
-						//use the connection as normal
-						var request = new Request("SELECT loc.id,loc.name, loc_type.id as type_id, loc_type.name as type, loc_type.image_url, geo.Lat as lat, geo.Long as lon " +                        
-                        " FROM locations loc" +
-                        " inner join location_type loc_type on ( loc.location_type_id = loc_type.id )", function(err, rowCount, data) {
-								if (err) {
-										console.error(err);
-										return;
-								}
-
-								console.log('rowCount: ' + rowCount);
-								res.send(data);
-								//release the connection back to the pool when finished
-								connection.release();
-						});
-
-						request.on('row', function(columns) {
-								console.log('value: ' + columns[0].value);
-									var requestOperator = new Request("SELECT loc.id,loc.name, loc_type.id as type_id, loc_type.name as type, loc_type.image_url, geo.Lat as lat, geo.Long as lon " +                        
-														" FROM locations loc" +
-														" inner join location_type loc_type on ( loc.location_type_id = loc_type.id )", function(err, rowCount, data) {
-										if (err) {
-												console.error(err);
-												return;
-										}
-
-										console.log('rowCount: ' + rowCount);
-										res.send(data);
-										//release the connection back to the pool when finished
-										connection.release();
-								});
-						});
-
-						connection.execSql(request);
-				});
-			}
+                console.log(err);
+		res.send(err); 
+            }).Run(); 
+    }).catch(function (ex) { 
+        console.log(ex); 
+    }); 				
+}
