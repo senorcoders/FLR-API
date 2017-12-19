@@ -99,12 +99,7 @@ delete http://server_address/api/pricing/:id  //delete a price by id
 -currency
 -business_type
 ```
-### Prerequisites
 
-```
-dbconfig.js
-mailer.js
-```
 #### Favorites Operatores
 ```
 post  http://server_address/api/favorite-operator //create operator
@@ -114,6 +109,13 @@ post http://server_address/api/favorite-operator/:operator_id/delete //delete op
 ```
 -user_id
 -operator_id
+```
+
+### Prerequisites
+
+```
+dbconfig.js
+mailer.js
 ```
 
 ### Installing
