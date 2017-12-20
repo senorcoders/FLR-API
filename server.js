@@ -26,6 +26,9 @@ var pricingRoutes = require('./api/routes/pricingRoutes'); //importing route
 var commissionRoutes = require('./api/routes/commissionRoutes'); 
 var reservationRoutes = require ('./api/routes/reservationRoutes');
 var favoriteOperatorRoutes = require('./api/routes/favoriteOperatorRoute'); //importing route
+//Para checkear migrations
+var migrations = require('./api/controllers/migrations'); //importing route
+
 userRoutes(app); //register the route
 locationRoutes(app);
 operatorRoutes(app);
@@ -33,6 +36,9 @@ productRoutes(app);
 pricingRoutes(app);
 commissionRoutes(app);
 reservationRoutes(app);
+
+//Para las migrations
+migrations(app)
 
 favoriteOperatorRoutes(app);
 app.listen(port);

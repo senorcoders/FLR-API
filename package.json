@@ -6,11 +6,14 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rimraf dist/ && babel ./ --out-dir dist/ --ignore ./node_modules,./.babelrc,./package.json,./npm-debug.log --copy-files",
-    "start": "npm run build && nodemon dist/server.js"
+    "start": "npm run build && nodemon dist/server.js",
+    "migrations": "nodemon api/bd/migrations"
   },
   "author": "senorcoders",
   "license": "ISC",
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
     "nodemon": "^1.13.3"
   },
   "dependencies": {
@@ -19,6 +22,7 @@
     "express": "^4.16.2",
     "moment": "^2.19.2",
     "mssql": "^4.1.0",
+    "mysql2": "^1.5.1",
     "nodemailer": "^4.4.0",
     "randomatic": "^2.0.0",
     "sequelize": "^4.28.6",

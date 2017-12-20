@@ -5,6 +5,7 @@ exports.config = {
   options: {
     database: 'find-local-rentals',
     encrypt: true,
-    rowCollectionOnRequestCompletion: true
+    rowCollectionOnRequestCompletion: true,
+    connectionTimeout: 0
   }
 }
