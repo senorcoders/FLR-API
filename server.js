@@ -33,10 +33,7 @@ productRoutes(app);
 pricingRoutes(app);
 commissionRoutes(app);
 reservationRoutes(app);
-favoriteOperatorRoutes(app);
-app.listen(port);
 
 favoriteOperatorRoutes(app);
-app.listen(port, function(){
-    console.log('Find local rentals RESTful API server started on: ' + port);
-});
+app.listen(port);
+console.log('Find local rentals RESTful API server started on: ' + port);
