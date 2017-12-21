@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rimraf dist/ && babel ./ --out-dir dist/ --ignore ./node_modules,./.babelrc,./package.json,./npm-debug.log --copy-files",
     "start": "npm run build && nodemon dist/server.js",
-    "migrations": "nodemon api/bd/migrations"
+    "migrations": "nodemon api/bd/migrations",
+    "start-server": "nodemon server.js"
   },
   "author": "senorcoders",
   "license": "ISC",
