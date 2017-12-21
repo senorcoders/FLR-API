@@ -4,7 +4,7 @@ const newBD = require("./../index")
 
 
 function getCategoryFields(req, res){
-    oldBD.query("select category_id, category_name_1 from `category` limit 100", {
+    oldBD.query("select category_id, category_name_1 from `category` limit 10", {
         
     }).then(function(data){
         //Para Agregar old_id
@@ -26,7 +26,7 @@ function getCategoryFields(req, res){
                             "operatorName" : data[0][i].category_name_1
                         }
                     }).then(function(){
-                        console.log(length+ " :: "+ (i+1))
+                        console.log("category => operator "+ length+ " :: "+ (i+1))
                         i++
                         if( i < length){ save(res, i) }
                         

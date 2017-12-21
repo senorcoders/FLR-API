@@ -18,19 +18,9 @@ function getProductFields(req, res){
                     "name" : arr[0][i].product_name_1
                 }
             }).then(function(){
-                
-                if(arr[0].length === i ){
-                    newBD.query("select * from operator").all()
-                    .then(function(data){
-                        res.send(data)
-                    })
-                    .catch(function(err){
-                        res.send(err)
-                    })
-                    return
-                }
-                    
-                save(res, arr, i++)
+                console.log(""+ length+ " :: "+ (i+1))
+                i++
+                if( i < length){ save(res, i) }
             })
             .catch(function(err){
                 console.error("error en el item :"+ i+ " data: "+ arr[0][i]+ err.message)
