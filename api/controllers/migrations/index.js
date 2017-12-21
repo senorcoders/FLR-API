@@ -11,7 +11,4 @@ module.exports = function(app){
 
     app.route(endpoint+ "/locations")
     .get(controller.migraProduct_Rent_locationFields)
-
-    app.route(endpoint+ "/get-rows-count")
-    .post(controller.getRowsCount)
 }
