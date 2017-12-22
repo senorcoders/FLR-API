@@ -34,6 +34,6 @@ pricingRoutes(app);
 commissionRoutes(app);
 reservationRoutes(app);
 
-favoriteOperatorRoutes(app);
+//favoriteOperatorRoutes(app);
 app.listen(port);
 console.log('Find local rentals RESTful API server started on: ' + port);
