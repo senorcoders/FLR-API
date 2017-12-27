@@ -2,7 +2,7 @@ const Sequelize = require("sequelize")
 const oldBD = require("./conectMysql")
 const newBD = require("./../index")
 
-function getLocationsFields(req, res){
+function updateFieldsLocations(req, res){
     oldBD.query("select product_id, coord_x, coord_y from product_rent_location")
     .then(function(data){
         const length = data[0].length
@@ -42,4 +42,4 @@ function getLocationsFields(req, res){
     })
 }
 
-module.exports = getLocationsFields
+module.exports = updateFieldsLocations

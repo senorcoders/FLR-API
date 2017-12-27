@@ -11,4 +11,7 @@ module.exports = function(app){
 
     /*app.route(endpoint+ "/locations")
     .get(controller.migraProduct_Rent_locationFields)*/
+
+    /*app.route(endpoint+ "/locations-update")
+    .get(controller.updateFieldsLocations)*/
 }

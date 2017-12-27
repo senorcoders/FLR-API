@@ -2,6 +2,7 @@
 const getCategoryFields = require("./category")
 const getProductFields = require("./product")
 const getLocationsFields = require("./locations")
+const updateFieldsLocations = require("./upadateLocations")
 const getRowsCount = require("./test")
 
 function migraCategoryFields (req, res){
@@ -20,5 +21,6 @@ module.exports = {
     migraCategoryFields,
     migraProductFields,
     migraProduct_Rent_locationFields,
-    getRowsCount
+    getRowsCount,
+    updateFieldsLocations
 }
