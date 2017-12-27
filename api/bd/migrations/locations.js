@@ -3,7 +3,7 @@ const oldBD = require("./conectMysql")
 const newBD = require("./../index")
 
 function getLocationsFields(req, res){
-    oldBD.query("select product_id, coord_x, coord_y from product_rent_location limit 10")
+    oldBD.query("select product_id, coord_x, coord_y from product_rent_location")
     .then(function(data){
         const length = data[0].length
 
@@ -27,8 +27,8 @@ function getLocationsFields(req, res){
                     if( i < length){ save(res, i) }
                 })
                 .catch(function(err){
-                    console.error("error en el item :"+ i+ " data: "+ data[0][i]+ err.message)
-                    res.send("error en el item :"+ i+ " data: "+ data[0][i]+ err.message)
+                    console.error("error en el item :"+ i+ " data: "+ data[0][i].stringify()+ err.message)
+                    res.send("error en el item :"+ i+ " data: "+ data[0][i].stringify()+ err.message)
                 })
             }
 

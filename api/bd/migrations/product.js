@@ -3,7 +3,15 @@ const oldBD = require("./conectMysql")
 const newBD = require("./../index")
 
 function getProductFields(req, res){
-    oldBD.query("select product_id, product_name_1 from product limit 10")
+    let q = String.raw`
+    select producto.product_id as oldId, 
+    producto.product_name_1 as name_producto, 
+    operator.category_id as idOperator 
+    from product producto INNER JOIN product_category_xref operator 
+    on producto.product_id = operator.product_id
+    `
+
+    oldBD.query(q)
     .then(function(data){
         const length = data[0].length
         //Para agregar el campo old id
@@ -14,19 +22,27 @@ function getProductFields(req, res){
             * para insertar los nuevos datos usando llamadas recursivas
             */
             function save(res, i){
-                newBD.query("insert into products (old_id, name) values($oldId, $name)", {
+                let query = String.raw`
+                    insert into products (old_id, name, operator_id, location_id) 
+                    values($oldId, $name, (select id from operator where old_id = $idOperator), 
+                    (select id from locations where old_id = $oldId) )
+                `
+                newBD.query(query, {
                     bind : {
-                        "oldId" : data[0][i].product_id,
-                        "name" : data[0][i].product_name_1
+                        "oldId" : data[0][i].oldId,
+                        "name" : data[0][i].name_producto,
+                        "idOperator" : data[0][i].idOperator
                     }
                 }).then(function(){
                     console.log("product => products "+ length+ " :: "+ (i+1))
                     i++
                     if( i < length){ save(res, i) }
+                    else
+                        console.log("finished")
                 })
                 .catch(function(err){
-                    console.error("error en el item :"+ i+ " data: "+ data[0][i].stringify()+ err.message)
-                    res.send("error en el item :"+ i+ " data: "+ data[0][i].stringify()+ err.message)
+                    console.error("error en el item :"+ i+ " data: "+ JSON.stringify(data[0][i])+ err.message)
+                    res.send("error en el item :"+ i+ " data: "+ JSON.stringify(data[0][i])+ err.message)
                 })
             }
 

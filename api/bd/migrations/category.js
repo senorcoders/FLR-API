@@ -4,7 +4,7 @@ const newBD = require("./../index")
 
 
 function getCategoryFields(req, res){
-    oldBD.query("select category_id, category_name_1 from `category` limit 10", {
+    oldBD.query("select category_id, category_name_1 from `category`", {
         
     }).then(function(data){
         //Para Agregar old_id
@@ -32,7 +32,7 @@ function getCategoryFields(req, res){
                         
                     })
                     .catch(function(err){
-                        console.error("error en el item :"+ i+ " data: "+ data[0][i]+ err.message)
+                        console.error("error en el item :"+ i+ " data: "+ data[0][i].stringify()+ err.message)
                     })
                 }
 
