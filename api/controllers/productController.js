@@ -1,6 +1,55 @@
 'use strict'
+const models = require("../models");
+var forEach = require('async-foreach').forEach;
 
-exports.create = function(req, res, callback){
+module.exports ={
+	create : function (req, res) {
+        models.products.findAll({ limit: 1 }).then(function (data) {
+					forEach(data, function(item, index, arr) {
+						var done = this.async();
+//						console.log("each", item, index, arr);
+						console.log("lol");
+							/*models.products.findAll({limit:1}).then(function(other) {																
+								arr[index].dataValues.operato =other;
+								done();		//wait for the results before continue
+							});*/
+					} , allDone);				
+					
+						function allDone(notAborted, arr) {
+							console.log("done");
+							res.send(arr);
+						}
+					}, function(reason) {
+						console.log(reason); // Error!
+					});
+		},
+	get_all : function(req, res){
+  	models.products.findAll({ limit: 20 }).then(function (data) {
+					forEach(data, function(item, index, arr) {
+						var done = this.async();
+						console.log("each", item, index, arr);
+						  models.operator.findAll( { where: {id: item.operator_id} }).then(function(operator) {																
+								arr[index].dataValues.operator =operator;
+								models.locations.findAll( { where: {id: item.location_id} }).then(function(location) {																
+										arr[index].dataValues.location =location;
+										done();		//wait for the results before continue
+									});
+								//done();		//wait for the results before continue
+							});
+					} , operatorDone);				
+					
+						function operatorDone(notAborted, arr) {		
+							res.send(arr);
+						}
+			
+						
+					}, function(reason) {
+						console.log(reason); // Error!
+					});  
+	}
+
+}
+/*exports.create_old = function(req, res, callback){
     var TYPES = require("tedious").TYPES; 
     var msSqlConnecter = require("../../sqlhelper"); 
     var dbConfig = require('../../dbConfig');
@@ -40,26 +89,5 @@ exports.create = function(req, res, callback){
      }); 
 }
 
-exports.get_all = function(req, res){
-     var TYPES = require("tedious").TYPES; 
-    var msSqlConnecter = require("../../sqlhelper"); 
-    var dbConfig = require('../../dbConfig');
-    var con = new msSqlConnecter.msSqlConnecter(dbConfig.config); 
-   
-    con.connect().then(function () { 
-        new con.Request("select * from [products]") 
-            .onComplate(function (count, datas) { 
-                console.log(count);
-                console.log(datas);
-                res.send(datas);
-								con.close();
-            }) 
-            .onError(function (err) { 
-                console.log(err); 
-								res.send(err);
-            }).Run(); 
-    }).catch(function (ex) { 
-        console.log(ex); 
-    }); 
-}
 
+*/
