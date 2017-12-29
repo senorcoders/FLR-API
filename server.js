@@ -2,10 +2,8 @@ var express = require('express'),
 app = express(),
 port = process.env.PORT || 3030,
 cors = require('cors'),
-//user = require('./api/models/userModel'),
 winston = require('winston'),
 bodyParser = require('body-parser');
-//sql = require('mssql'); // MS Sql Server client
 
 
 var corsOptions = {
@@ -25,7 +23,7 @@ var productRoutes = require('./api/routes/productRoutes'); //importing route
 var pricingRoutes = require('./api/routes/pricingRoutes'); //importing route
 var commissionRoutes = require('./api/routes/commissionRoutes'); 
 var reservationRoutes = require ('./api/routes/reservationRoutes');
-var favoriteOperatorRoutes = require('./api/routes/favoriteOperatorRoute'); //importing route
+//var favoriteOperatorRoutes = require('./api/routes/favoriteOperatorRoute'); //importing route
 userRoutes(app); //register the route
 locationRoutes(app);
 operatorRoutes(app);
