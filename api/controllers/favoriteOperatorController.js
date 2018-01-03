@@ -45,14 +45,14 @@ module.exports = {
         })
     },
     getAllXUser : function (req, res, callback) {
-        if( !req.body.hasOwnProperty("operator_id") ){
-            throw new Error("Falta el parametro operator_id")
+        if( !req.body.hasOwnProperty("user_id") ){
+            throw new Error("Falta el parametro user_id")
             return
         }
 
         favorite_operator.findAll({
             where : {
-                user_id : req.body.operator_id
+                user_id : req.body.user_id
             }
         }).then(function (data) {
             res.send(data)
