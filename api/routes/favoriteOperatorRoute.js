@@ -5,7 +5,7 @@
 "use strict"
 
 module.exports = function(app){
-    const controller = require("./../controllers/withorm/favoriteOperatorController")
+    const controller = require("./../controllers/favoriteOperatorController")
     const endpoint = "/api/favorite-operator"
 
     app.route(endpoint)

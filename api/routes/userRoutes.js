@@ -2,7 +2,7 @@
 module.exports = function(app) {
   var user = require('../controllers/userController');
   const endpoint = '/api/user';
-  const controllerFavoriteOperator = require("./../controllers/withorm/favoriteOperatorController")
+  const controllerFavoriteOperator = require("./../controllers/favoriteOperatorController")
   // User Routes
   app.route(endpoint)
     .post(user.create)
