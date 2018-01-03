@@ -1,22 +1,5 @@
-/**
- * Created by Erick Nunez on 18/12/2017.
- */
 "use strict"
-const Sequelize = require("sequelize")
-
-const db = require("./../../bd")
-
-const favorite_operator = db.define("favorite_operator", {
-    id : { type: Sequelize.INTEGER, primaryKey : true, autoIncrement: true },
-    user_id : {type : Sequelize.INTEGER, references : { model : "users", key : "id", allowNull : false } },
-    operator_id : { type : Sequelize.INTEGER, references: { model : "operator", key : "id", allowNull: false } }
-})
-
-db.sync().then(function() {
-    console.log('----- success');
-}).catch(function(error) {
-    console.log('- error \n', error);
-})
+const favorite_operator = require("../models").favorite_operator
 
 module.exports = {
     /*Solo para pruebas de desarrollo */
@@ -62,14 +45,14 @@ module.exports = {
         })
     },
     getAllXUser : function (req, res, callback) {
-        if( !req.body.hasOwnProperty("operator_id") ){
-            throw new Error("Falta el parametro operator_id")
+        if( !req.body.hasOwnProperty("user_id") ){
+            throw new Error("Falta el parametro user_id")
             return
         }
 
         favorite_operator.findAll({
             where : {
-                user_id : req.body.operator_id
+                user_id : req.body.user_id
             }
         }).then(function (data) {
             res.send(data)
