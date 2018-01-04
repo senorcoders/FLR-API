@@ -24,6 +24,7 @@ var pricingRoutes = require('./api/routes/pricingRoutes'); //importing route
 var commissionRoutes = require('./api/routes/commissionRoutes'); 
 var reservationRoutes = require ('./api/routes/reservationRoutes');
 var favoriteOperatorRoutes = require('./api/routes/favoriteOperatorRoute'); //importing route
+var commentsOperator = require('./api/routes/commentsOperatorRoute')
 userRoutes(app); //register the route
 locationRoutes(app);
 operatorRoutes(app);
@@ -33,5 +34,7 @@ commissionRoutes(app);
 reservationRoutes(app);
 
 favoriteOperatorRoutes(app);
+commentsOperator(app)
+
 app.listen(port);
 console.log('Find local rentals RESTful API server started on: ' + port);
