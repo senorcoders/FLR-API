@@ -111,6 +111,36 @@ post http://server_address/api/favorite-operator/:operator_id/delete //delete op
 -operator_id
 ```
 
+#### comment of user for Operator
+```
+post  http://server_address/api/comments-operator //create comment
+put http://server_address/api/comments-operator //get all comments
+post http://server_address/api/comments-operator/update //update comment
+post http://server_address/api/comments-operator/:id/delete //delete comment
+```
+
+##### comment of user for Operator params
+```
+-user_id
+-operator_id
+-content
+```
+
+#### starts of user for Operator
+```
+post  http://server_address/api/starts-operator //save start of operator
+put http://server_address/api/starts-operator //get start of operator
+post http://server_address/api/starts-operator/update //update start of operator
+post http://server_address/api/starts-operator/:id/delete //delete start of operator
+```
+
+##### comment of user for Operator params
+```
+-user_id
+-operator_id
+-numStart
+```
+
 ### Prerequisites
 
 ```
