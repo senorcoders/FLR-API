@@ -83,6 +83,16 @@ post http://server_address/api/product  //create a product
 -max_adults
 -max_childs
 ```
+
+#### Reservations
+```
+post  http://server_address/api/reservation/not-passed  //get all reservations that have not passed
+```
+##### Reservations params
+```
+-dateNow format YYYY-MM-DD
+```
+
 #### Pricing
 ```
 get  http://server_address/api/pricing  //get all the prices

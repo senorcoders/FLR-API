@@ -10,6 +10,9 @@ module.exports = function(app) {
   app.route(endpoint + '/:id')
     .get(reservation.get_one)
     .put(reservation.update)
-    .delete(reservation.delete); 
+    .delete(reservation.delete);
+
+    app.route(endpoint+ "/not-passed")
+    .post(reservation.getAllNotPassed)
 
 };

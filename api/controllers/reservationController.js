@@ -197,3 +197,16 @@ exports.delete = function(req, res){
         console.log(ex); 
     }); 
 }
+
+exports.getAllNotPassed = (req, res)=>{
+    let db = require("./../bd")
+    let query = String.raw`
+        select * from reservations where CAST('${ req.body.dateNow }' AS DATE) <= transaction_end_date
+    `
+    db.query(query)
+    .then(data=>{ res.send(data[0]) })
+    .catch((err)=>{
+        console.error(err.message)
+        res.send(err)
+    })
+}
