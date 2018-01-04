@@ -6,6 +6,7 @@ module.exports = function(app) {
   // User Routes
   app.route(endpoint)
   .put(starts_operator.get)
+  .get(starts_operator.getAll)
     .post(starts_operator.save)
 
     app.route(endpoint+ "/:id/delete")

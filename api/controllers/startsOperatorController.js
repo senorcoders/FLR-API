@@ -26,6 +26,16 @@ module.exports = {
             res.send(err.message)
         })
     },
+    getAll : (req, res)=>{
+        start_operator.findAll({})
+        .then((data)=>{
+            res.send(data)
+        })
+        .catch((err)=>{
+            console.error(err)
+            res.send(err.message)
+        })
+    },
     get : (req, res)=>{
         start_operator.find({ user_id : req.body.user_id, operator_id : req.body.operator_id})
         .then((data)=>{

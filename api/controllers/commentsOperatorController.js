@@ -14,6 +14,16 @@ module.exports = {
         })
     },
     getAll : (req, res)=>{
+        comments_operator.findAll({})
+        .then((data)=>{
+            res.send(data)
+        })
+        .catch((err)=>{
+            console.error(err)
+            res.send(err.message)
+        })
+    },
+    getAllXUser : (req, res)=>{
         comments_operator.findAll({ user_id : req.body.user_id, operator_id : req.body.operator_id})
         .then((data)=>{
             res.send(data)
