@@ -23,7 +23,11 @@ module.exports = function(app) {
     .put(user.update_location);
 
   //get favorites por usuario
-    app.route(endpoint+ "/:user_id/favorites-operatores")
-        .put(controllerFavoriteOperator.getAllXUser)
+    app.route(endpoint+ "/:userId/favorites-operators")
+        .post(controllerFavoriteOperator.getAllXUser)
+
+  //get all the operators that have been used
+  app.route(endpoint+ "/:userId/operators")
+  .post(require("./../controllers/operatorController").getAllXUser)
 
 };

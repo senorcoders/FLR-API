@@ -22,7 +22,7 @@ put   http://server_address/api/user/:id/change-location  //change location para
  
 get    http://server_address/api/user/azure_id/:id  //get azure id of the user
 
-get http://server_address/api/user/:id/favorites-operatores //get all favorites operatores 
+post http://server_address/api/user/:userId/favorites-operators //get all favorites operatores 
 
 ```
 ##### User Params
@@ -43,6 +43,7 @@ get http://server_address/api/user/:id/favorites-operatores //get all favorites 
 ```
 get  http://server_address/api/operator //get all operators
 post http://server_address/api/operator //create all operators
+post http://server_address/api/operator/:id/starts-comments //get all starts y comments
 ```
 ##### Operator params
 ```
