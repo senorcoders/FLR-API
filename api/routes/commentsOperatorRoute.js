@@ -5,6 +5,7 @@ module.exports = function(app) {
 
   // User Routes
   app.route(endpoint)
+  .put(comments_operator.getAll)
     .post(comments_operator.save)
 
 };
