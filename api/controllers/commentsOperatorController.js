@@ -22,5 +22,35 @@ module.exports = {
             console.error(err)
             res.send(err.message)
         })
+    },
+    delete : (req, res)=>{
+        comments_operator.destroy({
+            where: {
+                id : req.body.id
+            }
+        })
+        .then((data)=>{
+            res.send({ affectRows : data})
+        })
+        .catch((err)=>{
+            console.error(err)
+            res.send(err.message)
+        })
+    },
+    update : (req, res)=>{
+        comments_operator.update({
+            content : req.body.content
+        },{
+            where: {
+                id : req.body.id
+            }
+        })
+        .then((data)=>{
+            res.send(data)
+        })
+        .catch((err)=>{
+            console.error(err)
+            res.send(err.message)
+        })
     }
 }
