@@ -116,6 +116,7 @@ post http://server_address/api/favorite-operator/:operator_id/delete //delete op
 post  http://server_address/api/comments-operator //create comment
 post http://server_address/api/comments-operator //get all comments
 ```
+
 ##### comment of user for Operator params
 ```
 -user_id
