@@ -8,4 +8,9 @@ module.exports = function(app) {
   .put(starts_operator.get)
     .post(starts_operator.save)
 
+    app.route(endpoint+ "/:id/delete")
+    .post(starts_operator.delete)
+
+    app.route(endpoint+ "/update")
+    .post(starts_operator.update)
 };

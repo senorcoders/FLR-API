@@ -35,5 +35,35 @@ module.exports = {
             console.error(err)
             res.send(err.message)
         })
+    },
+    delete : (req, res)=>{
+        start_operator.destroy({
+            where: {
+                id : req.body.id
+            }
+        })
+        .then((data)=>{
+            res.send({ affectRows : data})
+        })
+        .catch((err)=>{
+            console.error(err)
+            res.send(err.message)
+        })
+    },
+    update : (req, res)=>{
+        start_operator.update({
+            start : req.body.numStart
+        },{
+            where: {
+                id : req.body.id
+            }
+        })
+        .then((data)=>{
+            res.send(data)
+        })
+        .catch((err)=>{
+            console.error(err)
+            res.send(err.message)
+        })
     }
 }
