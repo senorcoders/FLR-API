@@ -114,7 +114,7 @@ post http://server_address/api/favorite-operator/:operator_id/delete //delete op
 #### comment of user for Operator
 ```
 post  http://server_address/api/comments-operator //create comment
-post http://server_address/api/comments-operator //get all comments
+put http://server_address/api/comments-operator //get all comments
 ```
 
 ##### comment of user for Operator params
@@ -122,6 +122,19 @@ post http://server_address/api/comments-operator //get all comments
 -user_id
 -operator_id
 -content
+```
+
+#### starts of user for Operator
+```
+post  http://server_address/api/starts-operator //save start of operator
+put http://server_address/api/starts-operator //get start of operator
+```
+
+##### comment of user for Operator params
+```
+-user_id
+-operator_id
+-numStart
 ```
 
 ### Prerequisites
