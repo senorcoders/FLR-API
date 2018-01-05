@@ -1,7 +1,7 @@
 'use strict';
 module.exports = function(app) {
-  var starts_operator = require('../controllers/startsOperatorController');
-  const endpoint = '/api/starts-operator';
+  var starts_operator = require('../controllers/starsOperatorController');
+  const endpoint = '/api/stars-operator';
 
   // User Routes
   app.route(endpoint)

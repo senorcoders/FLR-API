@@ -1,6 +1,6 @@
 'use strict'
 
-const start_operator = require("./../models").start_operator
+const star_operator = require("./../models").star_operator
 
 module.exports = {
     save : (req, res)=>{
@@ -17,7 +17,7 @@ module.exports = {
                 return;
             }
         }
-        start_operator.create({ user_id : req.body.user_id, operator_id : req.body.operator_id, start : req.body.numStart})
+        star_operator.create({ user_id : req.body.user_id, operator_id : req.body.operator_id, start : req.body.numStart})
         .then((data)=>{
             res.send(data)
         })
@@ -27,7 +27,7 @@ module.exports = {
         })
     },
     getAll : (req, res)=>{
-        start_operator.findAll({})
+        star_operator.findAll({})
         .then((data)=>{
             res.send(data)
         })
@@ -37,7 +37,7 @@ module.exports = {
         })
     },
     get : (req, res)=>{
-        start_operator.find({ user_id : req.body.user_id, operator_id : req.body.operator_id})
+        star_operator.find({ user_id : req.body.user_id, operator_id : req.body.operator_id})
         .then((data)=>{
             res.send(data)
         })
@@ -47,7 +47,7 @@ module.exports = {
         })
     },
     delete : (req, res)=>{
-        start_operator.destroy({
+        star_operator.destroy({
             where: {
                 id : req.body.id
             }
@@ -61,7 +61,7 @@ module.exports = {
         })
     },
     update : (req, res)=>{
-        start_operator.update({
+        star_operator.update({
             start : req.body.numStart
         },{
             where: {

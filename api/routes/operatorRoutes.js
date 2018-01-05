@@ -14,8 +14,8 @@ module.exports = function(app) {
     .delete(location.delete);
   
     //For get all starts and comments for operator
-    app.route(endpoint+ "/:id/starts-comments")
-    .post(require("../controllers/startsCommentsOperator").getAllXOperator)
+    app.route(endpoint+ "/:id/stars-comments")
+    .post(require("../controllers/starsCommentsOperator").getAllXOperator)
 
 };
 
