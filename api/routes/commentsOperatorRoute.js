@@ -11,8 +11,6 @@ module.exports = function(app) {
     app.route(endpoint+ "/:id")
     .get(comments_operator.getOne)
     .delete(comments_operator.delete)
-
-    app.route(endpoint)
     .put(comments_operator.update)
 
 };

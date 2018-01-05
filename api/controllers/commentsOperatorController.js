@@ -63,7 +63,7 @@ module.exports = {
             content : req.body.content
         },{
             where: {
-                id : req.body.id
+                id : req.params.id
             }
         })
         .then((data)=>{

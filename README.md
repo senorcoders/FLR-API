@@ -139,20 +139,19 @@ delete http://server_address/api/comments-operator/:id //delete comment
 -content
 ```
 
-#### starts of user for Operator
+#### stars of user for Operator
 ```
-post  http://server_address/api/stars-operator //save start of operator
-put http://server_address/api/stars-operator //get start of operator
-post http://server_address/api/stars-operator/update //update start of operator
-post http://server_address/api/stars-operator/:id/delete //delete start of operator
-get http://server_address/api/stars-operator //get all start of operators
+post  http://server_address/api/stars-operator //save stars of operator
+get  http://server_address/api/stars-operator //get all stars of operator
+put http://server_address/api/stars-operator/:id //update stars of operator
+delete http://server_address/api/stars-operator/:id //delete stars of operator
 ```
 
 ##### comment of user for Operator params
 ```
 -user_id
 -operator_id
--numStart
+-numStars
 ```
 
 ### Prerequisites
