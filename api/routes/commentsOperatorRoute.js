@@ -6,13 +6,13 @@ module.exports = function(app) {
   // User Routes
   app.route(endpoint)
   .get(comments_operator.getAll)
-  .put(comments_operator.getAllXUser)
     .post(comments_operator.save)
 
-    app.route(endpoint+ "/:id/delete")
-    .post(comments_operator.delete)
+    app.route(endpoint+ "/:id")
+    .get(comments_operator.getOne)
+    .delete(comments_operator.delete)
 
-    app.route(endpoint+ "/update")
-    .post(comments_operator.update)
+    app.route(endpoint)
+    .put(comments_operator.update)
 
 };

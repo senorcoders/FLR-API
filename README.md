@@ -126,10 +126,10 @@ post http://server_address/api/favorite-operator/:operator_id/delete //delete op
 
 #### comment of user for Operator
 ```
+get  http://server_address/api/comments-operator //get all comment
 post  http://server_address/api/comments-operator //create comment
-put http://server_address/api/comments-operator //get all comments
-post http://server_address/api/comments-operator/update //update comment
-post http://server_address/api/comments-operator/:id/delete //delete comment
+put http://server_address/api/comments-operator/update //update comment
+delete http://server_address/api/comments-operator/:id //delete comment
 ```
 
 ##### comment of user for Operator params

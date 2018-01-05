@@ -13,6 +13,17 @@ module.exports = {
             res.send(err.message)
         })
     },
+    getOne : (req, res)=>{
+        console.log(req.params)
+        comments_operator.find({ where : { id : req.params.id } })
+        .then((data)=>{
+            res.send(data)
+        })
+        .catch((err)=>{
+            console.error(err)
+            res.send(err.message)
+        })
+    },
     getAll : (req, res)=>{
         comments_operator.findAll({})
         .then((data)=>{
@@ -36,7 +47,7 @@ module.exports = {
     delete : (req, res)=>{
         comments_operator.destroy({
             where: {
-                id : req.body.id
+                id : req.params.id
             }
         })
         .then((data)=>{
