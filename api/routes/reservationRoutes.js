@@ -12,7 +12,7 @@ module.exports = function(app) {
     .put(reservation.update)
     .delete(reservation.delete);
 
-    app.route(endpoint+ "/not-passed")
-    .post(reservation.getAllNotPassed)
+    app.route(endpoint+ "/:dateNow/not-passed")
+    .get(reservation.getAllNotPassed)
 
 };

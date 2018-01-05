@@ -201,7 +201,7 @@ exports.delete = function(req, res){
 exports.getAllNotPassed = (req, res)=>{
     let db = require("./../bd")
     let query = String.raw`
-        select * from reservations where CAST('${ req.body.dateNow }' AS DATE) <= transaction_end_date
+        select * from reservations where CAST('${ req.params.dateNow }' AS DATE) <= transaction_end_date
     `
     db.query(query)
     .then(data=>{ res.send(data[0]) })
