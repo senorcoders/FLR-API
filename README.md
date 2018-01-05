@@ -24,7 +24,7 @@ get    http://server_address/api/user/azure_id/:id  //get azure id of the user
 
 post http://server_address/api/user/:userId/favorites-operators //get all favorites operatores
 
-get http://server_address/api/user/:id/stars-comments //get all stars and comments
+get http://server_address/api/user/:id/stars-comments //get all stars and comments for id user
 
 ```
 ##### User Params
@@ -45,7 +45,7 @@ get http://server_address/api/user/:id/stars-comments //get all stars and commen
 ```
 get  http://server_address/api/operator //get all operators
 post http://server_address/api/operator //create all operators
-post http://server_address/api/operator/:id/stars-comments //get all starts and comments
+get http://server_address/api/operator/:id/stars-comments //get all stars and comments for id operator
 ```
 ##### Operator params
 ```
