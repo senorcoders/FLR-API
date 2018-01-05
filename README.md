@@ -22,7 +22,9 @@ put   http://server_address/api/user/:id/change-location  //change location para
  
 get    http://server_address/api/user/azure_id/:id  //get azure id of the user
 
-post http://server_address/api/user/:userId/favorites-operators //get all favorites operatores 
+post http://server_address/api/user/:userId/favorites-operators //get all favorites operatores
+
+get http://server_address/api/user/:id/stars-comments //get all stars and comments
 
 ```
 ##### User Params
@@ -43,7 +45,7 @@ post http://server_address/api/user/:userId/favorites-operators //get all favori
 ```
 get  http://server_address/api/operator //get all operators
 post http://server_address/api/operator //create all operators
-post http://server_address/api/operator/:id/starts-comments //get all starts y comments
+post http://server_address/api/operator/:id/stars-comments //get all starts and comments
 ```
 ##### Operator params
 ```
@@ -139,10 +141,11 @@ post http://server_address/api/comments-operator/:id/delete //delete comment
 
 #### starts of user for Operator
 ```
-post  http://server_address/api/starts-operator //save start of operator
-put http://server_address/api/starts-operator //get start of operator
-post http://server_address/api/starts-operator/update //update start of operator
-post http://server_address/api/starts-operator/:id/delete //delete start of operator
+post  http://server_address/api/stars-operator //save start of operator
+put http://server_address/api/stars-operator //get start of operator
+post http://server_address/api/stars-operator/update //update start of operator
+post http://server_address/api/stars-operator/:id/delete //delete start of operator
+get http://server_address/api/stars-operator //get all start of operators
 ```
 
 ##### comment of user for Operator params

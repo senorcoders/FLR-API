@@ -28,6 +28,10 @@ module.exports = function(app) {
 
   //get all the operators that have been used
   app.route(endpoint+ "/:userId/operators")
-  .post(require("./../controllers/operatorController").getAllXUser)
+  .get(require("./../controllers/operatorController").getAllXUser)
+
+  //get all the comments y stars
+  app.route(endpoint+ "/:id/stars-comments")
+  .get(require("./../controllers/starsComments").getAllXUser)
 
 };

@@ -15,7 +15,7 @@ module.exports = function(app) {
   
     //For get all starts and comments for operator
     app.route(endpoint+ "/:id/stars-comments")
-    .post(require("../controllers/starsCommentsOperator").getAllXOperator)
+    .get(require("../controllers/starsComments").getAllXOperator)
 
 };
 
