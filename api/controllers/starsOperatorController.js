@@ -17,7 +17,11 @@ module.exports = {
                 return;
             }
         }
-        star_operator.create({ user_id : req.body.user_id, operator_id : req.body.operator_id, start : req.body.numStars})
+        star_operator.create({ 
+            user_id : req.body.user_id, 
+            operator_id : req.body.operator_id, 
+            start : req.body.numStars
+        })
         .then((data)=>{
             res.send(data)
         })

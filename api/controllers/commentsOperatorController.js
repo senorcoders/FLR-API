@@ -4,7 +4,12 @@ const comments_operator = require("./../models").comments_operator
 
 module.exports = {
     save : (req, res)=>{
-        comments_operator.create({ user_id : req.body.user_id, operator_id : req.body.operator_id, content : req.body.content})
+        comments_operator.create({ 
+            user_id : req.body.user_id, 
+            operator_id : req.body.operator_id, 
+            content : req.body.content,
+            date_create : req.body.dateCreate
+        })
         .then((data)=>{
             res.send(data)
         })
