@@ -147,7 +147,7 @@ put http://server_address/api/stars-operator/:id //update stars of operator
 delete http://server_address/api/stars-operator/:id //delete stars of operator
 ```
 
-##### comment of user for Operator params
+##### stars of user for Operator params
 ```
 -user_id
 -operator_id
