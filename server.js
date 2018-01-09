@@ -25,7 +25,9 @@ var commissionRoutes = require('./api/routes/commissionRoutes');
 var reservationRoutes = require ('./api/routes/reservationRoutes');
 var favoriteOperatorRoutes = require('./api/routes/favoriteOperatorRoute'); //importing route
 var commentsOperator = require('./api/routes/commentsOperatorRoute')
-var starsOperator = require('./api/routes/starsOperatorRoute')
+var startsOperator = require('./api/routes/startsOperatorRoute')
+var serviceDatesRoutes = require('./api/routes/servicesDatesRoutes');
+
 userRoutes(app); //register the route
 locationRoutes(app);
 operatorRoutes(app);
@@ -33,6 +35,7 @@ productRoutes(app);
 pricingRoutes(app);
 commissionRoutes(app);
 reservationRoutes(app);
+serviceDatesRoutes(app);
 
 favoriteOperatorRoutes(app);
 commentsOperator(app)

@@ -4,11 +4,11 @@ module.exports = function(app) {
   const endpoint = '/api/reservation';
   // User Routes
   app.route(endpoint)
-    .post(reservation.create)
+    .post(reservation.save)
     .get(reservation.get_all);
 
   app.route(endpoint + '/:id')
-    .get(reservation.get_one)
+    .get(reservation.get)
     .put(reservation.update)
     .delete(reservation.delete);
 
@@ -18,4 +18,6 @@ module.exports = function(app) {
     app.route(endpoint+ "/:dateNow/future")
     .get(reservation.getAllFuture)
 
+  app.route(endpoint+ '/update_payment/:id')
+    .put(reservation.update_payment_token);
 };
