@@ -166,6 +166,37 @@ module.exports ={
 			console.error(err.message)
 			res.send(err)
 		})
+	},
+	getAllProductXOperator : (req, res, next)=>{
+		let bd = require("./../bd")
+		let query = String.raw`
+		select 
+			operator.id,
+			operator.operator_name,
+			operator.business_type,
+			operator.operator_type,
+			locations.location_type_id, 
+			locations.lot,
+			locations.lat,
+			products.id as product_id,
+			products.name,
+			products.max_adults,
+			pricing.price
+			from operator
+			inner join products on operator.id = products.operator_id
+			inner join locations on products.location_id = locations.id
+			inner join pricing on products.id != pricing.product_id 
+			where operator.id = ${ req.params.id } and lat != '' and price_plan != 'price plan'
+		`
+
+		bd.query(query)
+		.then((data)=>{
+			res.send(data)
+		})
+		.catch((err)=>{
+			console.error(err.message)
+			res.send(err)
+		})
 	}
 }
 

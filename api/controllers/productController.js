@@ -24,7 +24,31 @@ module.exports ={
 					});
 		},
 	get_all : function(req, res){
-  	models.products.findAll({ limit: 20 }).then(function (data) {
+  	models.products.findAll().then(function (data) {
+					forEach(data, function(item, index, arr) {
+						var done = this.async();
+						console.log("each", item, index, arr);
+						  models.operator.findAll( { where: {id: item.operator_id} }).then(function(operator) {																
+								arr[index].dataValues.operator =operator;
+								models.locations.findAll( { where: {id: item.location_id} }).then(function(location) {																
+										arr[index].dataValues.location =location;
+										done();		//wait for the results before continue
+									});
+								//done();		//wait for the results before continue
+							});
+					} , operatorDone);				
+					
+						function operatorDone(notAborted, arr) {		
+							res.send(arr);
+						}
+			
+						
+					}, function(reason) {
+						console.log(reason); // Error!
+					});  
+	},
+	get_one : function(req, res){
+  	models.products.findById(req.params.id).then(function (data) {
 					forEach(data, function(item, index, arr) {
 						var done = this.async();
 						console.log("each", item, index, arr);
