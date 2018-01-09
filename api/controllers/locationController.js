@@ -70,10 +70,13 @@ exports.by_distance = function(req, res){
     
     console.log(req.params.distance);
     con.connect().then(function () { 
-        new con.Request("	SELECT loc.id,loc.name, /*loc_type.id as type_id, loc_type.name as type, loc_type.image_url,*/ geo.Lat as lat, geo.Long as lon, " +
+        new con.Request("	SELECT loc.id,loc.name, /*loc_type.id as type_id, loc_type.name as type, loc_type.image_url, */ geo.Lat as lat, geo.Long as lon, operator.*," +
                         " geo.STDistance(geography::Point(@lat, @lon, 4326)) Distance" +
                         " FROM locations loc" +
-/*                        " inner join location_type loc_type on ( loc.location_type_id = loc_type.id ) "+*/
+                        /*" inner join location_type loc_type on ( loc.location_type_id = loc_type.id ) " +*/
+                        " inner join products on products.location_id = loc.id "+
+                        " inner join operator on operator.id = products.operator_id"+
+
                         " WHERE geo.STDistance(geography::Point(@lat, @lon, 4326)) < @distance") 
             .addParam("lat", TYPES.Real, req.params.lat)  
 						.addParam("lon", TYPES.Real, req.params.lon)  
