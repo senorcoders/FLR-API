@@ -117,16 +117,16 @@ delete http://server_address/api/pricing/:id  //delete a price by id
 -business_type
 ```
 
-#### Favorites Operatores
+#### Favorites Product
 ```
 get  http://server_address/api/favorite-product //create favorite
 post  http://server_address/api/favorite-product //create favorite
 delete http://server_address/api/favorite-product/:id //delete favorite
 ```
-##### Favorites Operatores params
+##### Favorites Product params
 ```
 -user_id
--operator_id
+-product_id
 ```
 
 #### comment of user for Operator
@@ -157,6 +157,20 @@ delete http://server_address/api/stars-operator/:id //delete stars of operator
 -user_id
 -operator_id
 -numStars
+```
+
+#### Coupon 
+```
+get  http://server_address/api/coupon/:code/:productId //get coupon
+post  http://server_address/api/coupon //create coupon
+delete http://server_address/api/coupon/:id //delete favorite
+```
+##### Coupon params
+```
+-type
+-amount
+-code
+-product_id
 ```
 
 ### Prerequisites
