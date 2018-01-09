@@ -9,9 +9,9 @@ module.exports = function(app) {
     .post(product.create)
     .get(product.get_all);
 
-  /*app.route(endpoint + '/:id')
+  app.route(endpoint + '/:id')
     .get(product.get_one)
-    .put(product.update)
+  /*  .put(product.update)
     .delete(product.delete);*/
 };
 

@@ -178,6 +178,7 @@ module.exports ={
 			locations.location_type_id, 
 			locations.lot,
 			locations.lat,
+			products.id as product_id,
 			products.name,
 			products.max_adults,
 			pricing.price

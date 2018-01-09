@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes)=>{
         tableName: 'reservations'
       });
     
-      sequelize.sync()
+      //sequelize.sync()
 
     return reservations
 }

@@ -23,7 +23,7 @@ var productRoutes = require('./api/routes/productRoutes'); //importing route
 var pricingRoutes = require('./api/routes/pricingRoutes'); //importing route
 var commissionRoutes = require('./api/routes/commissionRoutes'); 
 var reservationRoutes = require ('./api/routes/reservationRoutes');
-var favoriteOperatorRoutes = require('./api/routes/favoriteOperatorRoute'); //importing route
+var favoriteProductRoutes = require('./api/routes/favoriteProductRoute'); //importing route
 var commentsOperator = require('./api/routes/commentsOperatorRoute')
 var starsOperator = require('./api/routes/starsOperatorRoute')
 var serviceDatesRoutes = require('./api/routes/servicesDatesRoutes');
@@ -38,7 +38,7 @@ commissionRoutes(app);
 reservationRoutes(app);
 serviceDatesRoutes(app);
 serviceHoursRoutes(app);
-favoriteOperatorRoutes(app);
+favoriteProductRoutes(app);
 commentsOperator(app)
 starsOperator(app)
 
