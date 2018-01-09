@@ -22,7 +22,7 @@ put   http://server_address/api/user/:id/change-location  //change location para
  
 get    http://server_address/api/user/azure_id/:id  //get azure id of the user
 
-post http://server_address/api/user/:userId/favorites-operators //get all favorites operatores
+post http://server_address/api/user/:userId/favorites-products //get all favorites products
 
 get http://server_address/api/user/:id/stars-comments //get all stars and comments for id user
 
@@ -119,8 +119,9 @@ delete http://server_address/api/pricing/:id  //delete a price by id
 
 #### Favorites Operatores
 ```
-post  http://server_address/api/favorite-operator //create operator
-post http://server_address/api/favorite-operator/:operator_id/delete //delete operator
+get  http://server_address/api/favorite-product //create favorite
+post  http://server_address/api/favorite-product //create favorite
+delete http://server_address/api/favorite-product/:id //delete favorite
 ```
 ##### Favorites Operatores params
 ```
