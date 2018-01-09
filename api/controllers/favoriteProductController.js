@@ -1,10 +1,10 @@
 "use strict"
-const favorite_operator = require("../models").favorite_operator
+const favorite_product = require("../models").favorite_product
 
 module.exports = {
     /*Solo para pruebas de desarrollo */
     getAll : function (req, res, callback) {
-        favorite_operator.findAll().then(function (data) {
+        favorite_product.findAll().then(function (data) {
             res.send(data)
         }).catch(function (err) {
             console.error(err.message)
@@ -14,12 +14,12 @@ module.exports = {
         if( !req.body.hasOwnProperty("user_id") ){
             throw new Error("Falta el parametro:: user_id")
             return;
-        }else if( !req.body.hasOwnProperty("operator_id") ){
-            throw new Error("Falta el parametro:: operator_id")
+        }else if( !req.body.hasOwnProperty("product_id") ){
+            throw new Error("Falta el parametro:: product_id")
             return;
         }
 
-        favorite_operator.create({user_id: req.body.user_id, operator_id : req.body.operator_id}).then(function (data) {
+        favorite_product.create({user_id: req.body.user_id, product_id : req.body.product_id}).then(function (data) {
             res.send(data)
         })
             .catch(function (err) {
@@ -29,14 +29,14 @@ module.exports = {
     },
     delete : function (req, res, callback) {
 
-        if( !req.body.hasOwnProperty("operator_id") ){
-            throw new Error("Falta el parametro:: operator_id")
+        if( !req.params.hasOwnProperty("id") ){
+            throw new Error("Falta el parametro:: id")
             return;
         }
 
-        favorite_operator.destroy({
+        favorite_product.destroy({
             where : {
-                id : req.body.operator_id
+                id : req.params.id
             }
         }).then(function (data) {
             res.send({ rowsDeleted : data })
@@ -45,14 +45,14 @@ module.exports = {
         })
     },
     getAllXUser : function (req, res, callback) {
-        if( !req.body.hasOwnProperty("userId") ){
+        if( !req.params.hasOwnProperty("userId") ){
             throw new Error("Falta el parametro userId")
             return
         }
 
         let bd = require("./../bd")
         let query = String.raw`
-        SELECT op.* from favorite_operators fp INNER JOIN operator op on fp.operator_id = op.id where fp.user_id = ${req.body.userId}
+        SELECT op.* from favorite_products fp INNER JOIN products op on fp.product_id = op.id where fp.user_id = ${req.params.userId}
         `
         bd.query(query)
         .then((data)=>{
