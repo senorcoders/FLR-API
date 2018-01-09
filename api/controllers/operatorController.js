@@ -140,6 +140,32 @@ module.exports ={
 				}).catch(function (ex) { 
 						console.log(ex); 
 				}); 
-		}
+		},
+	//get all the operators that have been used
+	getAllXUser : (req, res, next)=>{
+		let bd = require("./../bd")
+		let query = String.raw`
+		select rs.id as reservationsID, 
+		rs.product_id as productID,
+		op.id as operatorID, 
+		op.operator_name, 
+		op.operator_type, 
+		op.time_zone,
+		op.currency,
+		op.business_type,
+		op.old_id
+		from reservations rs INNER JOIN products pds on rs.product_id = pds.id 
+		INNER JOIN operator op on pds.operator_id = op.id where rs.transaction_status = 'paid' and user_id = ${req.body.userId}
+		`
+
+		bd.query(query)
+		.then((data)=>{
+			res.send(data[0])
+		})
+		.catch((err)=>{
+			console.error(err.message)
+			res.send(err)
+		})
+	}
 }
 

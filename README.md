@@ -22,7 +22,9 @@ put   http://server_address/api/user/:id/change-location  //change location para
  
 get    http://server_address/api/user/azure_id/:id  //get azure id of the user
 
-get http://server_address/api/user/:id/favorites-operatores //get all favorites operatores 
+post http://server_address/api/user/:userId/favorites-operators //get all favorites operatores
+
+get http://server_address/api/user/:id/stars-comments //get all stars and comments for id user
 
 ```
 ##### User Params
@@ -43,6 +45,7 @@ get http://server_address/api/user/:id/favorites-operatores //get all favorites 
 ```
 get  http://server_address/api/operator //get all operators
 post http://server_address/api/operator //create all operators
+get http://server_address/api/operator/:id/stars-comments //get all stars and comments for id operator
 ```
 ##### Operator params
 ```
@@ -82,6 +85,17 @@ post http://server_address/api/product  //create a product
 -max_adults
 -max_childs
 ```
+
+#### Reservations
+```
+get  http://server_address/api/reservation/:dateNow/past  //get all reservations that have not passed
+get  http://server_address/api/reservation/:dateNow/future  //get all reservations for the future
+```
+##### Reservations params
+```
+-dateNow format YYYY-MM-DD
+```
+
 #### Pricing
 ```
 get  http://server_address/api/pricing  //get all the prices
@@ -113,10 +127,10 @@ post http://server_address/api/favorite-operator/:operator_id/delete //delete op
 
 #### comment of user for Operator
 ```
+get  http://server_address/api/comments-operator //get all comment
 post  http://server_address/api/comments-operator //create comment
-put http://server_address/api/comments-operator //get all comments
-post http://server_address/api/comments-operator/update //update comment
-post http://server_address/api/comments-operator/:id/delete //delete comment
+put http://server_address/api/comments-operator/update //update comment
+delete http://server_address/api/comments-operator/:id //delete comment
 ```
 
 ##### comment of user for Operator params
@@ -126,19 +140,19 @@ post http://server_address/api/comments-operator/:id/delete //delete comment
 -content
 ```
 
-#### starts of user for Operator
+#### stars of user for Operator
 ```
-post  http://server_address/api/starts-operator //save start of operator
-put http://server_address/api/starts-operator //get start of operator
-post http://server_address/api/starts-operator/update //update start of operator
-post http://server_address/api/starts-operator/:id/delete //delete start of operator
+post  http://server_address/api/stars-operator //save stars of operator
+get  http://server_address/api/stars-operator //get all stars of operator
+put http://server_address/api/stars-operator/:id //update stars of operator
+delete http://server_address/api/stars-operator/:id //delete stars of operator
 ```
 
-##### comment of user for Operator params
+##### stars of user for Operator params
 ```
 -user_id
 -operator_id
--numStart
+-numStars
 ```
 
 ### Prerequisites

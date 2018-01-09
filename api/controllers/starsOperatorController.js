@@ -1,23 +1,27 @@
 'use strict'
 
-const start_operator = require("./../models").start_operator
+const star_operator = require("./../models").star_operator
 
 module.exports = {
     save : (req, res)=>{
-        if( !req.body.hasOwnProperty("numStart") ){
-            throw new Error("Falta el parametro :: numStart")
+        if( !req.body.hasOwnProperty("numStars") ){
+            throw new Error("Falta el parametro :: numStars")
             return;
         }else{
 
             if( req.body.numStart > 5 ){
-                throw new Error("the parameter numStart can not be greater than 5")
+                throw new Error("the parameter numStars can not be greater than 5")
                 return;
             }else if( req.body.numStart < 1 ){
-                throw new Error("the parameter numStart can not be less than 1")
+                throw new Error("the parameter numStars can not be less than 1")
                 return;
             }
         }
-        start_operator.create({ user_id : req.body.user_id, operator_id : req.body.operator_id, start : req.body.numStart})
+        star_operator.create({ 
+            user_id : req.body.user_id, 
+            operator_id : req.body.operator_id, 
+            start : req.body.numStars
+        })
         .then((data)=>{
             res.send(data)
         })
@@ -26,8 +30,18 @@ module.exports = {
             res.send(err.message)
         })
     },
-    get : (req, res)=>{
-        start_operator.find({ user_id : req.body.user_id, operator_id : req.body.operator_id})
+    getAll : (req, res)=>{
+        star_operator.findAll({})
+        .then((data)=>{
+            res.send(data)
+        })
+        .catch((err)=>{
+            console.error(err)
+            res.send(err.message)
+        })
+    },
+    getOne : (req, res)=>{
+        star_operator.find({ where: { id : req.params.id } })
         .then((data)=>{
             res.send(data)
         })
@@ -37,9 +51,9 @@ module.exports = {
         })
     },
     delete : (req, res)=>{
-        start_operator.destroy({
+        star_operator.destroy({
             where: {
-                id : req.body.id
+                id : req.params.id
             }
         })
         .then((data)=>{
@@ -51,11 +65,11 @@ module.exports = {
         })
     },
     update : (req, res)=>{
-        start_operator.update({
-            start : req.body.numStart
+        star_operator.update({
+            start : req.body.numStars
         },{
             where: {
-                id : req.body.id
+                id : req.params.id
             }
         })
         .then((data)=>{

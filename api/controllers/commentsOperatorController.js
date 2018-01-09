@@ -4,7 +4,23 @@ const comments_operator = require("./../models").comments_operator
 
 module.exports = {
     save : (req, res)=>{
-        comments_operator.create({ user_id : req.body.user_id, operator_id : req.body.operator_id, content : req.body.content})
+        comments_operator.create({ 
+            user_id : req.body.user_id, 
+            operator_id : req.body.operator_id, 
+            content : req.body.content,
+            date_create : req.body.dateCreate
+        })
+        .then((data)=>{
+            res.send(data)
+        })
+        .catch((err)=>{
+            console.error(err)
+            res.send(err.message)
+        })
+    },
+    getOne : (req, res)=>{
+        console.log(req.params)
+        comments_operator.find({ where : { id : req.params.id } })
         .then((data)=>{
             res.send(data)
         })
@@ -14,6 +30,16 @@ module.exports = {
         })
     },
     getAll : (req, res)=>{
+        comments_operator.findAll({})
+        .then((data)=>{
+            res.send(data)
+        })
+        .catch((err)=>{
+            console.error(err)
+            res.send(err.message)
+        })
+    },
+    getAllXUser : (req, res)=>{
         comments_operator.findAll({ user_id : req.body.user_id, operator_id : req.body.operator_id})
         .then((data)=>{
             res.send(data)
@@ -26,7 +52,7 @@ module.exports = {
     delete : (req, res)=>{
         comments_operator.destroy({
             where: {
-                id : req.body.id
+                id : req.params.id
             }
         })
         .then((data)=>{
@@ -42,7 +68,7 @@ module.exports = {
             content : req.body.content
         },{
             where: {
-                id : req.body.id
+                id : req.params.id
             }
         })
         .then((data)=>{
