@@ -88,7 +88,8 @@ post http://server_address/api/product  //create a product
 
 #### Reservations
 ```
-get  http://server_address/api/reservation/:dateNow/not-passed  //get all reservations that have not passed
+get  http://server_address/api/reservation/:dateNow/past  //get all reservations that have not passed
+get  http://server_address/api/reservation/:dateNow/future  //get all reservations for the future
 ```
 ##### Reservations params
 ```
