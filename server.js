@@ -27,6 +27,7 @@ var favoriteOperatorRoutes = require('./api/routes/favoriteOperatorRoute'); //im
 var commentsOperator = require('./api/routes/commentsOperatorRoute')
 var starsOperator = require('./api/routes/starsOperatorRoute')
 var serviceDatesRoutes = require('./api/routes/servicesDatesRoutes');
+var serviceHoursRoutes = require('./api/routes/servicesHoursRoutes');
 
 userRoutes(app); //register the route
 locationRoutes(app);
@@ -36,7 +37,7 @@ pricingRoutes(app);
 commissionRoutes(app);
 reservationRoutes(app);
 serviceDatesRoutes(app);
-
+serviceHoursRoutes(app);
 favoriteOperatorRoutes(app);
 commentsOperator(app)
 starsOperator(app)
