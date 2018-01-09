@@ -108,10 +108,66 @@ module.exports = {
         })
         .then((data)=>{
             res.send(data);
-        })
-        .catch((err)=>{
-            console.error(err)
-            res.send(err.message);
+        }) 
+       .catch(function (ex) { 
+            console.log(ex); 
+            res.send(err.message)
+        }); 
+    },
+    getXUserAll : (req, res)=>{
+        let db = require("./../bd")
+        let query = String.raw`
+            select 
+            rs.id as reservationID,
+            rs.activity_type as reservationActivityType,
+            rs.transaction_date as transactionDate,
+            rs.transaction_start_date as transactionStartDate,
+            rs.transaction_end_date as transactionEndtTime,
+            rs.transaction_start_time as transactionStartTime,
+            rs.transaction_end_time as transactionEndTime,
+            rs.nbr_in_party as reservationNbrInParty,
+            rs.nbr_in_adult as reservationNbrInAdult,
+            rs.nbr_children as reservationNbrChildren,
+            rs.misc_trip_name as reservationMiscTripName,
+            rs.price as Price,
+            op.id as operatorID,
+            op.operator_name as operatorName,
+            op.operator_type as operatorType,
+            op.time_zone as operatorTimeZona,
+            op.currency as operatorCurrency,
+            op.business_type as operatorBusinessType,
+            pds.id as productID,
+            pds.name as productName,
+            pr.id as priceID,
+            pr.price as productPrice,
+            pr.price_plan as pricePlan,
+            pr.available_date as priceAvailableDate,
+            pr.available_time as priceAvailableTime,
+            pr.end_date as priceEndDate,
+            pr.end_time as priceEndTime,
+            loc.id as locationID,
+            loc.lat as locationLatitud,
+            loc.lot as locationLongitud,
+            loc.name as locationName,
+            loc.currency as locationCurrency,
+            loc.address as locationAddress,
+            loc.hours_operation as locationHoursOperation,
+            loc.website as locationWebSite,
+            loc.country as locationCountry,
+            loc.contact_name as locationContactName,
+            loc.contact_email as locationContactEmail
+            from products pds
+            INNER JOIN reservations rs  on pds.id = rs.product_id 
+            INNER JOIN operator op on pds.operator_id = op.id
+            inner JOIN pricing pr on pr.product_id = pds.id
+            inner join locations loc on loc.id = pds.location_id
+            where rs.user_id = ${ req.params.id }
+            `
+            db.query(query)
+            .then(data=>{ res.send(data[0]) })
+            .catch((err)=>{
+                console.error(err.message)
+                res.send(err)
         })
     },
     getAllNotPassed : (req, res)=>{
@@ -119,6 +175,7 @@ module.exports = {
         let query = String.raw`
         select 
         rs.id as reservationID,
+        rs.activity_type as reservationActivityType,
         rs.transaction_date as transactionDate,
         rs.transaction_start_date as transactionStartDate,
         rs.transaction_end_date as transactionEndtTime,
@@ -163,57 +220,58 @@ module.exports = {
         .catch((err)=>{
             console.error(err.message)
             res.send(err)
-        })
+       })    
     },
     getAllFuture : (req, res)=>{
         let db = require("./../bd")
         let query = String.raw`
-        select 
-        rs.id as reservationID,
-        rs.transaction_date as transactionDate,
-        rs.transaction_start_date as transactionStartDate,
-        rs.transaction_end_date as transactionEndtTime,
-        rs.transaction_start_time as transactionStartTime,
-        rs.transaction_end_time as transactionEndTime,
-        rs.price as Price,
-        op.id as operatorID,
-        op.operator_name as operatorName,
-        op.operator_type as operatorType,
-        op.time_zone as operatorTimeZona,
-        op.currency as operatorCurrency,
-        op.business_type as operatorBusinessType,
-        pds.id as productID,
-        pds.name as productName,
-        pr.id as priceID,
-        pr.price as productPrice,
-        pr.price_plan as pricePlan,
-        pr.available_date as priceAvailableDate,
-        pr.available_time as priceAvailableTime,
-        pr.end_date as priceEndDate,
-        pr.end_time as priceEndTime,
-        loc.id as locationID,
-        loc.lat as locationLatitud,
-        loc.lot as locationLongitud,
-        loc.name as locationName,
-        loc.currency as locationCurrency,
-        loc.address as locationAddress,
-        loc.hours_operation as locationHoursOperation,
-        loc.website as locationWebSite,
-        loc.country as locationCountry,
-        loc.contact_name as locationContactName,
-        loc.contact_email as locationContactEmail
-        from products pds
-        INNER JOIN reservations rs  on pds.id = rs.product_id 
-        INNER JOIN operator op on pds.operator_id = op.id
-        inner JOIN pricing pr on pr.product_id = pds.id
-        inner join locations loc on loc.id = pds.location_id
-        where CAST('${ req.params.dateNow }' AS DATE) <= rs.transaction_end_date
-        `
-        db.query(query)
-        .then(data=>{ res.send(data[0]) })
-        .catch((err)=>{
-            console.error(err.message)
-            res.send(err)
+            select 
+            rs.id as reservationID,
+            rs.activity_type as reservationActivityType,
+            rs.transaction_date as transactionDate,
+            rs.transaction_start_date as transactionStartDate,
+            rs.transaction_end_date as transactionEndtTime,
+            rs.transaction_start_time as transactionStartTime,
+            rs.transaction_end_time as transactionEndTime,
+            rs.price as Price,
+            op.id as operatorID,
+            op.operator_name as operatorName,
+            op.operator_type as operatorType,
+            op.time_zone as operatorTimeZona,
+            op.currency as operatorCurrency,
+            op.business_type as operatorBusinessType,
+            pds.id as productID,
+            pds.name as productName,
+            pr.id as priceID,
+            pr.price as productPrice,
+            pr.price_plan as pricePlan,
+            pr.available_date as priceAvailableDate,
+            pr.available_time as priceAvailableTime,
+            pr.end_date as priceEndDate,
+            pr.end_time as priceEndTime,
+            loc.id as locationID,
+            loc.lat as locationLatitud,
+            loc.lot as locationLongitud,
+            loc.name as locationName,
+            loc.currency as locationCurrency,
+            loc.address as locationAddress,
+            loc.hours_operation as locationHoursOperation,
+            loc.website as locationWebSite,
+            loc.country as locationCountry,
+            loc.contact_name as locationContactName,
+            loc.contact_email as locationContactEmail
+            from products pds
+            INNER JOIN reservations rs  on pds.id = rs.product_id 
+            INNER JOIN operator op on pds.operator_id = op.id
+            inner JOIN pricing pr on pr.product_id = pds.id
+            inner join locations loc on loc.id = pds.location_id
+            where CAST('${ req.params.dateNow }' AS DATE) <= rs.transaction_end_date
+            `
+            db.query(query)
+            .then(data=>{ res.send(data[0]) })
+            .catch((err)=>{
+                console.error(err.message)
+                res.send(err)
         })
     }
 }
