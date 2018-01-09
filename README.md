@@ -46,6 +46,7 @@ get http://server_address/api/user/:id/stars-comments //get all stars and commen
 get  http://server_address/api/operator //get all operators
 post http://server_address/api/operator //create all operators
 get http://server_address/api/operator/:id/stars-comments //get all stars and comments for id operator
+get http://server_address/api/operator/:id/products  //get all products by operator id
 ```
 ##### Operator params
 ```
@@ -60,7 +61,7 @@ get http://server_address/api/operator/:id/stars-comments //get all stars and co
 get  http://server_address/api/location  //get all locations
 post http://server_address/api/location  //create a new location
 
-get  http://server_address/api/location/by_distance/:lat/:lon/:distance  //get all locations in a radious of :distance from the :lat, :lon point
+get  http://server_address/api/location/by_distance/:lat/:lon/:distance  //get all locations and operators in a radious of :distance from the :lat, :lon point
     
 ```
 ##### Location params
