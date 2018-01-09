@@ -222,7 +222,7 @@ module.exports = {
             res.send(err)
        })    
     },
-    getAllFuture = (req, res)=>{
+    getAllFuture : (req, res)=>{
         let db = require("./../bd")
         let query = String.raw`
             select 
