@@ -76,6 +76,7 @@ exports.by_distance = function(req, res){
                         /*" inner join location_type loc_type on ( loc.location_type_id = loc_type.id ) " +*/
                         " inner join products on products.location_id = loc.id "+
                         " inner join operator on operator.id = products.operator_id"+
+
                         " WHERE geo.STDistance(geography::Point(@lat, @lon, 4326)) < @distance") 
             .addParam("lat", TYPES.Real, req.params.lat)  
 						.addParam("lon", TYPES.Real, req.params.lon)  

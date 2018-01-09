@@ -27,6 +27,7 @@ var favoriteOperatorRoutes = require('./api/routes/favoriteOperatorRoute'); //im
 var commentsOperator = require('./api/routes/commentsOperatorRoute')
 var startsOperator = require('./api/routes/startsOperatorRoute')
 var serviceDatesRoutes = require('./api/routes/servicesDatesRoutes');
+
 userRoutes(app); //register the route
 locationRoutes(app);
 operatorRoutes(app);
@@ -38,7 +39,7 @@ serviceDatesRoutes(app);
 
 favoriteOperatorRoutes(app);
 commentsOperator(app)
-startsOperator(app)
+starsOperator(app)
 
 app.listen(port);
 console.log('Find local rentals RESTful API server started on: ' + port);

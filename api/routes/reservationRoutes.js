@@ -10,7 +10,13 @@ module.exports = function(app) {
   app.route(endpoint + '/:id')
     .get(reservation.get)
     .put(reservation.update)
-    .delete(reservation.delete); 
+    .delete(reservation.delete);
+
+    app.route(endpoint+ "/:dateNow/past")
+    .get(reservation.getAllNotPassed)
+
+    app.route(endpoint+ "/:dateNow/future")
+    .get(reservation.getAllFuture)
 
   app.route(endpoint+ '/update_payment/:id')
     .put(reservation.update_payment_token);

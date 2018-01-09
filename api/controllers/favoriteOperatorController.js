@@ -45,20 +45,21 @@ module.exports = {
         })
     },
     getAllXUser : function (req, res, callback) {
-        if( !req.body.hasOwnProperty("user_id") ){
-            throw new Error("Falta el parametro user_id")
+        if( !req.body.hasOwnProperty("userId") ){
+            throw new Error("Falta el parametro userId")
             return
         }
 
-        favorite_operator.findAll({
-            where : {
-                user_id : req.body.user_id
-            }
-        }).then(function (data) {
-            res.send(data)
-        }).catch(function (err) {
-            res.send(err.message)
+        let bd = require("./../bd")
+        let query = String.raw`
+        SELECT op.* from favorite_operators fp INNER JOIN operator op on fp.operator_id = op.id where fp.user_id = ${req.body.userId}
+        `
+        bd.query(query)
+        .then((data)=>{
+            res.send(data[0])
         })
-
+        .catch(function (err) {
+            console.error(err.message)
+        })
     }
 }
