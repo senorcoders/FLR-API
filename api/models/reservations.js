@@ -12,20 +12,20 @@ module.exports = (sequelize, DataTypes)=>{
         transaction_start_date : { type : Sequelize.DATE, allowNull : false },
         transaction_end_date : { type : Sequelize.DATE, allowNull : false },
         transaction_start_time : { type : Sequelize.DATE, allowNull : false },
-        transaction_end_time : { type : Sequelize.DATE, allowNull : false },
-        transaction : { type : Sequelize.TEXT, allowNull : false },
+        transaction_end_time : { type : Sequelize.DATE, allowNull : false },        
         number_activity_reserved : { type : Sequelize.INTEGER, allowNull : false },
         nbr_in_party : { type : Sequelize.TEXT, allowNull : false },
         nbr_in_adult : { type : Sequelize.TEXT, allowNull : false },
         nbr_children : { type : Sequelize.TEXT, allowNull : false },
         misc_trip_name : { type : Sequelize.TEXT, allowNull : false },
-        price : { type : Sequelize.FLOAT , allowNull : false }
+        price : { type : Sequelize.FLOAT , allowNull : false },
+        payment_id : { type :Sequelize.TEXT, allowNull : true }
     }, {
         freezeTableName: true,
         tableName: 'reservations'
       });
     
-      //sequelize.sync()
+      sequelize.sync()
 
     return reservations
 }
