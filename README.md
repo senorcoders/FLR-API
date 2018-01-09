@@ -26,6 +26,8 @@ post http://server_address/api/user/:userId/favorites-operators //get all favori
 
 get http://server_address/api/user/:id/stars-comments //get all stars and comments for id user
 
+get http://server_address/api/user/:id/reservations //get all reservations
+
 ```
 ##### User Params
 ```

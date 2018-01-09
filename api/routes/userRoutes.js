@@ -34,4 +34,8 @@ module.exports = function(app) {
   app.route(endpoint+ "/:id/stars-comments")
   .get(require("./../controllers/starsComments").getAllXUser)
 
+  //get all the reservations
+  app.route(endpoint+ "/:id/reservations")
+  .get(require("./../controllers/reservationController").getXUserAll)
+
 };
