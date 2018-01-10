@@ -20,4 +20,7 @@ module.exports = function(app) {
 
   app.route(endpoint+ '/update_payment/:id')
     .put(reservation.update_payment_token);
+
+    app.route(endpoint+ "/reviews/:id")
+    .get(reservation.getOne)
 };
