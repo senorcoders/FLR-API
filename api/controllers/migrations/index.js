@@ -14,4 +14,7 @@ module.exports = function(app){
 
     /*app.route(endpoint+ "/locations-update")
     .get(controller.updateFieldsLocations)*/
+
+    app.route(endpoint+ "/horarios")
+    .get(controller.updateFieldsLocations)
 }
