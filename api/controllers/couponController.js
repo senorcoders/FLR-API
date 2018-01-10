@@ -9,6 +9,12 @@ module.exports = {
                 product_id : req.params.productId
             }
         }).then(function(data){
+            if( data === null){
+                data = {
+                    message : "coupon not found"
+                }
+            }
+
             res.send(data)
         })
         .catch(function(err){
