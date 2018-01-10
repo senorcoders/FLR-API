@@ -7,8 +7,7 @@ module.exports = {
         comments_operator.create({ 
             user_id : req.body.user_id, 
             operator_id : req.body.operator_id, 
-            content : req.body.content,
-            date_create : req.body.dateCreate
+            content : req.body.content
         })
         .then((data)=>{
             res.send(data)
