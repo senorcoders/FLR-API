@@ -67,7 +67,8 @@ exports.by_distance = function(req, res){
     var msSqlConnecter = require("../../sqlhelper"); 
     var dbConfig = require('../../dbConfig');
     var con = new msSqlConnecter.msSqlConnecter(dbConfig.config);
-    
+    const forEach = require('async-foreach').forEach;
+
     console.log(req.params.distance);
     con.connect().then(function () { 
         new con.Request("select distinct "+
@@ -89,9 +90,47 @@ exports.by_distance = function(req, res){
 						.addParam("distance", TYPES.Int, Number(req.params.distance))  
             .onComplate(function (count, datas) { 
                 console.log(count);                
-                console.log(datas);
-                res.send(datas);
-								con.close();
+                //console.log(datas);
+                forEach(datas, function(operator, indexOperator, arrOperator) {                                
+                    var listo = this.async();
+                    
+                    let bd = require("./../bd")
+                    let query = String.raw`
+                    select 
+                        locations.location_type_id, 
+                        locations.lot,
+                        locations.lat,
+                        products.id as product_id,
+                        products.name,
+                        products.max_adults,
+                        pricing.price
+                        from operator
+                        inner join products on operator.id = products.operator_id
+                        inner join locations on products.location_id = locations.id
+                        inner join pricing on products.id != pricing.product_id 
+                        where operator.id = ${ operator.id } and lat != '' and price_plan != 'price plan'
+                    `
+
+                    bd.query(query, { type: bd.QueryTypes.SELECT})
+                    .then((productos)=>{
+                        console.log(productos);
+                        arrOperator[indexOperator].products = productos
+                        listo();
+                    })
+                    .catch((err)=>{
+                        console.error(err.message)
+                        res.send(err)
+                    })
+
+                    
+                }, allDone);
+                function allDone(notAborted, arr) {
+                    console.log("hours done");    
+                    res.send(datas);
+                    con.close();
+                }
+                
+								
             }) 
             .onError(function (err) { 
                 console.log(err);
