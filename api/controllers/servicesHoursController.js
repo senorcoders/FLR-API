@@ -1,55 +1,76 @@
 'use strict'
 
+const service_hours = require("./../models").service_hours
 
-exports.create = function(req, res, callback){
-    var TYPES = require("tedious").TYPES; 
-    var msSqlConnecter = require("../../sqlhelper"); 
-    var dbConfig = require('../../dbConfig');
-    var moment = require('moment');
-    
-
-    var con = new msSqlConnecter.msSqlConnecter(dbConfig.config); 
-    con.connect().then(function () { 
-         console.log("moment request at "+moment().format('YYYY-MM-DD'));
-         new con.Request("insert into [service_hours] (id, time, product_id); select * from [service_hours] where id = scope_identity();") 
-            .addParam("time", TYPES.Time, req.body.time)  
-            .addParam("product_id", TYPES.Int, req.body.product_id) 
-            .onComplate(function (count, data) {                  
-                res.send(data);
-            		con.close();
-            }) 
-            .onError(function (err) { 
-                console.log(err); 
-		            res.send(err);  
-            }) 
-            .Run(); 
-     }).catch(function (ex) { 
-         console.log(ex); 
-     }); 
-}
-
-
-exports.delete = function(req, res){
-    var TYPES = require("tedious").TYPES; 
-    var msSqlConnecter = require("../../sqlhelper"); 
-    var dbConfig = require('../../dbConfig');
-    var moment = require('moment');
-
-    var con = new msSqlConnecter.msSqlConnecter(dbConfig.config); 
-    con.connect().then(function () { 
-        console.log("moment request at "+moment().format('YYYY-MM-DD'));
-        new con.Request("delete from [service_hours] where id = @id") 
-        .addParam("id", TYPES.VarChar, Number(req.params.userId)  )
-        .onComplate(function (count, data) {                  
-            res.send({"rows deleted": count});
-        }) 
-        .onError(function (err) { 
-            console.log(err);
-	    			res.send(err); 
-						con.close();
-        }) 
-        .Run(); 
-    }).catch(function (ex) { 
-        console.log(ex); 
-    }); 
+module.exports = {
+    save : (req, res)=>{
+        if( !req.body.hasOwnProperty("start_hours") ){
+            throw new Error("Falta el parametro :: start_hours")
+            return;
+        }
+        service_hours.create({ 
+            start_hours : req.body.start_hours, 
+            duration : req.body.duration, 
+            service_dates_id : req.body.service_dates_id
+        })
+        .then((data)=>{
+            res.send(data)
+        })
+        .catch((err)=>{
+            console.error(err)
+            res.send(err.message)
+        })
+    },
+    getAll : (req, res)=>{
+        service_hours.findAll({})
+        .then((data)=>{
+            res.send(data)
+        })
+        .catch((err)=>{
+            console.error(err)
+            res.send(err.message)
+        })
+    },
+    getOne : (req, res)=>{
+        service_hours.find({ where: { id : req.params.id } })
+        .then((data)=>{
+            res.send(data)
+        })
+        .catch((err)=>{
+            console.error(err)
+            res.send(err.message)
+        })
+    },
+    delete : (req, res)=>{
+        service_hours.destroy({
+            where: {
+                id : req.params.id
+            }
+        })
+        .then((data)=>{
+            res.send({ affectRows : data})
+        })
+        .catch((err)=>{
+            console.error(err)
+            res.send(err.message)
+        })
+    },
+    update : (req, res)=>{
+        service_hours.update({
+            start_hours : req.body.start_hours, 
+            duration : req.body.duration, 
+            service_dates_id : req.body.service_dates_id
+        },{
+            where: {
+                id : req.params.id
+            }
+        })
+        .then((data)=>{
+            res.send(data)
+        })
+        .catch((err)=>{
+            console.error(err)
+            res.send(err.message)
+        })
+    }
 }
