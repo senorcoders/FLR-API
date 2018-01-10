@@ -1,6 +1,23 @@
 'use strict'
 const reservations = require("./../models").reservations
 
+/*function getComments(req, res, next, data){
+    let db = require("./../bd")
+        let query = String.raw`
+                select * from comments_operators where user_id = ${req.params.id}
+            `
+            db.query(query)
+            .then(d=>{
+                data.comments = d[0]
+                res.send(data) 
+            
+            })
+            .catch((err)=>{
+                console.error(err.message)
+                res.send(err)
+        })
+}*/
+
 module.exports = {
     get_all : (req, res)=>{
         reservations.findAll()
@@ -168,7 +185,7 @@ module.exports = {
             .catch((err)=>{
                 console.error(err.message)
                 res.send(err)
-        })
+            })
     },
     getAllNotPassed : (req, res)=>{
         let db = require("./../bd")
@@ -216,11 +233,13 @@ module.exports = {
         where CAST('${ req.params.dateNow}' AS DATE) > rs.transaction_end_date
         `
         db.query(query)
-        .then(data=>{ res.send(data[0]) })
-        .catch((err)=>{
-            console.error(err.message)
-            res.send(err)
-       })    
+            .then(data=>{
+                getComments(req, res, data[0])
+            })
+            .catch((err)=>{
+                console.error(err.message)
+                res.send(err)
+        })   
     },
     getAllFuture : (req, res)=>{
         let db = require("./../bd")
