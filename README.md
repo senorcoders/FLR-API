@@ -22,7 +22,9 @@ put   http://server_address/api/user/:id/change-location  //change location para
  
 get    http://server_address/api/user/azure_id/:id  //get azure id of the user
 
-post http://server_address/api/user/:userId/favorites-products //get all favorites products
+get http://server_address/api/user/:userId/favorites-products //get all favorites products
+
+get http://server_address/api/user/:userId/favorites-products?product_id //get for filter
 
 get http://server_address/api/user/:id/stars-comments //get all stars and comments for id user
 
