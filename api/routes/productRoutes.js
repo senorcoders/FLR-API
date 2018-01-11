@@ -11,6 +11,10 @@ module.exports = function(app) {
 
   app.route(endpoint + '/:id')
     .get(product.get_one)
+
+    app.route(endpoint + '/all/not-dates-not-hours')
+    .get(product.notDatesNotHours) 
+
   /*  .put(product.update)
     .delete(product.delete);*/
 };
