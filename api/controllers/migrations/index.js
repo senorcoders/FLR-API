@@ -15,6 +15,9 @@ module.exports = function(app){
     /*app.route(endpoint+ "/locations-update")
     .get(controller.updateFieldsLocations)*/
 
-    app.route(endpoint+ "/horarios")
-    .get(controller.updateFieldsLocations)
+    /*app.route(endpoint+ "/rent")
+    .get(controller.getRentFields)*/
+
+    app.route(endpoint+ "/pricing")
+    .get(controller.getPricingFields)
 }
