@@ -11,7 +11,7 @@ module.exports = {
     next_days : (req,res)=>{
         services_dates.findAll({ where: {product_id: req.params.product_id} } )
         .then(function (data){
-            forEach(data.slice(-6), function(item, index, arr) {                                
+            forEach(data, function(item, index, arr) {                                
                 var done = this.async();
                 var date = moment().day(item.day).format('YYYY-MM-DD');
                 var day_name = moment().day(item.day).format('dddd');
