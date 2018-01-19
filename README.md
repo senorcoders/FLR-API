@@ -80,6 +80,7 @@ get  http://server_address/api/location/by_distance/:lat/:lon/:distance  //get a
 ```
 get  http://server_address/api/product  //get all products
 post http://server_address/api/product  //create a product
+get  http://server_address/api/product/:page/:mount  //get for pagination
 ```
 ##### Product params
 ```
@@ -174,6 +175,23 @@ delete http://server_address/api/coupon/:id //delete favorite
 -code
 -product_id
 ```
+
+#### Inquiry
+```
+post  http://server_address/api/inquiry //save 
+get  http://server_address/api/inquiry //get all 
+get http://server_address/api/inquiry/:id //get one 
+put http://server_address/api/inquiry/:id //update 
+delete http://server_address/api/inquiry/:id //delete
+```
+
+##### Inquiry params
+```
+-product_id
+-name
+-email
+-phone
+-message
 
 ### Prerequisites
 
