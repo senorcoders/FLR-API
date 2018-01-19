@@ -187,7 +187,7 @@ module.exports = {
         rs.activity_type as reservationActivityType,
         rs.transaction_date as transactionDate,
         rs.transaction_start_date as transactionStartDate,
-        rs.transaction_end_date as transactionEndtTime,
+        rs.transaction_end_date as transactionEndDate,
         rs.transaction_start_time as transactionStartTime,
         rs.transaction_end_time as transactionEndTime,
         rs.price as Price,
@@ -222,11 +222,12 @@ module.exports = {
         INNER JOIN operator op on pds.operator_id = op.id
         inner JOIN pricing pr on pr.product_id = pds.id
         inner join locations loc on loc.id = pds.location_id
-        where CAST('${ req.params.dateNow}' AS DATE) > rs.transaction_end_date
+        where CAST('${req.params.dateNow}' AS DATE) > rs.transaction_end_date
         `
         db.query(query)
             .then(data=>{
-                getComments(req, res, data[0])
+                //getComments(req, res, data[0])
+                res.send(data[0])
             })
             .catch((err)=>{
                 console.error(err.message)
@@ -241,7 +242,7 @@ module.exports = {
             rs.activity_type as reservationActivityType,
             rs.transaction_date as transactionDate,
             rs.transaction_start_date as transactionStartDate,
-            rs.transaction_end_date as transactionEndtTime,
+            rs.transaction_end_date as transactionEndDate,
             rs.transaction_start_time as transactionStartTime,
             rs.transaction_end_time as transactionEndTime,
             rs.price as Price,
