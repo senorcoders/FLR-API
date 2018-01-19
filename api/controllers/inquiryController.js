@@ -1,15 +1,30 @@
 const inquiry = require("./../models").inquiry
+const Sequelize = require("sequelize")
+const Products = require("../models/").products
 
 module.exports = {
     getAll : function(req, res, next){
-        inquiry.find({})
-        .then(function(data){
-            res.send(data)
-        })
-        .catch(function(err){
-            console.error(err)
-            res.send(err)
-        })
+        let db = require("./../bd")
+		let query = String.raw`
+        select 
+        inquirys.id as inquiryID,
+        inquirys.name as inquiryName,
+        inquirys.email as inquiryEmail,
+        inquirys.message as inquiryMessage,
+        inquirys.phone as inquiryPhone,
+        inquirys.createdAt as inquiryCreatedAts,
+        products.* from inquirys inner join products on inquirys.product_id = products.id
+		`
+		
+		console.log(query)
+		db.query(query)
+		.then(function(data){
+			res.send(data[0])
+		})
+		.catch(function(err){
+			console.log(err)
+			res.send(err)
+		})
     },
     getOne : function(req, res, next){
         inquiry.findOne({
@@ -18,7 +33,23 @@ module.exports = {
             }
         })
         .then(function(data){
-            res.send(data)
+            console.log(JSON.parse( JSON.stringify(data)) ) 
+            Products.findOne({
+                where : {
+                    id : data.product_id
+                }
+            })
+            .then(function(p){
+                res.send({
+                    inquiry : data,
+                    product: p
+                })
+            })
+            .catch(function(err){
+                console.error(err)
+                res.send(err)
+            })
+            
         })
         .catch(function(err){
             console.error(err)
@@ -34,7 +65,22 @@ module.exports = {
             product_id : req.body.product_id
         })
         .then(function(data){
-            res.send(data)
+            console.log(JSON.parse( JSON.stringify(data)) ) 
+            Products.findOne({
+                where : {
+                    id : data.product_id
+                }
+            })
+            .then(function(p){
+                res.send({
+                    inquiry : data,
+                    product: p
+                })
+            })
+            .catch(function(err){
+                console.error(err)
+                res.send(err)
+            })
         })
         .catch(function(err){
             console.error(err)
