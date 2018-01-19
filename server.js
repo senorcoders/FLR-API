@@ -32,6 +32,8 @@ var couponRoutes = require('./api/routes/couponRoute');
 
 var serviceHoursRoutes = require('./api/routes/servicesHoursRoutes');
 
+var inquiryRoute = require("./api/routes/inquiryRoute")
+
 
 userRoutes(app); //register the route
 locationRoutes(app);
@@ -46,6 +48,7 @@ favoriteProductRoutes(app);
 commentsOperator(app)
 starsOperator(app)
 couponRoutes(app)
+inquiryRoute(app)
 
 app.listen(port);
 console.log('Find local rentals RESTful API server started on: ' + port);
