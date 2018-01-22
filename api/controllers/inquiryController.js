@@ -2,8 +2,34 @@ const inquiry = require("./../models").inquiry
 const Sequelize = require("sequelize")
 const Products = require("../models/").products
 
+function getXEmail(req, res, next){
+    let db = require("./../bd")
+    let query = String.raw`
+    select 
+    inquirys.id as inquiryID,
+    inquirys.name as inquiryName,
+    inquirys.email as inquiryEmail,
+    inquirys.message as inquiryMessage,
+    inquirys.phone as inquiryPhone,
+    inquirys.createdAt as inquiryCreatedAts,
+    products.* from inquirys inner join products on inquirys.product_id = products.id
+    where inquirys.email = '${ req.query.email }'
+    `
+    db.query(query)
+    .then(function(data){
+        res.send(data[0])
+    })
+    .catch(function(err){
+        console.log(err)
+        res.send(err)
+    })
+}
+
 module.exports = {
     getAll : function(req, res, next){
+        if( req.query.hasOwnProperty("email") ){
+            getXEmail(req, res, next)
+        }
         let db = require("./../bd")
 		let query = String.raw`
         select 
@@ -15,8 +41,6 @@ module.exports = {
         inquirys.createdAt as inquiryCreatedAts,
         products.* from inquirys inner join products on inquirys.product_id = products.id
 		`
-		
-		console.log(query)
 		db.query(query)
 		.then(function(data){
 			res.send(data[0])
@@ -26,6 +50,7 @@ module.exports = {
 			res.send(err)
 		})
     },
+    getXEmail,
     getOne : function(req, res, next){
         inquiry.findOne({
             where : {

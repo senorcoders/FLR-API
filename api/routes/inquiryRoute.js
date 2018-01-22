@@ -12,4 +12,5 @@ module.exports = function(app){
     .get(controller.getOne)
     .put(controller.update)
     .delete(controller.delete)
+
 }
