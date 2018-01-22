@@ -74,13 +74,19 @@ module.exports = {
             }
         })
     },
-    check_date : (req,res)=>{      
-        services_dates.findAll({ where: {product_id: req.params.product_id, } } )
+    check_date : (req,res)=>{
+        const Sequelize = require('sequelize');
+        const op = Sequelize.Op;
+        var date_request = req.params.date;      
+        var day_request = moment(date_request, "YYYY-MM-DD").format('E');
+
+        services_dates.findAll({ where: {product_id: req.params.product_id, day: { [op.gte]: day_request } } } )
         .then(function (data){
             forEach(data, function(item, index, arr) {                                
                 var done = this.async();
-                var date = req.params.date;
-                var day_name = moment(date, "YYYY-MM-DD").format('dddd');
+                
+                var date = moment().day(item.day).format('YYYY-MM-DD');
+                var day_name = moment().day(item.day).format('dddd');
                 arr[index].dataValues.day_name = day_name; 
                 arr[index].dataValues.date = date; 
                 services_hours.findAll({ where: {service_dates_id : item.dataValues.id } } )
@@ -89,7 +95,7 @@ module.exports = {
                         var doneHours = this.async();
                         var time = arrHour[indexHour].dataValues.start_hours;
                         arrHour[indexHour].dataValues.hour = time;
-                        console.log(time);
+                        //console.log(time);
                         
                         /** reservation date **/
                         let db = require("./../bd")
@@ -114,7 +120,7 @@ module.exports = {
                             }, reservationDone);
                         
                             function reservationDone(notAborted, arr) {
-                                console.log("reservation done");    
+                                //console.log("reservation done");    
                                 //res.send(arr);
                                 doneHours();
                             }
@@ -128,7 +134,7 @@ module.exports = {
                         
                     }, hourDone);
                     function hourDone(notAborted, arr) {
-                        console.log("hours done");                            
+                        //console.log("hours done");                            
                         done();
                     }
                     
