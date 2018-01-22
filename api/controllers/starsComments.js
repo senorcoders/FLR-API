@@ -114,13 +114,10 @@ module.exports = {
     },
     getAllXUserNotContains : (req, res, next)=>{
         let query = String.raw`
-        declare @operatorsTable table(
-            operator_id INT
-        )
-        insert into @operatorsTable(operator_id) 
-        select star_operators.operator_id from star_operators INNER JOIN comments_operators on star_operators.operator_id = comments_operators.operator_id
-        where star_operators.user_id = ${req.params.userId} and comments_operators.user_id = ${req.params.userId}
-        select * from @operatorsTable inner JOIN operator on id != operator_id ORDER BY id OFFSET ${parseInt(req.params.page)*parseInt(req.params.number)} ROWS FETCH NEXT ${parseInt(req.params.number)} ROWS ONLY;
+        select * from operator where id not in(
+            select star_operators.operator_id from star_operators INNER JOIN comments_operators on star_operators.operator_id = comments_operators.operator_id
+            where star_operators.user_id = ${req.params.userId} and comments_operators.user_id = ${req.params.userId}
+            ) order by id OFFSET ${parseInt(req.params.page)*parseInt(req.params.number)} ROWS FETCH NEXT ${parseInt(req.params.number)} ROWS ONLY;
         `
 
         bd.query(query)
