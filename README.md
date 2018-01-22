@@ -94,6 +94,16 @@ get  http://server_address/api/product/:page/:mount  //get for pagination
 -max_childs
 ```
 
+-#### Available Dates
+-```
+-get  http://server_address/api/services-dates/next-dates/:product_id  //get the available dates of the next week
+-get  http://server_address/api/services-dates/next-dates/:product_id/:start_date  //get available dates starting from a start_date
+-```
+-##### Available Dates params
+-```
+--product_id
+--start_date format YYYY-MM-DD
+
 #### Reservations
 ```
 get  http://server_address/api/reservation/:dateNow/past  //get all reservations that have not passed
