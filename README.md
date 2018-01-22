@@ -28,6 +28,8 @@ get http://server_address/api/user/:userId/favorites-products?product_id //get f
 
 get http://server_address/api/user/:id/stars-comments //get all stars and comments for id user
 
+get http://server_address/api/user/:id/not-stars-comments/:page/:number //get all operators not contains stars and comments for id user
+
 get http://server_address/api/user/:id/reservations //get all reservations
 
 ```
@@ -100,17 +102,6 @@ get  http://server_address/api/reservation/:dateNow/future  //get all reservatio
 ##### Reservations params
 ```
 -dateNow format YYYY-MM-DD
-```
-
-#### Available Dates
-```
-get  http://server_address/api/services-dates/next-dates/:product_id  //get the available dates of the next week
-get  http://server_address/api/services-dates/next-dates/:product_id/:start_date  //get available dates starting from a start_date
-```
-##### Available Dates params
-```
--product_id
--start_date format YYYY-MM-DD
 ```
 
 #### Pricing

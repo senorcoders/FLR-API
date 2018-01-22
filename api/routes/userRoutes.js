@@ -34,6 +34,10 @@ module.exports = function(app) {
   app.route(endpoint+ "/:id/stars-comments")
   .get(require("./../controllers/starsComments").getAllXUser)
 
+   //get all the comments y stars
+   app.route(endpoint+ "/:userId/not-stars-comments/:page/:number")
+   .get(require("./../controllers/starsComments").getAllXUserNotContains)
+
   //get all the reservations
   app.route(endpoint+ "/:id/reservations")
   .get(require("./../controllers/reservationController").getXUserAll)
