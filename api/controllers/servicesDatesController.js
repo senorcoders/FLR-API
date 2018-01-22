@@ -28,7 +28,7 @@ module.exports = {
                         /** reservation date **/
                         let db = require("./../bd")
                         let query = String.raw`
-                        select                         
+                        select              
                         pds.max_adults productMaxAdults,
                         pds.max_childs productMaxChilds,
                         sum(cast (rs.nbr_in_adult as int) ) adult_reserved,

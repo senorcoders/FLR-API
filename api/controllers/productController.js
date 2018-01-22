@@ -70,9 +70,50 @@ module.exports ={
 					}, function(reason) {
 						console.log(reason); // Error!
 					});  
+	},
+	notDatesNotHours : function(req, res, next){
+		let db = require("./../bd")
+		let query = String.raw`
+			select p.* from products p left join service_dates sd on p.id = sd.product_id where sd.product_id is null
+		`
+		db.query(query)
+		.then(function(data){
+			res.send(data[0])
+		})
+		.catch(function(err){
+			console.log(err)
+			res.send(err)
+		})
+	},
+	getXPagination : function(req, res, next){
+		let db = require("./../bd")
+		let query = "";
+		console.log(req.params)
+		if( parseInt(req.params.page) === 1){
+			query = String.raw`
+			select top ${req.params.number} * from products
+			`
+		}
+
+		if( req.params.page > 1){
+			query = String.raw`
+				SELECT * FROM products ORDER BY id OFFSET ${parseInt(req.params.page)*parseInt(req.params.number)} ROWS FETCH NEXT ${parseInt(req.params.number)} ROWS ONLY;
+			`
+		}
+		console.log(query)
+		db.query(query)
+		.then(function(data){
+			res.send(data[0])
+		})
+		.catch(function(err){
+			console.log(err)
+			res.send(err)
+		})
 	}
 
 }
+
+
 /*exports.create_old = function(req, res, callback){
     var TYPES = require("tedious").TYPES; 
     var msSqlConnecter = require("../../sqlhelper"); 

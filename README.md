@@ -22,7 +22,9 @@ put   http://server_address/api/user/:id/change-location  //change location para
  
 get    http://server_address/api/user/azure_id/:id  //get azure id of the user
 
-post http://server_address/api/user/:userId/favorites-products //get all favorites products
+get http://server_address/api/user/:userId/favorites-products //get all favorites products
+
+get http://server_address/api/user/:userId/favorites-products?product_id //get for filter
 
 get http://server_address/api/user/:id/stars-comments //get all stars and comments for id user
 
@@ -78,6 +80,7 @@ get  http://server_address/api/location/by_distance/:lat/:lon/:distance  //get a
 ```
 get  http://server_address/api/product  //get all products
 post http://server_address/api/product  //create a product
+get  http://server_address/api/product/:page/:mount  //get for pagination
 ```
 ##### Product params
 ```
@@ -172,6 +175,23 @@ delete http://server_address/api/coupon/:id //delete favorite
 -code
 -product_id
 ```
+
+#### Inquiry
+```
+post  http://server_address/api/inquiry //save 
+get  http://server_address/api/inquiry //get all 
+get http://server_address/api/inquiry/:id //get one 
+put http://server_address/api/inquiry/:id //update 
+delete http://server_address/api/inquiry/:id //delete
+```
+
+##### Inquiry params
+```
+-product_id
+-name
+-email
+-phone
+-message
 
 ### Prerequisites
 

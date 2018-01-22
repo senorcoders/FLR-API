@@ -9,7 +9,18 @@ module.exports = {
                 product_id : req.params.productId
             }
         }).then(function(data){
-            res.send(data)
+            let coupon = {}
+            if( data === null){
+                coupon = {
+                    message : "coupon not found"
+                }
+            }else{
+                coupon = data
+                coupon.dataValues.message = "ok"
+                console.log(coupon)
+            }
+            
+            res.send(coupon)
         })
         .catch(function(err){
             console.error(err)
