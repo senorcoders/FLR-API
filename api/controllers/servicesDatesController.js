@@ -42,18 +42,8 @@ module.exports = {
                         `
                         db.query(query)
                         .then(function (all_reservations){
-                            forEach(all_reservations, function(reservation, indexReservation, arrReservation) {                                
-                                //var doneReservation = this.async();
+                            forEach(all_reservations, function(reservation, indexReservation, arrReservation) {                                                                
                                 arrHour[indexHour].dataValues.reservations = reservation;
-                                //arrHour[indexHour].dataValues.productMaxAdults = arrReservation[indexReservation].productMaxAdults ;
-                                //arrHour[indexHour].dataValues.productMaxChilds = arrReservation[indexReservation].productMaxChilds ;
-                                /*arrHour[indexHour].dataValues.adultReserved = arrReservation[indexReservation].adultReserved ;
-                                arrHour[indexHour].dataValues.childReserved = arrReservation[indexReservation].childReserved ;
-                                arrHour[indexHour].dataValues.inPartyReserved = arrReservation[indexReservation].inPartyReserved ;
-                                arrHour[indexHour].dataValues.available = arrHour[indexHour].dataValues.productMaxAdults+arrHour[indexHour].dataValues.productMaxChilds;
-                                arrHour[indexHour].dataValues.TotalReserved = arrHour[indexHour].dataValues.childReserved +arrHour[indexHour].dataValues.adultReserved;
-                                arrHour[indexHour].dataValues.TotalAvailable = arrHour[indexHour].dataValues.productMaxAdults+arrHour[indexHour].dataValues.productMaxChilds-arrHour[indexHour].dataValues.childReserved - arrHour[indexHour].dataValues.adultReserved;    */
-                                //doneReservation();
                             }, reservationDone);
                         
                             function reservationDone(notAborted, arr) {
@@ -66,26 +56,85 @@ module.exports = {
                             console.error(err.message)
                             res.send(err)
                     })
-                        /** reservation date **/
-                        
-                        /*reservations.findAll({ where: {transaction_start_date : date, transaction_start_time: hour.start_hours } } )
-                        .then(function (all_reservations){
-                            forEach(all_reservations, function(reservation, indexReservation, arrReservation) {                                
-                                var doneReservation = this.async();
-                                arrHour[indexHour].dataValues.reservations = arrReservation;    
-                                doneReservation();
-                            }, reservationDone);
-                        
-                            function reservationDone(notAborted, arr) {
-                                console.log("reservation done");    
-                                //res.send(arr);
-                            }
-                        })*/
                         arr[index].dataValues.hours = arrHour;    
                         
                     }, hourDone);
                     function hourDone(notAborted, arr) {
                         console.log("hours done");                            
+                        done();
+                    }
+                    
+                        
+                })
+                
+            }, allDone);
+            function allDone(notAborted, arr) {
+                console.log("done");    
+                res.send(arr);
+            }
+        })
+    },
+    check_date : (req,res)=>{
+        const Sequelize = require('sequelize');
+        const op = Sequelize.Op;
+        var date_request = req.params.date;      
+        var day_request = moment(date_request, "YYYY-MM-DD").format('E');
+
+        services_dates.findAll({ where: {product_id: req.params.product_id, day: { [op.gte]: day_request } } } )
+        .then(function (data){
+            forEach(data, function(item, index, arr) {                                
+                var done = this.async();
+                
+                var date = moment().day(item.day).format('YYYY-MM-DD');
+                var day_name = moment().day(item.day).format('dddd');
+                arr[index].dataValues.day_name = day_name; 
+                arr[index].dataValues.date = date; 
+                services_hours.findAll({ where: {service_dates_id : item.dataValues.id } } )
+                .then(function (hours){
+                    forEach(hours, function(hour, indexHour, arrHour) {                                
+                        var doneHours = this.async();
+                        var time = arrHour[indexHour].dataValues.start_hours;
+                        arrHour[indexHour].dataValues.hour = time;
+                        //console.log(time);
+                        
+                        /** reservation date **/
+                        let db = require("./../bd")
+                        let query = String.raw`
+                        select              
+                        pds.max_adults productMaxAdults,
+                        pds.max_childs productMaxChilds,
+                        sum(cast (rs.nbr_in_adult as int) ) adult_reserved,
+                        sum(cast(rs.nbr_children as int)) child_reserved,
+                        sum(cast(rs.nbr_in_party as int)) in_party_reserved
+                        from products pds
+                        INNER JOIN reservations rs  on pds.id = rs.product_id                         
+                        where CAST('${ arr[index].dataValues.date }' AS DATE) <= rs.transaction_end_date
+                        and transaction_start_time = '${ arrHour[indexHour].dataValues.hour }'
+                        group by pds.max_adults, pds.max_childs
+                        `
+                        db.query(query)
+                        .then(function (all_reservations){
+                            forEach(all_reservations, function(reservation, indexReservation, arrReservation) {                                
+                                //var doneReservation = this.async();
+                                arrHour[indexHour].dataValues.reservations = reservation;                                
+                            }, reservationDone);
+                        
+                            function reservationDone(notAborted, arr) {
+                                //console.log("reservation done");    
+                                //res.send(arr);
+                                doneHours();
+                            }
+                        })
+                        .catch((err)=>{
+                            console.error(err.message)
+                            res.send(err)
+                    })
+                        /** reservation date **/
+                        arr[index].dataValues.hours = arrHour;    
+                        
+                    }, hourDone);
+                    function hourDone(notAborted, arr) {
+                        //console.log("hours done");                            
                         done();
                     }
                     

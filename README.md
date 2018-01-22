@@ -102,6 +102,17 @@ get  http://server_address/api/reservation/:dateNow/future  //get all reservatio
 -dateNow format YYYY-MM-DD
 ```
 
+#### Available Dates
+```
+get  http://server_address/api/services-dates/next-dates/:product_id  //get the available dates of the next week
+get  http://server_address/api/services-dates/next-dates/:product_id/:start_date  //get available dates starting from a start_date
+```
+##### Available Dates params
+```
+-product_id
+-start_date format YYYY-MM-DD
+```
+
 #### Pricing
 ```
 get  http://server_address/api/pricing  //get all the prices
