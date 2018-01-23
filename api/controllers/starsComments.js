@@ -114,13 +114,13 @@ module.exports = {
     },
     getAllXUserNotContains : (req, res, next)=>{
         let query = String.raw`
-        select operator.* from products INNER JOIN reservations on reservations.product_id = products.id
+        select DISTINCT operator.* from products INNER JOIN reservations on reservations.product_id = products.id
         INNER JOIN operator on operator.id = products.operator_id
         where reservations.user_id = ${req.params.userId}
         and operator.id not in(
         select star_operators.operator_id from star_operators INNER JOIN comments_operators on star_operators.operator_id = comments_operators.operator_id
         where star_operators.user_id = ${req.params.userId} and comments_operators.user_id = ${req.params.userId}
-        )
+        ) order by operator.id
         `
         bd.query(query)
         .then((data)=>{
