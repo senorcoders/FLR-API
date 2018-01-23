@@ -28,7 +28,7 @@ get http://server_address/api/user/:userId/favorites-products?product_id //get f
 
 get http://server_address/api/user/:id/stars-comments //get all stars and comments for id user
 
-get http://server_address/api/user/:id/not-stars-comments/:page/:number //get all operators not contains stars and comments for id user
+get http://server_address/api/user/:id/not-stars-comments/ //get all operators not contains stars and comments for id user
 
 get http://server_address/api/user/:id/reservations //get all reservations
 

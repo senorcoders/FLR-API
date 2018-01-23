@@ -35,7 +35,7 @@ module.exports = function(app) {
   .get(require("./../controllers/starsComments").getAllXUser)
 
    //get all the comments y stars
-   app.route(endpoint+ "/:userId/not-stars-comments/:page/:number")
+   app.route(endpoint+ "/:userId/not-stars-comments")
    .get(require("./../controllers/starsComments").getAllXUserNotContains)
 
   //get all the reservations
