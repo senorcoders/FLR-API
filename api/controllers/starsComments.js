@@ -40,16 +40,14 @@ module.exports = {
                     })
                     .catch((err)=>{
                         console.error(err.message)
-                        res.send(err)
+                        res.send([])
                     })
                 }
                 
                 gets(0)
                 
             }else{
-                res.send({
-                    message : "not found"
-                })
+                res.send([])
             }
             
         })
@@ -96,15 +94,13 @@ module.exports = {
                     })
                     .catch((err)=>{
                         console.error(err.message)
-                        res.send(err)
+                        res.send([])
                     })
                 }
 
                 gets(0)
             }else{
-                res.send({
-                    message : "not found"
-                })
+                res.send([])
             }
         })
         .catch((err)=>{
