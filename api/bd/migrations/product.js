@@ -55,4 +55,58 @@ function getProductFields(req, res){
     })
 }
 
-module.exports = getProductFields
+
+function updateImageDescripcion(req, res){
+    let q = String.raw`
+    select product_id as oldId, 
+    product_thumb_image as imageName,
+    product_desc_1 as descripcion
+    from product producto
+    `
+
+    oldBD.query(q)
+    .then(function(data){
+        const length = data[0].length
+        //Para agregar el campo old id
+        newBD.query("IF COL_LENGTH('products', 'name_image') IS NULL BEGIN ALTER TABLE products ADD [name_image] varchar(8000) null END")
+        .then(function(){
+            res.send("Running... check console")
+            /**
+            * para insertar los nuevos datos usando llamadas recursivas
+            */
+            function save(res, i){
+                let query = String.raw`
+                update products set descripcion = $descripcion, name_image = $imageName where old_id = $oldId
+                `
+                newBD.query(query, {
+                    bind : {
+                        "oldId" : data[0][i].oldId,
+                        "imageName" : data[0][i].imageName,
+                        "descripcion" : data[0][i].descripcion
+                    }
+                }).then(function(){
+                    console.log("product => products "+ length+ " :: "+ (i+1))
+                    i++
+                    if( i < length){ save(res, i) }
+                    else
+                        console.log("finished")
+                })
+                .catch(function(err){
+                    console.error("error en el item :"+ i+ " data: "+ JSON.stringify(data[0][i])+ err.message)
+                    res.send("error en el item :"+ i+ " data: "+ JSON.stringify(data[0][i])+ err.message)
+                })
+            }
+
+            save(res, 0)
+    })
+    .catch(function(err){
+         console.error(err)
+    })
+         
+    })
+}
+
+module.exports = {
+    getProductFields,
+    updateImageDescripcion
+} 
