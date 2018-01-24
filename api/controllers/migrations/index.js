@@ -23,4 +23,7 @@ module.exports = function(app){
 
     /*app.route(endpoint+ "/product")
     .get(controller.updateImageDescripcion)*/
+
+    app.route(endpoint+ "/product")
+    .get(controller.insertTypeProducts)
 }

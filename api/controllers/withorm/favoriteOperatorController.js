@@ -12,12 +12,6 @@ const favorite_operator = db.define("favorite_operator", {
     operator_id : { type : Sequelize.INTEGER, references: { model : "operator", key : "id", allowNull: false } }
 })
 
-db.sync().then(function() {
-    console.log('----- success');
-}).catch(function(error) {
-    console.log('- error \n', error);
-})
-
 module.exports = {
     /*Solo para pruebas de desarrollo */
     getAll : function (req, res, callback) {

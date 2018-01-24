@@ -106,7 +106,68 @@ function updateImageDescripcion(req, res){
     })
 }
 
+//Para crear la tabla type products
+const products_types = newBD.define('products_types', {
+    product_id : { type : Sequelize.INTEGER, references : { model : 'products', key : 'id' } },
+    old_id : { type : Sequelize.INTEGER, allowNull : true },
+    name : { type : Sequelize.STRING, allowNull : true },
+    name_image : { type : Sequelize.STRING,  allowNull : true },
+    show_map : { type : Sequelize.INTEGER, allowNull : true }
+})
+
+//newBD.sync()
+
+function insertTypeProducts(req, res){
+    let q = String.raw`
+    SELECT prl.product_id as oldId, ta.name, ta.show_map as showMap, ta.icon_name as imageName 
+        FROM product_rent_location prl 
+        INNER JOIN trip_activitys ta on prl.activity_id = ta.id
+    `
+
+    oldBD.query(q)
+    .then(function(data){
+        const length = data[0].length
+        res.send("Running... check console")
+            /**
+            * para insertar los nuevos datos usando llamadas recursivas
+            */
+            function save(res, i){
+                let query = String.raw`
+                IF not EXISTS(select * from products_types where old_id = $oldId) BEGIN 
+                    insert into products_types(old_id, product_id, name, name_image, show_map, updatedAt, createdAt) 
+                    VALUES($oldId, (SELECT id from products where old_id = $oldId), $name, $imageName, $showMap, '', '')
+                END
+                `
+                newBD.query(query, {
+                    bind : {
+                        "oldId" : data[0][i].oldId,
+                        "imageName" : data[0][i].imageName,
+                        "showMap" : data[0][i].showMap,
+                        "name" : data[0][i].name
+                    }
+                }).then(function(){
+                    console.log("product => products "+ length+ " :: "+ (i+1))
+                    i++
+                    if( i < length){ save(res, i) }
+                    else
+                        console.log("finished")
+                })
+                .catch(function(err){
+                    console.error("error en el item :"+ i+ " data: "+ JSON.stringify(data[0][i])+ err.message)
+                    res.send("error en el item :"+ i+ " data: "+ JSON.stringify(data[0][i])+ err.message)
+                })
+            }
+
+            save(res, 0)
+         
+    })
+    .catch(function(err){
+        console.error(err)
+   })
+}
+
 module.exports = {
     getProductFields,
-    updateImageDescripcion
+    updateImageDescripcion,
+    insertTypeProducts
 } 
