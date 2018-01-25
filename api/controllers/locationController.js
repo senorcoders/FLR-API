@@ -93,7 +93,7 @@ exports.by_distance = function(req, res){
                 //console.log(datas);
                 forEach(datas, function(operator, indexOperator, arrOperator) {                                
                     var listo = this.async();
-                    
+                    console.log(operator.id)
                     let bd = require("./../bd")
                     let query = String.raw`
                     select 
@@ -107,7 +107,7 @@ exports.by_distance = function(req, res){
                         from operator
                         inner join products on operator.id = products.operator_id
                         inner join locations on products.location_id = locations.id
-                        inner join pricing on products.id != pricing.product_id 
+                        inner join pricing on products.id = pricing.product_id 
                         where operator.id = ${ operator.id } and lat != '' and price_plan != 'price plan'
                     `
 
