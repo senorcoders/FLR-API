@@ -77,7 +77,7 @@ exports.by_distance = function(req, res){
                             "operator.business_type, "+
                             "operator.operator_type, "+
                             "locations.location_type_id,  "+
-                            "locations.lot, "+
+                            "locations.lot , "+
                             "locations.lat "+
                             "from operator "+
                             "inner join products on operator.id = products.operator_id "+
@@ -98,8 +98,8 @@ exports.by_distance = function(req, res){
                     let query = String.raw`
                     select 
                         locations.location_type_id, 
-                        locations.lot,
-                        locations.lat,
+                        locations.lot ,
+                        locations.lat ,
                         products.id as product_id,
                         products.name,
                         products.max_adults,
