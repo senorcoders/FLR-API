@@ -7,6 +7,8 @@ function getOne (req, res, callback) {
         let query = String.raw`
         SELECT 
         fp.id as favoriteProductID,
+        fp.createdAt as favoriteCreatedAt,
+        fp.updatedAt as favoriteUpdatedAt,
         pd.id as productID,
         pd.operator_id as productOperatorID,
         pd.location_id as productLocationID,
@@ -85,6 +87,8 @@ module.exports = {
         let query = String.raw`
         SELECT 
         fp.id as favoriteProductID,
+        fp.createdAt as favoriteCreatedAt,
+        fp.updatedAt as favoriteUpdatedAt,
         pd.id as productID,
         pd.operator_id as productOperatorID,
         pd.location_id as productLocationID,
