@@ -28,5 +28,5 @@ module.exports = function(app){
     .get(controller.insertTypeProducts)*/
 
     app.route(endpoint+ "/pricing")
-    .get(controller.getPricingFieldsMore)
+    .get(controller.updateFields)
 }

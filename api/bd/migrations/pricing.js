@@ -92,7 +92,47 @@ function getPricingFieldsMore(req, res){
     })
 }
 
+function updateFields(req, res){
+    newBD.query("select id, product_id as oldID from pricing where old_id is not null ")
+    .then(function(data){
+        const length = data[0].length
+        res.send("Running... check console")
+        /**
+        * para insertar los nuevos datos usando llamadas recursivas
+        */
+        function save(res, i){
+            var query = String.raw`
+            update pricing set product_id = (select id from products where old_id = $oldID) where id = $id
+            `
+            newBD.query(query, {
+                bind : {
+                    "oldID" : data[0][i].oldID,
+                    "id" : data[0][i].id
+                }
+            }).then(function(){
+                console.log("rental_fixed_prices => pricing "+ length+ " :: "+ (i+1))
+                i++
+                if( i < length){ save(res, i) }
+                else
+                    console.log("finished")
+            })
+            .catch(function(err){
+                console.error("error en el item :"+ i+ " data: "+ JSON.stringify(data[0][i])+ err.message)
+                res.send("error en el item :"+ i+ " data: "+ JSON.stringify(data[0][i])+ err.message)
+            })
+        }
+
+        save(res, 0)
+    .catch(function(err){
+         console.error(err)
+        res.send(err)
+    })
+         
+    })
+}
+
 module.exports = {
     getPricingFields,
-    getPricingFieldsMore
+    getPricingFieldsMore,
+    updateFields
 } 

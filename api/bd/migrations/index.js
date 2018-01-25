@@ -4,6 +4,7 @@ const getProductFields = require("./product").getProductFields
 const updateImageDescripcion = require("./product").updateImageDescripcion
 const insertTypeProducts = require("./product").insertTypeProducts
 const getPricingFieldsMore = require("./pricing").getPricingFieldsMore
+const updateFields = require("./pricing").updateFields
 const getLocationsFields = require("./locations")
 const updateFieldsLocations = require("./upadateLocations")
 const getRentFields = require("./rentalHorarios")
@@ -32,5 +33,6 @@ module.exports = {
     getPricingFields,
     updateImageDescripcion,
     insertTypeProducts,
-    getPricingFieldsMore
+    getPricingFieldsMore,
+    updateFields
 }
