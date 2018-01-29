@@ -30,15 +30,13 @@ module.exports = {
         })
     },
     save : (req, res)=>{
-        if( !req.body.hasOwnProperty("user_id") ){
-            throw new Error("Falta el parametro :: user_id")
-            return;
-        }else if(!req.body.hasOwnProperty("product_id") ){
+        if(!req.body.hasOwnProperty("product_id") ){
             throw new Error("Falta el parametro :: product_id")
             return;
         } 
         reservations.create({ 
                                 user_id : req.body.user_id, 
+                                guest_id : req.body.guest_id,
                                 product_id : req.body.product_id, 
                                 activity_type : req.body.activity_type,
                                 transaction_date : req.body.transaction_date,
@@ -171,6 +169,54 @@ module.exports = {
         INNER JOIN operator op on pds.operator_id = op.id
         inner join locations loc on loc.id = pds.location_id
         where rs.user_id = ${ req.params.id }
+            `
+            db.query(query)
+            .then(data=>{ res.send(data[0]) })
+            .catch((err)=>{
+                console.error(err.message)
+                res.send(err)
+            })
+    },
+    getXGuestAll : (req, res)=>{
+        let db = require("./../bd")
+        let query = String.raw`
+        select 
+        rs.id as reservationID,
+        rs.activity_type as reservationActivityType,
+        rs.transaction_date as transactionDate,
+        rs.transaction_start_date as transactionStartDate,
+        rs.transaction_end_date as transactionEndtTime,
+        rs.transaction_start_time as transactionStartTime,
+        rs.transaction_end_time as transactionEndTime,
+        rs.nbr_in_party as reservationNbrInParty,
+        rs.nbr_in_adult as reservationNbrInAdult,
+        rs.nbr_children as reservationNbrChildren,
+        rs.misc_trip_name as reservationMiscTripName,
+        rs.price as Price,
+        op.id as operatorID,
+        op.operator_name as operatorName,
+        op.operator_type as operatorType,
+        op.time_zone as operatorTimeZona,
+        op.currency as operatorCurrency,
+        op.business_type as operatorBusinessType,
+        pds.id as productID,
+        pds.name as productName,
+        loc.id as locationID,
+        loc.lat as locationLatitud,
+        loc.lot as locationLongitud,
+        loc.name as locationName,
+        loc.currency as locationCurrency,
+        loc.address as locationAddress,
+        loc.hours_operation as locationHoursOperation,
+        loc.website as locationWebSite,
+        loc.country as locationCountry,
+        loc.contact_name as locationContactName,
+        loc.contact_email as locationContactEmail
+        from products pds
+        INNER JOIN reservations rs  on pds.id = rs.product_id 
+        INNER JOIN operator op on pds.operator_id = op.id
+        inner join locations loc on loc.id = pds.location_id
+        where rs.guest_id = ${ req.params.id }
             `
             db.query(query)
             .then(data=>{ res.send(data[0]) })
