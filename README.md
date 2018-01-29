@@ -47,6 +47,26 @@ get http://server_address/api/user/:id/reservations //get all reservations
 -azure_id
 -social_access_token
 ```
+
+#### Guest
+```
+get    http://server_address/api/guest       //get all users 
+post   http://server_address/api/guest       //create new user
+
+get    http://server_address/api/guest/:id   //get one user
+put    http://server_address/api/guest/:id   //update one user
+delete http://server_address/api/guest/:id   //delete one user
+ 
+get http://server_address/api/guest/:id/reservations //get all reservations
+
+```
+##### Guest Params
+```
+-device_id
+-email
+-phone 
+-address
+
 #### Operator
 ```
 get  http://server_address/api/operator //get all operators
@@ -108,6 +128,8 @@ get  http://server_address/api/product/:page/:mount  //get for pagination
 ```
 get  http://server_address/api/reservation/:dateNow/past  //get all reservations that have not passed
 get  http://server_address/api/reservation/:dateNow/future  //get all reservations for the future
+
+
 ```
 ##### Reservations params
 ```
