@@ -10,7 +10,7 @@ module.exports = {
             
             // set content-type header and data as json in args parameter 
             var args = {
-                headers: { "Authorization": "Basic XXXXXXX" ,"Content-Type": "application/json" }
+                headers: { "Authorization": "Basic Y2FyZGNvbm5lY3Q6Y2Nvbm5lY3QhNDk=" ,"Content-Type": "application/json" }
             };
             
             client.get("https://fts.cardconnect.com:6443/cardconnect/rest/", args, function (data, response) {
