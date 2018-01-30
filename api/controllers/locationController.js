@@ -77,11 +77,13 @@ exports.by_distance = function(req, res){
                             "operator.business_type, "+
                             "operator.operator_type, "+
                             "locations.location_type_id,  "+
-                            "locations.lot, "+
-                            "locations.lat "+
+                            "locations.lot , "+
+                            "locations.lat, "+
+			    "products_types.* "+
                             "from operator "+
                             "inner join products on operator.id = products.operator_id "+
                             "inner join locations on products.location_id = locations.id "+
+			    "inner join products_types on products.id = products_types.product_id "+
                             "where  "+
                             "locations.lat != '' "+
                             " AND geo.STDistance(geography::Point(@lat, @lon, 4326)) < @distance") 
@@ -98,16 +100,18 @@ exports.by_distance = function(req, res){
                     let query = String.raw`
                     select 
                         locations.location_type_id, 
-                        locations.lot,
-                        locations.lat,
+                        locations.lot ,
+                        locations.lat ,
                         products.id as product_id,
                         products.name,
                         products.max_adults,
-                        pricing.price
+                        pricing.price,
+			products_types.* 
                         from operator
                         inner join products on operator.id = products.operator_id
                         inner join locations on products.location_id = locations.id
                         inner join pricing on products.id = pricing.product_id 
+			inner join products_types on products.id = products_types.id
                         where operator.id = ${ operator.id } and lat != '' and price_plan != 'price plan'
                     `
 

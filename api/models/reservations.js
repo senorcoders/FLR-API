@@ -6,7 +6,8 @@ const db = require("./../bd")
 module.exports = (sequelize, DataTypes)=>{
     let reservations = sequelize.define('reservations', {
         id : { type: Sequelize.INTEGER, primaryKey : true, autoIncrement: true },
-        user_id : { type : Sequelize.INTEGER, references : { model : "users", key : "id", allowNull : false } },
+        user_id : { type : Sequelize.INTEGER, references : { model : "users", key : "id", allowNull : true } },
+        guest_id : { type : Sequelize.INTEGER, references : { model : "guest", key : "id", allowNull : true } },
         product_id : { type : Sequelize.INTEGER, references: { model : "products", key : "id", allowNull: false } },
         transaction_date : { type : Sequelize.DATE, allowNull : false },
         transaction_start_date : { type : Sequelize.DATE, allowNull : false },
