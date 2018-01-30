@@ -69,7 +69,7 @@ exports.by_distance = function(req, res){
     var con = new msSqlConnecter.msSqlConnecter(dbConfig.config);
     const forEach = require('async-foreach').forEach;
 
-    console.log(req.params.distance);
+    //console.log(req.params.distance);
     con.connect().then(function () { 
         new con.Request("select distinct "+
                             "operator.id, "+
@@ -79,7 +79,12 @@ exports.by_distance = function(req, res){
                             "locations.location_type_id,  "+
                             "locations.lot , "+
                             "locations.lat, "+
-			    "products_types.* "+
+                            "products_types.id as products_types_id,"+
+                            "products_types.product_id,"+
+                            "products_types.old_id as products_types_old_id,"+
+                            "products_types.name as products_types_name,"+
+                            "products_types.name_image as products_types_name,"+
+                            "products_types.show_map as products_types_show_map "+
                             "from operator "+
                             "inner join products on operator.id = products.operator_id "+
                             "inner join locations on products.location_id = locations.id "+
@@ -91,7 +96,7 @@ exports.by_distance = function(req, res){
 						.addParam("lon", TYPES.Real, req.params.lon)  
 						.addParam("distance", TYPES.Int, Number(req.params.distance))  
             .onComplate(function (count, datas) { 
-                console.log(count);                
+                //console.log(count);                
                 //console.log(datas);
                 forEach(datas, function(operator, indexOperator, arrOperator) {                                
                     var listo = this.async();
