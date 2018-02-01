@@ -126,7 +126,7 @@ exports.by_distance = function(req, res){
                     inner join products on operator.id = products.operator_id
                     inner join locations on products.location_id = locations.id
                     inner join pricing on products.id = pricing.product_id 
-			        inner join products_types on products.id = products_types.id
+			        inner join products_types on products.id = products_types.product_id
                     where operator.id = ${ operator.id } and lat != '' and price_plan != 'price plan'
                     `
 
