@@ -15,8 +15,12 @@ module.exports = function(app) {
     app.route(endpoint + '/all/not-dates-not-hours')
     .get(product.notDatesNotHours) 
 
+    app.route(endpoint + '/:id/prices')
+      .get(product.getProductPrice)
+
     app.route(endpoint + '/:page/:number')
     .get(product.getXPagination) 
+
 
   /*  .put(product.update)
     .delete(product.delete);*/
