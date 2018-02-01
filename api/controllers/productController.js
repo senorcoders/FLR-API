@@ -109,6 +109,24 @@ module.exports ={
 			console.log(err)
 			res.send(err)
 		})
+	},
+	getProductPrice : function(req, res, next){
+		let db = require("./../bd")
+		let query = "";
+		query = String.raw`
+				select id, product_id, price, price_plan 
+				from pricing 
+				where product_id = ${parseInt(req.params.id)};
+			`
+		console.log(query);
+		db.query(query)
+		.then(function(data){
+			res.send(data[0])
+		})
+		.catch(function(err){
+
+		})
+
 	}
 
 }
