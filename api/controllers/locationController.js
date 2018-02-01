@@ -71,27 +71,33 @@ exports.by_distance = function(req, res){
 
     //console.log(req.params.distance);
     con.connect().then(function () { 
-        new con.Request("select distinct "+
-                            "operator.id, "+
-                            "operator.operator_name, "+
-                            "operator.business_type, "+
-                            "operator.operator_type, "+
-                            "locations.location_type_id,  "+
-                            "locations.lot , "+
-                            "locations.lat, "+
-                            "products_types.id as products_types_id,"+
-                            "products_types.product_id,"+
-                            "products_types.old_id as products_types_old_id,"+
-                            "products_types.name as products_types_name,"+
-                            "products_types.name_image as products_types_name,"+
-                            "products_types.show_map as products_types_show_map "+
-                            "from operator "+
-                            "inner join products on operator.id = products.operator_id "+
-                            "inner join locations on products.location_id = locations.id "+
-			    "inner join products_types on products.id = products_types.product_id "+
-                            "where  "+
-                            "locations.lat != '' "+
-                            " AND geo.STDistance(geography::Point(@lat, @lon, 4326)) < @distance") 
+        var qq = String.raw`
+        select * from ( 
+            select ROW_NUMBER() 
+            over (PARTITION BY operator.id order by locations.id) as rowNumber,
+            operator.id,
+            operator.operator_name,
+            operator.business_type, 
+            operator.operator_type,
+            locations.location_type_id, 
+            locations.lot ,
+            locations.lat, 
+            products_types.id as products_types_id,
+            products_types.product_id,
+            products_types.old_id as products_types_old_id,
+            products_types.name as products_types_name,
+            products_types.name_image as products_types_name_image,
+            products_types.show_map as products_types_show_map
+            from operator
+            inner join products on operator.id = products.operator_id 
+            inner join locations on products.location_id = locations.id
+            inner join products_types on products.id = products_types.product_id
+            where
+            locations.lat != '' 
+            AND geo.STDistance(geography::Point(@lat, @lon, 4326)) < @distance ) as r
+        where r.rowNumber = 1
+        `
+        new con.Request(qq) 
                         .addParam("lat", TYPES.Real, req.params.lat)  
 						.addParam("lon", TYPES.Real, req.params.lon)  
 						.addParam("distance", TYPES.Int, Number(req.params.distance))  
@@ -104,20 +110,24 @@ exports.by_distance = function(req, res){
                     let bd = require("./../bd")
                     let query = String.raw`
                     select 
-                        locations.location_type_id, 
-                        locations.lot ,
-                        locations.lat ,
-                        products.id as product_id,
-                        products.name,
-                        products.max_adults,
-                        pricing.price,
-			products_types.* 
-                        from operator
-                        inner join products on operator.id = products.operator_id
-                        inner join locations on products.location_id = locations.id
-                        inner join pricing on products.id = pricing.product_id 
-			inner join products_types on products.id = products_types.id
-                        where operator.id = ${ operator.id } and lat != '' and price_plan != 'price plan'
+                    locations.location_type_id, 
+                    locations.lot ,
+                    locations.lat ,
+                    products.id as product_id,
+                    products.name,
+                    products.max_adults,
+                    pricing.price,
+                    pricing.price_plan,
+                    products_types.id as products_types_id,
+                    products_types.name as products_types_name,
+                    products_types.name_image as products_types_name_image,
+                    products_types.show_map as products_types_show_map
+                    from operator
+                    inner join products on operator.id = products.operator_id
+                    inner join locations on products.location_id = locations.id
+                    inner join pricing on products.id = pricing.product_id 
+			        inner join products_types on products.id = products_types.id
+                    where operator.id = ${ operator.id } and lat != '' and price_plan != 'price plan'
                     `
 
                     bd.query(query, { type: bd.QueryTypes.SELECT})
