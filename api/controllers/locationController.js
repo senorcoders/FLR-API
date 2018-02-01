@@ -87,7 +87,9 @@ exports.by_distance = function(req, res){
             products_types.old_id as products_types_old_id,
             products_types.name as products_types_name,
             products_types.name_image as products_types_name_image,
-            products_types.show_map as products_types_show_map
+            products_types.show_map as products_types_show_map,
+            (select AVG(start) avg from star_operators where operator_id = operator.id group by operator_id)  avg_stars,
+            (select count(start) count from star_operators where operator_id = operator.id group by operator_id)  count_stars
             from operator
             inner join products on operator.id = products.operator_id 
             inner join locations on products.location_id = locations.id
