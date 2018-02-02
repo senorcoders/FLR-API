@@ -24,6 +24,7 @@
     "express": "^4.16.2",
     "moment": "^2.20.1",
     "mssql": "^4.1.0",
+    "node-rest-client": "^3.1.0",
     "nodemailer": "^4.4.0",
     "randomatic": "^2.0.0",
     "rimraf": "^2.6.2",

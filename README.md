@@ -66,7 +66,7 @@ get http://server_address/api/guest/:id/reservations //get all reservations
 -email
 -phone 
 -address
-
+```
 #### Operator
 ```
 get  http://server_address/api/operator //get all operators
@@ -114,16 +114,16 @@ get  http://server_address/api/product/:page/:mount  //get for pagination
 -max_childs
 ```
 
--#### Available Dates
--```
--get  http://server_address/api/services-dates/next-dates/:product_id  //get the available dates of the next week
--get  http://server_address/api/services-dates/next-dates/:product_id/:start_date  //get available dates starting from a start_date
--```
--##### Available Dates params
--```
---product_id
---start_date format YYYY-MM-DD
-
+#### Available Dates
+```
+get  http://server_address/api/services-dates/next-dates/:product_id  //get the available dates of the next week
+get  http://server_address/api/services-dates/next-dates/:product_id/:start_date  //get available dates starting from a start_date
+```
+##### Available Dates params
+```
+-product_id
+-start_date format YYYY-MM-DD
+```
 #### Reservations
 ```
 get  http://server_address/api/reservation/:dateNow/past  //get all reservations that have not passed
@@ -226,6 +226,26 @@ delete http://server_address/api/inquiry/:id //delete
 -email
 -phone
 -message
+```
+
+### Payments
+
+post http://server_address/api/payment //save 
+
+#### Payments params
+-acccttype,//"VISA",
+-orderid,//"AB-11-9876",
+-account,//"4111111111111111",
+-expiry,//"1218",
+-amount,//"10",
+-currency,
+-name,//"TOM JONES",
+-address,
+-city,//"anytown",
+-region,//"NY",
+-country,//"US",
+-postal,//"55555",			
+-cvv2,//"1
 
 ### Prerequisites
 
