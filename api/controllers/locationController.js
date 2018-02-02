@@ -118,8 +118,6 @@ exports.by_distance = function(req, res){
                     products.id as product_id,
                     products.name,
                     products.max_adults,
-                    pricing.price,
-                    pricing.price_plan,
                     products_types.id as products_types_id,
                     products_types.name as products_types_name,
                     products_types.name_image as products_types_name_image,
@@ -127,9 +125,8 @@ exports.by_distance = function(req, res){
                     from operator
                     inner join products on operator.id = products.operator_id
                     inner join locations on products.location_id = locations.id
-                    inner join pricing on products.id = pricing.product_id 
 			        inner join products_types on products.id = products_types.product_id
-                    where operator.id = ${ operator.id } and lat != '' and price_plan != 'price plan'
+                    where operator.id = ${ operator.id } and lat != ''
                     `
 
                     bd.query(query, { type: bd.QueryTypes.SELECT})
