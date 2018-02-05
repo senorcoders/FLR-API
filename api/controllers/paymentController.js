@@ -7,24 +7,24 @@ module.exports = {
     var client = new Client();		
     reservation_id = req.body.reservation_id;
     let post_data= {
-			    "merchid": "000000927996",
-				  "accttype": req.body.acccttype,//"VISA",
-				  "orderid": req.body.orderid,//"AB-11-9876",
-				  "account": req.body.account,//"4111111111111111",
-				  "expiry": req.body.expiry,//"1218",
-				  "amount": req.body.amount,//"10",
-				  "currency": req.body.amount,
-				  "name": req.body.name,//"TOM JONES",
-				  "address": req.body.address,
-				  "city": req.body.city,//"anytown",
-				  "region": req.body.region,//"NY",
-				  "country": req.body.country,//"US",
-				  "postal": req.body.postal,//"55555",
-				  "ecomind": "E",
-				  "cvv2": req.body.cvv2,//"123",
-				  "track": null,
-				  "tokenize": "Y",
-				  "capture": "Y"
+            "merchid": "000000927996",
+            "accttype": req.body.acccttype,//"VISA",
+            "orderid": req.body.orderid,//"AB-11-9876",
+            "account": req.body.account,//"4111111111111111",
+            "expiry": req.body.expiry,//"1218",
+            "amount": req.body.amount,//"10",
+            "currency": req.body.amount,
+            "name": req.body.name,//"TOM JONES",
+            "address": req.body.address,
+            "city": req.body.city,//"anytown",
+            "region": req.body.region,//"NY",
+            "country": req.body.country,//"US",
+            "postal": req.body.postal,//"55555",
+            "ecomind": "E",
+            "cvv2": req.body.cvv2,//"123",
+            "track": null,
+            "tokenize": "Y",
+            "capture": "Y"
       	}        
 
       	let post_string = JSON.stringify(post_data);
@@ -43,25 +43,33 @@ module.exports = {
         client.methods.jsonMethod(args, function (dataPayment, response) {
           // parsed response body as js object        
           setTimeout(function () {     
-            payment.create({
-                reservation_id : reservation_id,
-                amount : dataPayment.amount ,
-                resptext : dataPayment.resptext,
-                commandcard : dataPayment.commandcard,
-                cvvresp : dataPayment.cvvresp,
-                batchid : dataPayment.batchid,
-                avsresp : dataPayment.avsresp,
-                respcode : dataPayment.respcode,
-                merchid : dataPayment.merchid,
-                token : dataPayment.token,
-                authcode : dataPayment.authcode,
-                respproc : dataPayment.respproc,
-                retref : dataPayment.retref,
-                retstat : dataPayment.retstat,
-                account : dataPayment.account                
-            }).then(function(data){
-                res.send(data)
-            })
+            if(dataPayment.respstat == "C"){
+                res.send({"status":"Card Declined", "reference", dataPayment.retref, "amount": dataPayment.amount})
+            }else if(dataPayment.respstat == "A"){
+                payment.create({
+                    reservation_id : reservation_id,
+                    amount : dataPayment.amount ,
+                    resptext : dataPayment.resptext,
+                    commandcard : dataPayment.commandcard,
+                    cvvresp : dataPayment.cvvresp,
+                    batchid : dataPayment.batchid,
+                    avsresp : dataPayment.avsresp,
+                    respcode : dataPayment.respcode,
+                    merchid : dataPayment.merchid,
+                    token : dataPayment.token,
+                    authcode : dataPayment.authcode,
+                    respproc : dataPayment.respproc,
+                    retref : dataPayment.retref,
+                    retstat : dataPayment.retstat,
+                    account : dataPayment.account                
+                }).then(function(data){
+                    console.log("payment saved");                                    
+                })
+                res.send({"status":"Aproved", "reference", dataPayment.retref, "amount": dataPayment.amount})
+            }else{
+                res.send({"status":"Please try again", "reference", dataPayment.retref, "amount": dataPayment.amount})
+            }
+            
             .catch(function(err){
                 console.error(err)
                 res.send(err)
