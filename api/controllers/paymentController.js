@@ -2,10 +2,8 @@ const payment = require("../models").payment
 
 module.exports = {
 	makePayment :  function(req, res, next){
-		//res.send("holahola");
 	var Client = require('node-rest-client').Client;
-    var client = new Client();		
-    reservation_id = req.body.reservation_id;
+    var client = new Client();	    
     let post_data= {
             "merchid": "000000927996",
             "accttype": req.body.acccttype,//"VISA",
@@ -43,14 +41,14 @@ module.exports = {
         client.methods.jsonMethod(args, function (dataPayment, response) {
           // parsed response body as js object        
           setTimeout(function () {     
+            //res.send(dataPayment);
             if(dataPayment.respstat == "C"){
-                res.send({"status":"Card Declined", "reference": dataPayment.retref, "amount": dataPayment.amount})
+                res.send({"status":"Card Declined", "reference": dataPayment.retref, "amount": dataPayment.amount, "text": dataPayment.resptext})
             }else if(dataPayment.respstat == "A"){
                 payment.create({
-                    reservation_id : reservation_id,
                     amount : dataPayment.amount ,
                     resptext : dataPayment.resptext,
-                    commandcard : dataPayment.commandcard,
+                    commandcard : '',
                     cvvresp : dataPayment.cvvresp,
                     batchid : dataPayment.batchid,
                     avsresp : dataPayment.avsresp,
@@ -58,51 +56,29 @@ module.exports = {
                     merchid : dataPayment.merchid,
                     token : dataPayment.token,
                     authcode : dataPayment.authcode,
+                    currency : 'USD',
                     respproc : dataPayment.respproc,
                     retref : dataPayment.retref,
                     retstat : dataPayment.retstat,
                     account : dataPayment.account                
                 }).then(function(data){
                     console.log("payment saved");                                    
+                    res.send({"status":"Aproved", "reference": dataPayment.retref, "amount": dataPayment.amount, "text": dataPayment.resptext, "payment_id": data.id})
                 }).catch(function(err){
                     console.error(err)
                     res.send(err)
-                })              
-                res.send({"status":"Aproved", "reference": dataPayment.retref, "amount": dataPayment.amount})
+                })                              
             }else{
-                res.send({"status":"Please try again", "reference": dataPayment.retref, "amount": dataPayment.amount})
+                res.send({"status":"Please try again", "reference": dataPayment.retref, "amount": dataPayment.amount, "text": dataPayment.resptext})
             }
             
             
           }, 10)
         })
+        }
 	}	
 
-  /*  getCoupon : function(req, res, next){
-        coupon.find({
-            where : {
-                code : req.params.code,
-                product_id : req.params.productId
-            }
-        }).then(function(data){
-            let coupon = {}
-            if( data === null){
-                coupon = {
-                    message : "coupon not found"
-                }
-            }else{
-                coupon = data
-                coupon.dataValues.message = "ok"
-                console.log(coupon)
-            }
-            
-            res.send(coupon)
-        })
-        .catch(function(err){
-            console.error(err)
-            res.send(err)
-        })
-    },
+  /* 
 
     save :  function(req, res, next){
         coupon.create({
@@ -140,4 +116,3 @@ module.exports = {
             res.send(err)
         })
     },*/
-}
