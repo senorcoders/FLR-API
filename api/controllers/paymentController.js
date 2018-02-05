@@ -44,7 +44,7 @@ module.exports = {
           // parsed response body as js object        
           setTimeout(function () {     
             if(dataPayment.respstat == "C"){
-                res.send({"status":"Card Declined", "reference", dataPayment.retref, "amount": dataPayment.amount})
+                res.send({"status":"Card Declined", "reference": dataPayment.retref, "amount": dataPayment.amount})
             }else if(dataPayment.respstat == "A"){
                 payment.create({
                     reservation_id : reservation_id,
@@ -64,16 +64,16 @@ module.exports = {
                     account : dataPayment.account                
                 }).then(function(data){
                     console.log("payment saved");                                    
-                })
-                res.send({"status":"Aproved", "reference", dataPayment.retref, "amount": dataPayment.amount})
+                }).catch(function(err){
+                    console.error(err)
+                    res.send(err)
+                })              
+                res.send({"status":"Aproved", "reference": dataPayment.retref, "amount": dataPayment.amount})
             }else{
-                res.send({"status":"Please try again", "reference", dataPayment.retref, "amount": dataPayment.amount})
+                res.send({"status":"Please try again", "reference": dataPayment.retref, "amount": dataPayment.amount})
             }
             
-            .catch(function(err){
-                console.error(err)
-                res.send(err)
-            })          	
+            
           }, 10)
         })
 	}	
