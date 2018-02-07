@@ -11,7 +11,7 @@ module.exports = {
             "account": req.body.account,//"4111111111111111",
             "expiry": req.body.expiry,//"1218",
             "amount": req.body.amount,//"10",
-            "currency": req.body.amount,
+            "currency": "USD",
             "name": req.body.name,//"TOM JONES",
             "address": req.body.address,
             "city": req.body.city,//"anytown",
@@ -26,6 +26,7 @@ module.exports = {
       	}        
 
       	let post_string = JSON.stringify(post_data);
+	console.log(post_string);
       	let _authdata = "testin:testing123";
         var args = {
 				    data: post_string,
@@ -44,6 +45,7 @@ module.exports = {
             //res.send(dataPayment);
             if(dataPayment.respstat == "C"){
                 res.send({"status":"Card Declined", "reference": dataPayment.retref, "amount": dataPayment.amount, "text": dataPayment.resptext})
+		console.log(dataPayment.resptext);
             }else if(dataPayment.respstat == "A"){
                 payment.create({
                     amount : dataPayment.amount ,
@@ -59,16 +61,19 @@ module.exports = {
                     currency : 'USD',
                     respproc : dataPayment.respproc,
                     retref : dataPayment.retref,
-                    retstat : dataPayment.retstat,
+                    retstat : "test",
                     account : dataPayment.account                
                 }).then(function(data){
                     console.log("payment saved");                                    
+			console.log(dataPayment.resptext);
                     res.send({"status":"Aproved", "reference": dataPayment.retref, "amount": dataPayment.amount, "text": dataPayment.resptext, "payment_id": data.id})
                 }).catch(function(err){
                     console.error(err)
                     res.send(err)
                 })                              
             }else{
+		console.log(dataPayment.resptext);
+
                 res.send({"status":"Please try again", "reference": dataPayment.retref, "amount": dataPayment.amount, "text": dataPayment.resptext})
             }
             
