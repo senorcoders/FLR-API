@@ -12,7 +12,7 @@ module.exports = {
         let db = require("./../bd")
         let query = "";
         query = String.raw`
-                select id, product_id, price, price_plan 
+                select id, product_id, price, price_plan, timing
                 from pricing 
                 where product_id = ${parseInt(req.params.product_id)};
             `
