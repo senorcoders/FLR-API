@@ -31,6 +31,7 @@ module.exports = {
       	}        
 
       	let post_string = JSON.stringify(post_data);
+	console.log(post_string);
       	let _authdata = "testin:testing123";
         var args = {
 				    data: post_string,
@@ -93,6 +94,7 @@ module.exports = {
                     account : dataPayment.account                
                 }).then(function(data){
                     console.log("payment saved");                                    
+			console.log(dataPayment.resptext);
                     res.send({"status":"Aproved", "reference": dataPayment.retref, "amount": dataPayment.amount, "text": dataPayment.resptext, "payment_id": data.id})
                 }).catch(function(err){
                     console.error(err)
@@ -125,8 +127,7 @@ module.exports = {
                     console.error(err)
                     res.send(err)
                 })
-                
-            }
+               }
             
             
           }, 10)

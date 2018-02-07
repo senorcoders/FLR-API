@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes)=>{
         freezeTableName: true,
         tableName: 'payment'
       });
-    
+
       sequelize.sync()
 
     return payment
