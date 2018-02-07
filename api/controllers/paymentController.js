@@ -4,22 +4,27 @@ module.exports = {
 	makePayment :  function(req, res, next){
 	var Client = require('node-rest-client').Client;
     var client = new Client();	    
+    let expire_date = req.body.expiry
+    if (expire_date.includes("/")) {
+         expire_date = expire_date.replace("/", "");
+    }
     let post_data= {
             "merchid": "000000927996",
-            "accttype": req.body.acccttype,//"VISA",
-            "orderid": req.body.orderid,//"AB-11-9876",
+            "accttype": "",//req.body.acccttype,//"VISA",
+            //"orderid": req.body.orderid,//"AB-11-9876",
             "account": req.body.account,//"4111111111111111",
-            "expiry": req.body.expiry,//"1218",
+            "expiry": expire_date, //req.body.expiry,//"1218",
             "amount": req.body.amount,//"10",
-            "currency": req.body.amount,
+            "currency": req.body.currency,
             "name": req.body.name,//"TOM JONES",
-            "address": req.body.address,
-            "city": req.body.city,//"anytown",
-            "region": req.body.region,//"NY",
-            "country": req.body.country,//"US",
+            "address": "",//req.body.address,
+            "city": "",// req.body.city,//"anytown",
+            "region": "",//req.body.region,//"NY",
+            "country": "",//req.body.country,//"US",
             "postal": req.body.postal,//"55555",
-            "ecomind": "E",
-            "cvv2": req.body.cvv2,//"123",
+            "ecomind": "",
+            "cvv2": req.body.cvv2,//"123"
+            "retstat": "",
             "track": null,
             "tokenize": "Y",
             "capture": "Y"
@@ -43,7 +48,32 @@ module.exports = {
           setTimeout(function () {     
             //res.send(dataPayment);
             if(dataPayment.respstat == "C"){
-                res.send({"status":"Card Declined", "reference": dataPayment.retref, "amount": dataPayment.amount, "text": dataPayment.resptext})
+                payment.create({
+                    retstat : dataPayment.repstat,
+                    retref : dataPayment.retref,
+                    account : dataPayment.account,               
+                    amount : dataPayment.amount,
+                    token : dataPayment.token,
+                    merchid : dataPayment.merchid,
+                    respcode : dataPayment.respcode,
+                    resptext : dataPayment.resptext,
+                    respproc : dataPayment.respproc,
+                    currency :'',
+                    commandcard : '',
+                    cvv2 : '',
+                    cvvresp: '',
+                    batchid:'',
+                    avsresp:'',
+                    respstat:'',
+                    retstat:'',
+                    authcode:''
+                }).then(function(data){
+                    console.log("payment saved");                                    
+                    res.send({"status":"Declined", "reference": dataPayment.retref, "amount": dataPayment.amount, "text": dataPayment.resptext, "payment_id": data.id})
+                }).catch(function(err){
+                    console.error(err)
+                    res.send(err)
+                })                
             }else if(dataPayment.respstat == "A"){
                 payment.create({
                     amount : dataPayment.amount ,
@@ -56,10 +86,10 @@ module.exports = {
                     merchid : dataPayment.merchid,
                     token : dataPayment.token,
                     authcode : dataPayment.authcode,
-                    currency : 'USD',
+                    currency : req.body.currency,
                     respproc : dataPayment.respproc,
                     retref : dataPayment.retref,
-                    retstat : dataPayment.retstat,
+                    retstat : "test",
                     account : dataPayment.account                
                 }).then(function(data){
                     console.log("payment saved");                                    
@@ -69,7 +99,33 @@ module.exports = {
                     res.send(err)
                 })                              
             }else{
-                res.send({"status":"Please try again", "reference": dataPayment.retref, "amount": dataPayment.amount, "text": dataPayment.resptext})
+                payment.create({
+                    retstat : dataPayment.repstat,
+                    retref : dataPayment.retref,
+                    account : dataPayment.account,                
+                    amount : dataPayment.amount ,
+                    token : dataPayment.token,
+                    merchid : dataPayment.merchid,
+                    respcode : dataPayment.respcode,
+                    resptext : dataPayment.resptext,
+                    respproc : dataPayment.respproc,
+                    currency :'',
+                    commandcard : '' ,
+                    cvv2 : '',
+                    cvvresp: '',
+                    batchid:'',
+                    authcode:'',
+                    respstat:'',
+                    retstat:'',
+                    avsresp:''          
+                }).then(function(data){
+                    console.log("payment saved");                                    
+                    res.send({"status":"Please try again", "reference": dataPayment.retref, "amount": dataPayment.amount, "text": dataPayment.resptext, "payment_id": data.id})
+                }).catch(function(err){
+                    console.error(err)
+                    res.send(err)
+                })
+                
             }
             
             
@@ -77,42 +133,3 @@ module.exports = {
         })
         }
 	}	
-
-  /* 
-
-    save :  function(req, res, next){
-        coupon.create({
-            product_id : req.body.product_id,
-            code : req.body.code,
-            amount : req.body.amount,
-            type : req.body.type
-        }).then(function(data){
-            res.send(data)
-        })
-        .catch(function(err){
-            console.error(err)
-            res.send(err)
-        })
-    },
-
-    delete :  function(req, res, next){
-        if( !req.params.hasOwnProperty("id") ){
-            res.send({
-                message : "Error the id parameter is missing"
-            })
-            return
-        }
-        coupon.destroy({
-            where :{
-                id : req.params.id
-            }
-        }).then(function(data){
-            res.send({
-                rowsAffect : data
-            })
-        })
-        .catch(function(err){
-            console.error(err)
-            res.send(err)
-        })
-    },*/
