@@ -8,6 +8,9 @@ module.exports = function(app) {
     .post(user.create)
     .get(user.get_all);
 
+  app.route(endpoint + '/login/:email/:password')
+    .get(user.login)
+
   app.route(endpoint + '/:userId')
     .get(user.get_one)
     .put(user.update)

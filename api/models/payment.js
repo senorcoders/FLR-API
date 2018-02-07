@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes)=>{
         tableName: 'payment'
       });
 
-      sequelize.sync()
+      //sequelize.sync()
 
     return payment
 }
