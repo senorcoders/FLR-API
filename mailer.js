@@ -44,6 +44,7 @@ exports.sendCode = function(id, email, code){
         });
 }
 
+//#region for send notifications user y admin after new reservation
 function getTemplatesUser(user, reservation, product){
     const body = String.raw`
     <div style="color:#555555;line-height:120%;font-family:Arial, 'Helvetica Neue', 
@@ -103,7 +104,12 @@ function sendNotificationUser(user, reservation, product, template){
                 to: user.email, // list of receivers
                 subject: 'Reservation Completed ✔', // Subject line
                 text: '', // plain text body
-                html: template// html body
+                html: template, // html body
+                attachments: [{
+                    filename: 'image.png',
+                    path: './template_emails/images/image.png',
+                    cid: 'unique@kreata.ee' //same cid value as in the html img src
+                }]
             };
         
             // send mail with defined transport object
@@ -170,7 +176,7 @@ function getTemplatesAdmin(user, reservation, product){
 
 function sendNotificationAdmin(user, reservation, template){
     'use strict'
-    let emailAdministrator = "osmany@senorcoders.com"
+    let emailAdministrator = "kharron@senorcoders.com"
     console.log('sending email to '+ emailAdministrator);
     const nodemailer = require('nodemailer');
 
@@ -193,8 +199,8 @@ function sendNotificationAdmin(user, reservation, template){
             
             let mailOptionsAdmin = {
                 from: '"Senorcoders" <milton@senorcoders.com>', // sender address
-                to: 'osmany@senorcoders.com', // list of receivers
-                subject: 'Reservation Completed ✔', // Subject line
+                to: emailAdministrator, // list of receivers
+                subject: 'New Reservation', // Subject line
                 text: '', // plain text body
                 html: template// html body
             };
@@ -214,7 +220,7 @@ function sendNotificationAdmin(user, reservation, template){
             
         });
 }
-
+//#endregion
 
 //usando funciones compuestas
 exports
