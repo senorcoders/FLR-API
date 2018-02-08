@@ -87,6 +87,64 @@ module.exports = {
         })
         
     },
+    better_next_days : (req,res)=>{
+        let db = require("./../bd")
+        let query = "";
+        query = String.raw`
+                select id, product_id, price, price_plan, timing
+                from pricing 
+                where product_id = ${parseInt(req.params.product_id)};
+            `
+        db.query(query)
+        .then(function(pricing){
+          services_dates.findAll({ where: {product_id: req.params.product_id} } )
+            .then(function (data){
+                forEach(data, function(item, index, arr) {
+                    var done = this.async();
+                    var date = moment().day(item.day).format('YYYY-MM-DD');
+                    var day_name = moment().day(item.day).format('dddd');
+                    arr[index].dataValues.day_name = day_name; 
+                    arr[index].dataValues.date = date; 
+
+                    let query = String.raw`
+                            select sd.*, sh.*, pdt.max_adults,
+                            (select              
+                                    sum(cast (rs.nbr_in_adult as int) ) adult_reserved
+                                    from products pds
+                                    INNER JOIN reservations rs  on pds.id = rs.product_id                         
+                                    where CAST('${ arr[index].dataValues.date }' AS DATE) <= rs.transaction_end_date
+                                    and transaction_start_time = sh.start_hours
+                                    group by pds.max_adults, pds.max_childs) adult_reserved
+                            from service_dates sd 
+                            inner join products pdt on sd.product_id = pdt.id
+                            inner join service_hours sh on sd.id = sh.service_dates_id 
+                            where sd.id = ${ item.dataValues.id }
+                            `
+                            db.query(query)
+                            .then(function (all_reservations){
+                                arr[index].dataValues.hours = all_reservations[0];    
+                                arr[index].dataValues.pricing = pricing[0];    
+                                done();
+                            })
+                            .catch((err)=>{
+                                console.error(err.message)
+                                res.send(err)
+                            })
+                            
+                            
+                            
+
+                        
+                }, allDone);
+                function allDone(notAborted, arr) {
+                    console.log("done"); 
+                    //done();   
+                    res.send(arr);
+                }
+            })  
+        })
+        
+    },
     check_date : (req,res)=>{
         const Sequelize = require('sequelize');
         const op = Sequelize.Op;

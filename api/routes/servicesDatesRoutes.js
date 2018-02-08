@@ -16,6 +16,9 @@ module.exports = function(app){
     app.route(endpoint + '/next-dates/:product_id')
         .get(controller.next_days);
 
+    app.route(endpoint + '/better-next-dates/:product_id')
+        .get(controller.better_next_days);
+
     app.route(endpoint + '/next-dates/:product_id/:date')
         .get(controller.check_date);
 }
