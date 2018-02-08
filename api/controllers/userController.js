@@ -132,7 +132,7 @@ exports.create = function(req, res, callback){
                 mailer.sendCode(data[0].id, req.body.email, code);
 					 			con.close();
 
-            }) 
+            })
             .onError(function (err) { 
                 console.log(err); 
 		res.send(err);
