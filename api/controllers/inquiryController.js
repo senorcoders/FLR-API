@@ -101,6 +101,9 @@ module.exports = {
                     inquiry : data,
                     product: p
                 })
+                require("../../mailer").sendNoticationInquiry({
+                    email : req.body.email
+                }, p)
             })
             .catch(function(err){
                 console.error(err)
