@@ -241,19 +241,18 @@ function getTemplatesInquiry(user, product){
 	<!--[if mso]></td></tr></table><![endif]-->
     </div>
     `
-
-    this.callback = function(){
+    var _callback = function(){
         console.log("callback");
     }
 
     fs.readFile("./template_emails/inquiry.1.html", "utf8", function(err, data){
         fs.readFile("./template_emails/inquiry.2.html", "utf8", function(err, data2){
-            callback(user, (data+ body+ data2))
+            _callback(user, (data+ body+ data2))
         })
     })
 
     return function(callback){
-        this.callback = callback;
+        _callback = callback;
     }
 }
 
