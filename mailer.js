@@ -176,8 +176,7 @@ function getTemplatesAdmin(user, reservation, product){
 
 function sendNotificationAdmin(user, reservation, template){
     'use strict'
-    let emailAdministrator = "kharron@senorcoders.com"
-    console.log('sending email to '+ emailAdministrator);
+    console.log('sending email to '+ "admins");
     const nodemailer = require('nodemailer');
 
     
@@ -199,11 +198,13 @@ function sendNotificationAdmin(user, reservation, template){
             
             let mailOptionsAdmin = {
                 from: '"Senorcoders" <milton@senorcoders.com>', // sender address
-                to: emailAdministrator, // list of receivers
                 subject: 'New Reservation', // Subject line
                 text: '', // plain text body
-                html: template// html body
+                html: template, // html body
+                cc : 'mayra.harley@reservec.com'
             };
+
+            mailOptionsAdmin.to = 'mike.harley@reservec.com';
         
             // send mail with defined transport object
             transporter.sendMail(mailOptionsAdmin, (error, info) => {
