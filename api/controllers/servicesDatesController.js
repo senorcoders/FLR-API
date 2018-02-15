@@ -19,7 +19,8 @@ module.exports = {
         console.log(query);
         db.query(query)
         .then(function(pricing){
-          services_dates.findAll({ where: {product_id: req.params.product_id} } )
+          //services_dates.findAll({ where: {product_id: req.params.product_id} } )
+	    services_dates.findAll({ where: {product_id: 7722} })
             .then(function (data){
                 forEach(data, function(item, index, arr) {                                
                     var done = this.async();
@@ -97,7 +98,8 @@ module.exports = {
             `
         db.query(query)
         .then(function(pricing){
-          services_dates.findAll({ where: {product_id: req.params.product_id} } )
+          //services_dates.findAll({ where: {product_id: req.params.product_id} } )
+	  services_dates.findAll({ where : {product_id: req.params.product_id }})
             .then(function (data){
                 forEach(data, function(item, index, arr) {
                     var done = this.async();
@@ -152,7 +154,8 @@ module.exports = {
         var date_request = req.params.date;      
         var day_request = moment(date_request, "YYYY-MM-DD").format('E');
 
-        services_dates.findAll({ where: {product_id: req.params.product_id, day: { [op.gte]: day_request } } } )
+        //services_dates.findAll({ where: {product_id: req.params.product_id, day: { [op.gte]: day_request } } } )
+	services_dates.findAll({ where: { product_id: 7722, day: { [op.gte]: day_request } } } )
         .then(function (data){
             forEach(data, function(item, index, arr) {                                
                 var done = this.async();
