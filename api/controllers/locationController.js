@@ -118,7 +118,7 @@ exports.by_distance = function(req, res){
                     locations.lat ,
                     products.id as product_id,
                     products.name,
-		    name_image,
+		    products.name_image,
                     products.max_adults,
                     products_types.id as products_types_id,
                     products_types.name as products_types_name,
