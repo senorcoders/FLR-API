@@ -45,4 +45,10 @@ module.exports = function(app) {
   app.route(endpoint+ "/:id/reservations")
   .get(require("./../controllers/reservationController").getXUserAll)
 
+  app.route(endpoint + "/check/email/:email")
+    .get( user.email_exist )
+
+  app.route(endpoint + "/check/username/:username")
+    .get( user.username_exist )
 };
+
