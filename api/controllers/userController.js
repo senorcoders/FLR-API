@@ -297,7 +297,7 @@ exports.email_exist = function( req, res, callback){
     var con = new msSqlConnecter.msSqlConnecter(dbConfig.config); 
     console.log(req.params.userId);
     con.connect().then(function () { 
-        new con.Request("select count(id) from [users] where email = @email")
+        new con.Request("select count(id) as count from [users] where email = @email")
             .addParam("email", TYPES.VarChar, req.params.email)  
             .onComplate(function (count, datas) { 
                 console.log(count);
@@ -321,7 +321,7 @@ exports.username_exist = function( req, res, callback){
     var con = new msSqlConnecter.msSqlConnecter(dbConfig.config); 
     console.log(req.params.userId);
     con.connect().then(function () { 
-        new con.Request("select count(id) from [users] where username = @username")
+        new con.Request("select count(id) count from [users] where username = @username")
             .addParam("username", TYPES.VarChar, req.params.username)  
             .onComplate(function (count, datas) { 
                 console.log(count);
