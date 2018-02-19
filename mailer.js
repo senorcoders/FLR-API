@@ -1,4 +1,5 @@
 const fs = require("fs")
+const moment = require("moment")
 
 exports.sendCode = function(id, email, code){
     'use strict'
@@ -46,7 +47,9 @@ exports.sendCode = function(id, email, code){
 
 //#region for send notifications user y admin after new reservation
 function getTemplatesUser(user, reservation, product){
-    const body = String.raw`
+    var body;
+    if( moment(reservation.transaction_start_date, "YYYY-MM-DD").isSame( moment(reservation.transaction_end_date, "YYYY-MM-DD") ) ){
+        body = String.raw`
     <div style="color:#555555;line-height:120%;font-family:Arial, 'Helvetica Neue', 
     Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; 
     padding-bottom: 10px;">	
@@ -55,8 +58,7 @@ function getTemplatesUser(user, reservation, product){
         font-size: 14px;line-height: 17px"><span style="font-size: 20px; line-height: 24px;">
         Hello! you have completed a <strong style="text-transform: uppercase;">${reservation.activity_type}</strong> reservation</span>
         </p><p style="margin: 0;font-size: 14px;line-height: 17px">
-        <span style="font-size: 20px; line-height: 24px;">for start the ${reservation.transaction_start_date} and 
-        finish the ${reservation.transaction_end_date}.</span>
+        <span style="font-size: 20px; line-height: 24px;">for ${reservation.transaction_start_date}</span>
         </p><p style="margin: 0;font-size: 14px;line-height: 17px"><span 
         style="font-size: 20px; line-height: 24px;"><br data-mce-bogus="1"></span></p>
         <p style="margin: 0;font-size: 14px;line-height: 17px">
@@ -64,6 +66,26 @@ function getTemplatesUser(user, reservation, product){
         </strong></p></div>	
     </div>
     `
+    }else{
+        body = String.raw`
+    <div style="color:#555555;line-height:120%;font-family:Arial, 'Helvetica Neue', 
+    Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; 
+    padding-bottom: 10px;">	
+        <div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, 
+        'Helvetica Neue', Helvetica, sans-serif;text-align:left;"><p style="margin: 0;
+        font-size: 14px;line-height: 17px"><span style="font-size: 20px; line-height: 24px;">
+        Hello! you have completed a <strong style="text-transform: uppercase;">${reservation.activity_type}</strong> reservation</span>
+        </p><p style="margin: 0;font-size: 14px;line-height: 17px">
+        <span style="font-size: 20px; line-height: 24px;">for ${reservation.transaction_start_date}
+        to ${reservation.transaction_end_date}.</span>
+        </p><p style="margin: 0;font-size: 14px;line-height: 17px"><span 
+        style="font-size: 20px; line-height: 24px;"><br data-mce-bogus="1"></span></p>
+        <p style="margin: 0;font-size: 14px;line-height: 17px">
+        <strong><span style="font-size: 20px; line-height: 24px;">Enjoy them!</span>
+        </strong></p></div>	
+    </div>
+    `
+    }
 
     fs.readFile("./template_emails/user.1.html", "utf8", function(err, data){
         let tmp1 = data
