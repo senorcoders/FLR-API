@@ -22,7 +22,8 @@ exports.get_all = function(req, res, callback){
 														for (let i = 0; i < datas.length ; i++) {
 															datas[i].locations = locations;
 														}														
-														res.send(datas);											
+														res.send(datas);
+                                                        con.close();										
 												}) 
 												.onError(function (err) { 
 														console.log(err); 
@@ -55,7 +56,7 @@ exports.get_one = function(req, res){
                 console.log(count);
                 console.log(datas);
                 res.send(datas);
-								con.close();
+				con.close();
             }) 
             .onError(function (err) { 
                 console.log(err);
@@ -79,7 +80,7 @@ exports.get_by_azure = function(req, res){
                 console.log(count);
                 console.log(datas);
                 res.send(datas);
-								con.close();
+				con.close();
             })
             .onError(function (err) {
                 console.log(err);
@@ -132,7 +133,7 @@ exports.create = function(req, res, callback){
                 console.log(data);
                 console.log(data[0].id);
                 mailer.sendCode(data[0].id, req.body.email, code);
-					 			con.close();
+				con.close();
 
             })
             .onError(function (err) { 
@@ -327,7 +328,7 @@ exports.username_exist = function( req, res, callback){
                 console.log(count);
                 console.log(datas);
                 res.send(datas);
-                                con.close();
+                con.close();
             }) 
             .onError(function (err) { 
                 console.log(err);
