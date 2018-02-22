@@ -153,7 +153,7 @@ module.exports = {
         const op = Sequelize.Op;
         var date_request = req.params.date;      
         var day_request = moment(date_request, "YYYY-MM-DD").format('E');
-        console.log(day_request);
+        
         var diff =  moment(date_request).diff( moment(), 'day') ; 
         //services_dates.findAll({ where: {product_id: req.params.product_id, day: { [op.gte]: day_request } } } )
 	services_dates.findAll({ where: { product_id: 7722, day: { [op.gte]: day_request } } } )
