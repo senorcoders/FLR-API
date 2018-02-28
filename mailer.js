@@ -46,7 +46,7 @@ exports.sendCode = function(id, email, code){
 }
 
 //#region for send notifications user y admin after new reservation
-function getTemplatesUser(user, reservation, product){
+function getTemplatesUser(user, reservation, product, operator){
     var body;
     if( moment(reservation.transaction_start_date, "YYYY-MM-DD").isSame( moment(reservation.transaction_end_date, "YYYY-MM-DD") ) ){
         body = String.raw`
@@ -56,9 +56,7 @@ function getTemplatesUser(user, reservation, product){
         <div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, 
         'Helvetica Neue', Helvetica, sans-serif;text-align:left;"><p style="margin: 0;
         font-size: 14px;line-height: 17px"><span style="font-size: 20px; line-height: 24px;">
-        Hello! you have completed a <strong style="text-transform: uppercase;">${reservation.activity_type}</strong> reservation</span>
-        </p><p style="margin: 0;font-size: 14px;line-height: 17px">
-        <span style="font-size: 20px; line-height: 24px;">for ${reservation.transaction_start_date}</span>
+        Hello! you have completed a reservation with <strong style="text-transform: uppercase;">${operator.operator_name} for ${reservation.transaction_start_date} <strong> </span>
         </p><p style="margin: 0;font-size: 14px;line-height: 17px"><span 
         style="font-size: 20px; line-height: 24px;"><br data-mce-bogus="1"></span></p>
         <p style="margin: 0;font-size: 14px;line-height: 17px">
@@ -176,7 +174,9 @@ function getTemplatesAdmin(user, reservation, product){
         </p><p style="margin: 0;font-size: 12px;line-height: 14px">
         <span style="font-size: 20px; line-height: 24px;"><br data-mce-bogus="1">
         </span></p><p style="margin: 0;font-size: 12px;line-height: 14px">
-        <span style="font-size: 20px; line-height: 24px;">Name User: ${user.name} </span>
+        ${user.name !== undefined ? '<span style="font-size: 20px; line-height: 24px;">Name User: '+ user.name+ ' </span>' :
+        '<span style="font-size: 20px; line-height: 24px;">User Guest</span>' }
+        
         </p><p style="margin: 0;font-size: 12px;line-height: 14px">
         <span style="font-size: 20px; line-height: 24px;">Email:&#160;${user.email} </span>
         </p><p style="margin: 0;font-size: 12px;line-height: 14px">&#160;<br>
@@ -227,6 +227,7 @@ function sendNotificationAdmin(user, reservation, template){
             };
 
             mailOptionsAdmin.to = 'mike.harley@reservec.com';
+            //mailOptionsAdmin.to = 'osmany@senorcoders.com';
         
             // send mail with defined transport object
             transporter.sendMail(mailOptionsAdmin, (error, info) => {
@@ -247,7 +248,7 @@ function sendNotificationAdmin(user, reservation, template){
 //usando funciones compuestas
 exports
 .
-sendNotifications = (user, reservation, product)=> getTemplatesUser(user, reservation, product)
+sendNotifications = (user, reservation, product, operator)=> getTemplatesUser(user, reservation, product, operator)
 (getTemplatesAdmin)
 
 //#endregion

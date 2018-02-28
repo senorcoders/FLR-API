@@ -1,5 +1,6 @@
 'use strict'
 const reservations = require("./../models").reservations
+const Operator = require("./../models").operator
 
 /*function getComments(req, res, next, data){
     let db = require("./../bd")
@@ -54,22 +55,34 @@ module.exports = {
                                 payment_id : req.body.payment_id                                
                             })
         .then((data)=>{
-            var query = String.raw`
-            select top(1) 
-            users.name as userName, 
-            users.email as userEmail,
-            products.name as productName,
-            products.service_type as productServiceType
-            from users, products where users.id = ${req.body.user_id} and products.id = ${req.body.product_id}
-            `
+            var query;
+            if( req.body.hasOwnProperty('guest_id') ){
+                query = String.raw`
+                select top(1)
+                guest.email as userEmail,
+                products.name as productName,
+                products.service_type as productServiceType
+                from guest, products where guest.id = ${req.body.guest_id} and products.id = ${req.body.product_id}
+                `
+            }else{
+                query = String.raw`
+                select top(1) 
+                users.name as userName, 
+                users.email as userEmail,
+                products.name as productName,
+                products.service_type as productServiceType
+                from users, products where users.id = ${req.body.user_id} and products.id = ${req.body.product_id}
+                `
+            }
+            
 
             require("../bd").query(query)
             .then(data=>{ 
-                console.log(data[0])
                 let user = {
                     email : data[0][0].userEmail,
                     name : data[0][0].userName
                 }
+                console.log(user);
                 let reservation = {
                     activity_type : req.body.activity_type,
                     transaction_start_date : req.body.transaction_start_date,
@@ -83,7 +96,12 @@ module.exports = {
                     service_type: data[0][0].productServiceType
                 }
 
-                require("../../mailer").sendNotifications(user, reservation, product)
+                Operator.find({
+                    id : product.operator_id
+                }).then(function(operator){
+                    require("../../mailer").sendNotifications(user, reservation, product, operator)
+                })
+                
              })
             .catch((err)=>{
                 console.error(err.message)
