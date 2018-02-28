@@ -163,8 +163,12 @@ module.exports = {
                     console.log(item.day);
                     //var date = moment().day( diff + 4 + item.day).format('YYYY-MM-DD');
                     //var day_name = moment().day(diff + 4 + item.day).format('dddd');
-                    var date  = moment(date_request,'YYYY-MM-DD').format('YYYY-MM-DD');
-                    var day_name = moment(date_request,'YYYY-MM-DD').format('dddd');
+                    //var date  = moment(date_request,'YYYY-MM-DD').add(item.day).format('YYYY-MM-DD');
+                    //var day_name = moment(date_request,'YYYY-MM-DD').add(item.day).format('dddd');
+                    
+                    var date = moment(date_request,'YYYY-MM-DD').day(item.day).format('YYYY-MM-DD');
+                    var day_name = moment(date_request,'YYYY-MM-DD').day(item.day).format('dddd');
+
                     arr[index].dataValues.day_name =  day_name; 
                     arr[index].dataValues.date = date; 
 
