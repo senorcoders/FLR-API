@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes)=>{
         transaction_start_time : { type : Sequelize.TEXT, allowNull : false },
         transaction_end_time : { type : Sequelize.TEXT, allowNull : true },        
         activity_type : { type : Sequelize.TEXT, allowNull : false },
-        number_activity_reserved : { type : Sequelize.INTEGER, allowNull : false },
+        number_activity_reserved : { type : Sequelize.FLOAT, allowNull : false },
         nbr_in_party : { type : Sequelize.TEXT, allowNull : false },
         nbr_in_adult : { type : Sequelize.TEXT, allowNull : false },
         nbr_children : { type : Sequelize.TEXT, allowNull : false },
@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes)=>{
         tableName: 'reservations'
       });
     
-      //sequelize.sync()
+    //sequelize.sync()
 
     return reservations
 }
