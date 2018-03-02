@@ -107,7 +107,7 @@ function getTemplatesUser(user, reservation, product, operator){
                         <div class="">
         <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"><![endif]-->
         <div style="color:#555555;line-height:120%;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">	
-            <div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;text-align:left;"><p style="margin: 0;font-size: 14px;line-height: 17px"><span style="font-size: 16px; line-height: 19px;"><strong>Activity</strong>: ${reservation.activity_type} </span></p></div>	
+            <div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;text-align:left;"><p style="margin: 0;font-size: 14px;line-height: 17px"><span style="font-size: 16px; line-height: 19px;"><strong>Activity</strong>: ${operator.operator_type} </span></p></div>	
         </div>
         <!--[if mso]></td></tr></table><![endif]-->
     </div>
@@ -249,7 +249,7 @@ function getTemplatesUser(user, reservation, product, operator){
     })
 
     return function(callback){
-        callback(user, reservation, product);
+        callback(user, reservation, product, operator);
     }
 }
 
@@ -304,7 +304,7 @@ function sendNotificationUser(user, reservation, product, template){
         });
 }
 
-function getTemplatesAdmin(user, reservation, product){
+function getTemplatesAdmin(user, reservation, product, operator){
     let body = String.raw`
         <div style="color:#555555;line-height:120%;font-family:Arial, 
         'Helvetica Neue', Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; 
@@ -314,7 +314,7 @@ function getTemplatesAdmin(user, reservation, product){
         font-size: 12px;line-height: 14px"><span style="font-size: 20px; line-height: 24px;">
         New Reservation</span></p><p style="margin: 0;font-size: 12px;line-height: 14px">&#160;
         <br></p><p style="margin: 0;font-size: 12px;line-height: 14px">
-        <span style="font-size: 20px; line-height: 24px;">Activity Type:&#160; ${reservation.activity_type}</span>
+        <span style="font-size: 20px; line-height: 24px;">Activity Type:&#160; ${operator.operator_type}</span>
         </p><p style="margin: 0;font-size: 12px;line-height: 14px">
         <span style="font-size: 20px; line-height: 24px;">Start Date:&#160; ${reservation.transaction_start_date}</span></p>
         <p style="margin: 0;font-size: 12px;line-height: 14px">
@@ -352,7 +352,7 @@ function getTemplatesAdmin(user, reservation, product){
 
 }
 
-function sendNotificationAdmin(user, reservation, template){
+function sendNotificationAdmin(user, reservation, template, operator){
     'use strict'
     console.log('sending email to '+ "admins");
     const nodemailer = require('nodemailer');
@@ -379,11 +379,11 @@ function sendNotificationAdmin(user, reservation, template){
                 subject: 'New Reservation', // Subject line
                 text: '', // plain text body
                 html: template, // html body
-                cc : 'mayra.harley@reservec.com'
+                //cc : 'mayra.harley@reservec.com'
             };
 
-            mailOptionsAdmin.to = 'mike.harley@reservec.com';
-            //mailOptionsAdmin.to = 'osmany@senorcoders.com';
+            //mailOptionsAdmin.to = 'mike.harley@reservec.com';
+            mailOptionsAdmin.to = 'osmany@senorcoders.com';
         
             // send mail with defined transport object
             transporter.sendMail(mailOptionsAdmin, (error, info) => {
