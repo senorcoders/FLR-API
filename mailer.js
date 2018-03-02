@@ -379,11 +379,11 @@ function sendNotificationAdmin(user, reservation, template, operator){
                 subject: 'New Reservation', // Subject line
                 text: '', // plain text body
                 html: template, // html body
-                //cc : 'mayra.harley@reservec.com'
+                cc : 'mayra.harley@reservec.com'
             };
 
-            //mailOptionsAdmin.to = 'mike.harley@reservec.com';
-            mailOptionsAdmin.to = 'osmany@senorcoders.com';
+            mailOptionsAdmin.to = 'mike.harley@reservec.com';
+            //mailOptionsAdmin.to = 'osmany@senorcoders.com';
         
             // send mail with defined transport object
             transporter.sendMail(mailOptionsAdmin, (error, info) => {
