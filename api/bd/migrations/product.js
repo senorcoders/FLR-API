@@ -166,8 +166,53 @@ function insertTypeProducts(req, res){
    })
 }
 
+function updateMaxAdults(req, res){
+    let q = String.raw`
+        SELECT product_id as oldID, product_in_stock as stock from product
+    `
+
+    oldBD.query(q)
+    .then(function(data){
+        const length = data[0].length
+        res.send("Running... check console")
+        
+        /**
+        * para insertar los nuevos datos usando llamadas recursivas
+        */
+        function save(res, i){
+            let query = String.raw`
+                update products set max_adults = $stock where old_id = $oldID
+            `
+            newBD.query(query, {
+                bind : {
+                 "oldID" : data[0][i].oldID,
+                "stock" : data[0][i].stock
+                }
+            }).then(function(){
+                console.log("product => products "+ length+ " :: "+ (i+1))
+                i++
+                if( i < length){ save(res, i) }
+                else
+                    console.log("finished")
+            })
+            .catch(function(err){
+                console.error("error en el item :"+ i+ " data: "+ JSON.stringify(data[0][i])+ err.message)
+                res.send("error en el item :"+ i+ " data: "+ JSON.stringify(data[0][i])+ err.message)
+            })
+        }
+
+        save(res, 0)
+         
+    })
+    .catch(function(err){
+        console.error(err)
+   })
+}
+
+
 module.exports = {
     getProductFields,
     updateImageDescripcion,
-    insertTypeProducts
+    insertTypeProducts,
+    updateMaxAdults
 } 

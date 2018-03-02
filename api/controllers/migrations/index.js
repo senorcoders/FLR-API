@@ -27,6 +27,9 @@ module.exports = function(app){
     /*app.route(endpoint+ "/product")
     .get(controller.insertTypeProducts)*/
 
-    app.route(endpoint+ "/pricing")
-    .get(controller.updateFields)
+    /*app.route(endpoint+ "/pricing")
+    .get(controller.updateFields)*/
+
+    app.route(endpoint+ "/product")
+    .get(controller.updateMaxAdults)
 }
