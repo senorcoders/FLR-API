@@ -54,7 +54,7 @@ module.exports = {
                                 price : req.body.price,
                                 payment_id : req.body.payment_id                                
                             })
-        .then((data)=>{
+        .then((reservation)=>{
             var query;
             if( req.body.hasOwnProperty('guest_id') ){
                 query = String.raw`
@@ -83,14 +83,14 @@ module.exports = {
                     name : data[0][0].userName
                 }
                 console.log(user);
-                let reservation = {
+                /*let reservation = {
                     activity_type : req.body.activity_type,
                     transaction_start_date : req.body.transaction_start_date,
                     transaction_end_date : req.body.transaction_end_date,
                     transaction_start_time : req.body.transaction_start_time,
                     transaction_end_time : req.body.transaction_end_time,
                     misc_trip_name: req.body.misc_trip_name
-                }
+                }*/
                 let product = {
                     name :  data[0][0].productName,
                     service_type: data[0][0].productServiceType
@@ -108,7 +108,7 @@ module.exports = {
                 res.send(err)
             })
 
-            res.send(data)
+            res.send(reservation)
         })
         .catch((err)=>{
             console.error(err)

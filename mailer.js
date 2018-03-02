@@ -48,46 +48,202 @@ exports.sendCode = function(id, email, code){
 //#region for send notifications user y admin after new reservation
 function getTemplatesUser(user, reservation, product, operator){
     var body;
-    if( moment(reservation.transaction_start_date, "YYYY-MM-DD").isSame( moment(reservation.transaction_end_date, "YYYY-MM-DD") ) ){
-        body = String.raw`
-    <div style="color:#555555;line-height:120%;font-family:Arial, 'Helvetica Neue', 
-    Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; 
-    padding-bottom: 10px;">	
-        <div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, 
-        'Helvetica Neue', Helvetica, sans-serif;text-align:left;"><p style="margin: 0;
-        font-size: 14px;line-height: 17px"><span style="font-size: 20px; line-height: 24px;">
-        Hello! you have completed a reservation with <strong style="text-transform: uppercase;">${operator.operator_name} for ${reservation.transaction_start_date} <strong> </span>
-        </p><p style="margin: 0;font-size: 14px;line-height: 17px"><span 
-        style="font-size: 20px; line-height: 24px;"><br data-mce-bogus="1"></span></p>
-        <p style="margin: 0;font-size: 14px;line-height: 17px">
-        <strong><span style="font-size: 20px; line-height: 24px;">Enjoy them!</span>
-        </strong></p></div>	
+    /*if( moment(reservation.transaction_start_date, "YYYY-MM-DD").isSame( moment(reservation.transaction_end_date, "YYYY-MM-DD") ) ){
+        */body = String.raw`
+        <div class="">
+        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"><![endif]-->
+        <div style="color:#555555;line-height:120%;font-family:'Open Sans', Helvetica, Arial, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">	
+            <div style="font-size:12px;line-height:14px;font-family:'Open Sans', Helvetica, Arial, sans-serif;color:#555555;text-align:left;"><p style="margin: 0;font-size: 12px;line-height: 14px;text-align: left"><strong><span style="font-size: 20px; line-height: 24px;">${user.name !== undefined ? 'Hi '+ user.name+ '!' : 'Hi!'}</span></strong></p></div>	
+        </div>
+        <!--[if mso]></td></tr></table><![endif]-->
     </div>
-    `
-    }else{
-        body = String.raw`
-    <div style="color:#555555;line-height:120%;font-family:Arial, 'Helvetica Neue', 
-    Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; 
-    padding-bottom: 10px;">	
-        <div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, 
-        'Helvetica Neue', Helvetica, sans-serif;text-align:left;"><p style="margin: 0;
-        font-size: 14px;line-height: 17px"><span style="font-size: 20px; line-height: 24px;">
-        Hello! you have completed a <strong style="text-transform: uppercase;">${reservation.activity_type}</strong> reservation</span>
-        </p><p style="margin: 0;font-size: 14px;line-height: 17px">
-        <span style="font-size: 20px; line-height: 24px;">for ${reservation.transaction_start_date}
-        to ${reservation.transaction_end_date}.</span>
-        </p><p style="margin: 0;font-size: 14px;line-height: 17px"><span 
-        style="font-size: 20px; line-height: 24px;"><br data-mce-bogus="1"></span></p>
-        <p style="margin: 0;font-size: 14px;line-height: 17px">
-        <strong><span style="font-size: 20px; line-height: 24px;">Enjoy them!</span>
-        </strong></p></div>	
+                      
+                      
+                        <div class="">
+        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"><![endif]-->
+        <div style="color:#555555;line-height:120%;font-family:'Open Sans', Helvetica, Arial, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">	
+            <div style="font-size:12px;line-height:14px;font-family:'Open Sans', Helvetica, Arial, sans-serif;color:#555555;text-align:left;"><p style="margin: 0;font-size: 14px;line-height: 17px"><span style="font-size: 20px; line-height: 19px;"><strong>You have completed a reservation with ${operator.operator_name} for ${reservation.number_activity_reserved}  days!</strong></span><br></p></div>	
+        </div>
+        <!--[if mso]></td></tr></table><![endif]-->
     </div>
-    `
-    }
+                      
+                      
+                        <div class="">
+        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"><![endif]-->
+        <div style="color:#555555;line-height:120%;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">	
+            <div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;text-align:left;"><p style="margin: 0;font-size: 14px;line-height: 17px"><span style="font-size: 16px; line-height: 19px;"><strong>Booking ID</strong>: ${reservation.ID} </span></p></div>	
+        </div>
+        <!--[if mso]></td></tr></table><![endif]-->
+    </div>
 
-    fs.readFile("./template_emails/user.1.html", "utf8", function(err, data){
+
+    <div class="">
+        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"><![endif]-->
+        <div style="color:#555555;line-height:120%;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">	
+            <div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;text-align:left;"><p style="margin: 0;font-size: 14px;line-height: 17px"><span style="font-size: 16px; line-height: 19px;"><strong>Booking Date</strong>: ${reservation.transaction_date} </span></p></div>	
+        </div>
+        <!--[if mso]></td></tr></table><![endif]-->
+    </div>
+                      
+                      
+                        <div class="">
+        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"><![endif]-->
+        <div style="color:#555555;line-height:120%;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">	
+            <div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;text-align:left;"><p style="margin: 0;font-size: 14px;line-height: 17px"><span style="font-size: 16px; line-height: 19px;"><strong>Start Date</strong>: ${reservation.transaction_start_date} </span></p></div>	
+        </div>
+        <!--[if mso]></td></tr></table><![endif]-->
+    </div>
+                      
+                      
+                        <div class="">
+        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"><![endif]-->
+        <div style="color:#555555;line-height:120%;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">	
+            <div style="line-height:14px;font-size:12px;color:#555555;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;text-align:left;"><p style="margin: 0;line-height: 14px;font-size: 12px"><span style="font-size: 16px; line-height: 19px;"><b>Reservation Summary</b></span></p></div>	
+        </div>
+        <!--[if mso]></td></tr></table><![endif]-->
+    </div>
+                      
+                      
+                        <div class="">
+        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"><![endif]-->
+        <div style="color:#555555;line-height:120%;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">	
+            <div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;text-align:left;"><p style="margin: 0;font-size: 14px;line-height: 17px"><span style="font-size: 16px; line-height: 19px;"><strong>Activity</strong>: ${reservation.activity_type} </span></p></div>	
+        </div>
+        <!--[if mso]></td></tr></table><![endif]-->
+    </div>
+                      
+                      
+                        <div class="">
+        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"><![endif]-->
+        <div style="color:#555555;line-height:120%;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">	
+            <div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;text-align:left;"><p style="margin: 0;font-size: 14px;line-height: 17px"><span style="font-size: 16px; line-height: 19px;"><strong>Quantity</strong>: ${reservation.number_activity_reserved} </span></p></div>	
+        </div>
+        <!--[if mso]></td></tr></table><![endif]-->
+    </div>
+                      
+                      
+                        <div class="">
+        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"><![endif]-->
+        <div style="color:#555555;line-height:120%;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">	
+            <div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;text-align:left;"><p style="margin: 0;font-size: 14px;line-height: 17px"><span style="font-size: 16px; line-height: 19px;"><strong>Start</strong>: ${reservation.transaction_start_date}, ${reservation.transaction_start_time} </span></p></div>	
+        </div>
+        <!--[if mso]></td></tr></table><![endif]-->
+    </div>
+                      
+                      
+                        <div class="">
+        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"><![endif]-->
+        <div style="color:#555555;line-height:120%;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">	
+            <div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;text-align:left;"><p style="margin: 0;font-size: 14px;line-height: 17px"><span style="font-size: 16px; line-height: 19px;"><b>Ends</b>: ${reservation.transaction_end_date}, ${reservation.transaction_end_time} </span></p></div>	
+        </div>
+        <!--[if mso]></td></tr></table><![endif]-->
+    </div>
+                      
+                      
+                        <div class="">
+        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"><![endif]-->
+        <div style="color:#555555;line-height:120%;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">	
+            <div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;text-align:left;"><p style="margin: 0;font-size: 14px;line-height: 17px"><span style="font-size: 16px; line-height: 19px;"><b>Price</b>: ${reservation.price} </span></p></div>	
+        </div>
+        <!--[if mso]></td></tr></table><![endif]-->
+    </div>
+    `
+    /*}else{
+        body = String.raw`
+        <div class="">
+        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"><![endif]-->
+        <div style="color:#555555;line-height:120%;font-family:'Open Sans', Helvetica, Arial, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">	
+            <div style="font-size:12px;line-height:14px;font-family:'Open Sans', Helvetica, Arial, sans-serif;color:#555555;text-align:left;"><p style="margin: 0;font-size: 12px;line-height: 14px;text-align: left"><strong><span style="font-size: 20px; line-height: 24px;"></span></strong></p></div>	
+        </div>
+        <!--[if mso]></td></tr></table><![endif]-->
+    </div>
+                      
+                      
+                        <div class="">
+        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"><![endif]-->
+        <div style="color:#555555;line-height:120%;font-family:'Open Sans', Helvetica, Arial, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">	
+            <div style="font-size:12px;line-height:14px;font-family:'Open Sans', Helvetica, Arial, sans-serif;color:#555555;text-align:left;"><p style="margin: 0;font-size: 14px;line-height: 17px"><span style="font-size: 16px; line-height: 19px;">You have completed a reservation with ${operator.operator_name} for ${reservation.number_activity_reserved}  days!</span><br></p></div>	
+        </div>
+        <!--[if mso]></td></tr></table><![endif]-->
+    </div>
+                      
+                      
+                        <div class="">
+        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"><![endif]-->
+        <div style="color:#555555;line-height:120%;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">	
+            <div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;text-align:left;"><p style="margin: 0;font-size: 14px;line-height: 17px"><span style="font-size: 16px; line-height: 19px;"><strong>Booking ID</strong>: ${reservation.ID} </span></p></div>	
+        </div>
+        <!--[if mso]></td></tr></table><![endif]-->
+    </div>
+
+
+    <div class="">
+        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"><![endif]-->
+        <div style="color:#555555;line-height:120%;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">	
+            <div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;text-align:left;"><p style="margin: 0;font-size: 14px;line-height: 17px"><span style="font-size: 16px; line-height: 19px;"><strong>Booking Date</strong>: ${reservation.transaction_date} </span></p></div>	
+        </div>
+        <!--[if mso]></td></tr></table><![endif]-->
+    </div>
+                      
+                      
+                        <div class="">
+        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"><![endif]-->
+        <div style="color:#555555;line-height:120%;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">	
+            <div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;text-align:left;"><p style="margin: 0;font-size: 14px;line-height: 17px"><span style="font-size: 16px; line-height: 19px;"><strong>Start Date</strong>: ${reservation.transaction_start_date} </span></p></div>	
+        </div>
+        <!--[if mso]></td></tr></table><![endif]-->
+    </div>
+                      
+                      
+                        <div class="">
+        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"><![endif]-->
+        <div style="color:#555555;line-height:120%;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">	
+            <div style="line-height:14px;font-size:12px;color:#555555;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;text-align:left;"><p style="margin: 0;line-height: 14px;font-size: 12px"><span style="font-size: 16px; line-height: 19px;"><b>Reservation Summary</b></span></p></div>	
+        </div>
+        <!--[if mso]></td></tr></table><![endif]-->
+    </div>
+                      
+                      
+                        <div class="">
+        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"><![endif]-->
+        <div style="color:#555555;line-height:120%;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">	
+            <div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;text-align:left;"><p style="margin: 0;font-size: 14px;line-height: 17px"><span style="font-size: 16px; line-height: 19px;"><strong>Activity</strong>: ${reservation.activity_type} </span></p></div>	
+        </div>
+        <!--[if mso]></td></tr></table><![endif]-->
+    </div>
+                      
+                      
+                        <div class="">
+        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"><![endif]-->
+        <div style="color:#555555;line-height:120%;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">	
+            <div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;text-align:left;"><p style="margin: 0;font-size: 14px;line-height: 17px"><span style="font-size: 16px; line-height: 19px;"><strong>Quantity</strong>: ${reservation.number_activity_reserved} </span></p></div>	
+        </div>
+        <!--[if mso]></td></tr></table><![endif]-->
+    </div>
+                      
+                      
+                        <div class="">
+        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"><![endif]-->
+        <div style="color:#555555;line-height:120%;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">	
+            <div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;text-align:left;"><p style="margin: 0;font-size: 14px;line-height: 17px"><span style="font-size: 16px; line-height: 19px;"><strong>For</strong>: ${reservation.transaction_start_date}, ${reservation.transaction_start_time} </span></p></div>	
+        </div>
+        <!--[if mso]></td></tr></table><![endif]-->
+    </div>
+                      
+                      
+                        <div class="">
+        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"><![endif]-->
+        <div style="color:#555555;line-height:120%;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">	
+            <div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;text-align:left;"><p style="margin: 0;font-size: 14px;line-height: 17px"><span style="font-size: 16px; line-height: 19px;"><b>Price</b>: ${reservation.price} </span></p></div>	
+        </div>
+        <!--[if mso]></td></tr></table><![endif]-->
+    </div>
+    `
+    }*/
+
+    fs.readFile("./template_emails/user_new1.html", "utf8", function(err, data){
         let tmp1 = data
-        fs.readFile("./template_emails/user.2.html", "utf8", function(err, data2){
+        fs.readFile("./template_emails/user_new2.html", "utf8", function(err, data2){
             sendNotificationUser(user, reservation, product, (tmp1+ body+ data2))
         })
     })

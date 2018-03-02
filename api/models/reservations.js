@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes)=>{
         transaction_end_date : { type : Sequelize.TEXT, allowNull : true },
         transaction_start_time : { type : Sequelize.TEXT, allowNull : false },
         transaction_end_time : { type : Sequelize.TEXT, allowNull : true },        
+        activity_type : { type : Sequelize.TEXT, allowNull : false },
         number_activity_reserved : { type : Sequelize.INTEGER, allowNull : false },
         nbr_in_party : { type : Sequelize.TEXT, allowNull : false },
         nbr_in_adult : { type : Sequelize.TEXT, allowNull : false },

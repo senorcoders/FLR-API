@@ -1,0 +1,6 @@
+node_modules/
+dbConfig.js
+mailer.js
+index.html
+dist/
+.save
