@@ -69,6 +69,7 @@ module.exports = {
                 select top(1) 
                 users.name as userName, 
                 users.email as userEmail,
+                users.photo_url,
                 products.name as productName,
                 products.service_type as productServiceType
                 from users, products where users.id = ${req.body.user_id} and products.id = ${req.body.product_id}
@@ -80,17 +81,10 @@ module.exports = {
             .then(data=>{ 
                 let user = {
                     email : data[0][0].userEmail,
-                    name : data[0][0].userName
+                    name : data[0][0].userName,
+                    photo_url: data[0][0].photo_url
                 }
                 console.log(user);
-                /*let reservation = {
-                    activity_type : req.body.activity_type,
-                    transaction_start_date : req.body.transaction_start_date,
-                    transaction_end_date : req.body.transaction_end_date,
-                    transaction_start_time : req.body.transaction_start_time,
-                    transaction_end_time : req.body.transaction_end_time,
-                    misc_trip_name: req.body.misc_trip_name
-                }*/
                 let product = {
                     name :  data[0][0].productName,
                     service_type: data[0][0].productServiceType
