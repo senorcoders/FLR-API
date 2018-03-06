@@ -403,7 +403,7 @@ function getTemplatesAdmin(user, reservation, product, operator){
         font-size: 12px;line-height: 14px"><span style="font-size: 20px; line-height: 24px;">
         New Reservation</span></p><p style="margin: 0;font-size: 12px;line-height: 14px">&#160;
         <br></p><p style="margin: 0;font-size: 12px;line-height: 14px">
-        <span style="font-size: 20px; line-height: 24px;">Activity Type:&#160; ${operator.operator_type}</span>
+        <span style="font-size: 20px; line-height: 24px;">Activity Type:&#160; ${operator.operator_type !== null ? operator.operator_type : '' }</span>
         </p><p style="margin: 0;font-size: 12px;line-height: 14px">
         <span style="font-size: 20px; line-height: 24px;">Start Date:&#160; ${moment(reservation.transaction_start_date).format('MM-DD-YYYY')}</span></p>
         <p style="margin: 0;font-size: 12px;line-height: 14px">

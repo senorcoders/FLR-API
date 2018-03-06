@@ -61,6 +61,7 @@ module.exports = {
                 query = String.raw`
                 select top(1)
                 guest.email as userEmail,
+                products.operator_id,
                 products.name as productName,
                 products.service_type as productServiceType
                 from guest, products where guest.id = ${req.body.guest_id} and products.id = ${req.body.product_id}
@@ -71,6 +72,7 @@ module.exports = {
                 users.name as userName, 
                 users.email as userEmail,
                 users.photo_url,
+                products.operator_id,
                 products.name as productName,
                 products.service_type as productServiceType
                 from users, products where users.id = ${req.body.user_id} and products.id = ${req.body.product_id}
@@ -85,18 +87,24 @@ module.exports = {
                     name : data[0][0].userName,
                     photo_url: data[0][0].photo_url
                 }
-                console.log(user);
+                
                 let product = {
+                    operator_id: data[0][0].operator_id,
                     name :  data[0][0].productName,
                     service_type: data[0][0].productServiceType
                 }
-
+                console.log(product);
                 Operator.find({
-                    id : product.operator_id
+                    where : {
+                        id : product.operator_id
+                    }
                 }).then(function(operator){
                     Payment.find({
-                        id: req.body.payment_id
+                        where : {
+                            id: req.body.payment_id
+                        }
                     }).then(function(payment){
+                        //console.log(operator);
                         require("../../mailer").sendNotifications(user, reservation, product, operator, payment)
                     })
                 })
