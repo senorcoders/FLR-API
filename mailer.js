@@ -46,7 +46,7 @@ exports.sendCode = function(id, email, code){
 }
 
 //#region for send notifications user y admin after new reservation
-function getTemplatesUser(user, reservation, product, operator){
+function getTemplatesUser(user, reservation, product, operator, payment){
     var body = String.raw`
         </div>    <div style="background-color:transparent;">
                 <div style="Margin: 0 auto;min-width: 320px;max-width: 500px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;" class="block-grid mixed-two-up ">
@@ -308,6 +308,22 @@ function getTemplatesUser(user, reservation, product, operator){
             </div>
             <!--[if mso]></td></tr></table><![endif]-->
         </div>
+
+        <div class="">
+            <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"><![endif]-->
+            <div style="color:#555555;line-height:120%;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">	
+                <div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;text-align:left;"><p style="margin: 0;font-size: 14px;line-height: 17px"><span style="font-size: 16px; line-height: 19px;"><strong>Payment Amount</strong>: ${payment.amount}</span></p></div>	
+            </div>
+            <!--[if mso]></td></tr></table><![endif]-->
+        </div>
+
+        <div class="" style="display: none !important;">
+            <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"><![endif]-->
+            <div style="color:#555555;line-height:120%;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">	
+                <div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;text-align:left;"><p style="margin: 0;font-size: 14px;line-height: 17px"><span style="font-size: 16px; line-height: 19px;"><strong>Total: ${ parseInt(payment.amount,10) + parseInt(reservation.price,10)}</strong></span></p></div>	
+            </div>
+            <!--[if mso]></td></tr></table><![endif]-->
+        </div>
     `
 
     fs.readFile("./template_emails/user_temp1.html", "utf8", function(err, data){
@@ -477,7 +493,7 @@ function sendNotificationAdmin(user, reservation, template, operator){
 //usando funciones compuestas
 exports
 .
-sendNotifications = (user, reservation, product, operator)=> getTemplatesUser(user, reservation, product, operator)
+sendNotifications = (user, reservation, product, operator, payment)=> getTemplatesUser(user, reservation, product, operator, payment)
 (getTemplatesAdmin)
 
 //#endregion

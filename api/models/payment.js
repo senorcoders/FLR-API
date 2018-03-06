@@ -6,7 +6,7 @@ const db = require("./../bd")
 module.exports = (sequelize, DataTypes)=>{
     let payment = sequelize.define('payment', {
         id : { type: Sequelize.INTEGER, primaryKey : true, autoIncrement: true },
-        reservation_id : { type : Sequelize.INTEGER, references : { model : "reservations", key : "id", allowNull : true } },        
+        //reservation_id : { type : Sequelize.INTEGER, references : { model : "reservations", key : "id", allowNull : true } },        
         amount : { type : Sequelize.STRING, allowNull : false },
         resptext : { type : Sequelize.STRING, allowNull : false },
         commandcard : { type : Sequelize.STRING, allowNull : true },

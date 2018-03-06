@@ -1,6 +1,7 @@
 'use strict'
 const reservations = require("./../models").reservations
 const Operator = require("./../models").operator
+const Payment = require("./../models").payment
 
 /*function getComments(req, res, next, data){
     let db = require("./../bd")
@@ -93,7 +94,11 @@ module.exports = {
                 Operator.find({
                     id : product.operator_id
                 }).then(function(operator){
-                    require("../../mailer").sendNotifications(user, reservation, product, operator)
+                    Payment.find({
+                        id: req.body.payment_id
+                    }).then(function(payment){
+                        require("../../mailer").sendNotifications(user, reservation, product, operator, payment)
+                    })
                 })
                 
              })
