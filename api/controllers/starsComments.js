@@ -3,19 +3,17 @@ const bd = require("../bd")
 
 function averageStar(reviews){
     let average = {};
+    let total = 0;
     for(let review of reviews){
         let stars = review.numStars.toString();
         if( average.hasOwnProperty(stars) ){
             average[stars] = parseInt(average[stars]) + 1;
         }else{
             average[stars] = 1;
+            total += 1;
         }
     }
-    let total = 0;
     
-    for(var av of Object.keys(average)){
-        total += parseInt(av);
-    }
     average.total = total;
     
     return average;
