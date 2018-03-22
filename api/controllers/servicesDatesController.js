@@ -91,6 +91,11 @@ module.exports = {
     better_next_days : (req,res)=>{
         let db = require("./../bd")
         let query = "";
+        var max_number_days_to_show = 3;    
+        var date_request = moment(new Date()).format('YYYY-MM-DD');
+        var day_request = moment(date_request, "YYYY-MM-DD").format('E');
+
+        var need_next_week =false; 
         query = String.raw`
                 select id, product_id, price, price_plan, timing
                 from pricing 
@@ -101,10 +106,36 @@ module.exports = {
           //services_dates.findAll({ where: {product_id: req.params.product_id} } )
 	  services_dates.findAll({ where : {product_id: req.params.product_id }})
             .then(function (data){
+                var more_days = data;//.concat(data);
+                var count = 0;
                 forEach(data, function(item, index, arr) {
+                    need_next_week = true;
+                        count +=1;
                     var done = this.async();
-                    var date = moment().day(item.day).format('YYYY-MM-DD');
-                    var day_name = moment().day(item.day).format('dddd');
+                    var dayINeed = item.day;
+                    console.log(item.day);
+                    //var date = moment().day( diff + 4 + item.day).format('YYYY-MM-DD');
+                    //var day_name = moment().day(diff + 4 + item.day).format('dddd');
+                    //var date  = moment(date_request,'YYYY-MM-DD').add(item.day).format('YYYY-MM-DD');
+                    //var day_name = moment(date_request,'YYYY-MM-DD').add(item.day).format('dddd');
+                    
+                    // if we haven't yet passed the day of the week that I need:
+                    var date = moment(date_request,'YYYY-MM-DD').day(item.day).format('YYYY-MM-DD');
+                    var day_name = moment(date_request,'YYYY-MM-DD').day(item.day).format('dddd');
+                    if (day_request <= dayINeed) { 
+                      // then just give me this week's instance of that day
+                      var date = moment(date_request,'YYYY-MM-DD').day(item.day).format('YYYY-MM-DD');
+                      var day_name = moment(date_request,'YYYY-MM-DD').day(item.day).format('dddd');
+                      //return moment().isoWeekday(dayINeed);
+                    } else {
+                      // otherwise, give me next week's instance of that day
+                      var date = moment(date_request,'YYYY-MM-DD').add(1, 'weeks').day(item.day).format('YYYY-MM-DD');
+                      var day_name = moment(date_request,'YYYY-MM-DD').add(1, 'weeks').day(item.day).format('dddd');
+                      //return moment().add(1, 'weeks').isoWeekday(dayINeed);
+                    }
+                    
+                    //var date = moment().day(item.day).format('YYYY-MM-DD');
+                    //var day_name = moment().day(item.day).format('dddd');
                     arr[index].dataValues.day_name = day_name; 
                     arr[index].dataValues.date = date; 
 
@@ -141,6 +172,7 @@ module.exports = {
                 function allDone(notAborted, arr) {
                     console.log("done"); 
                     //done();   
+                    arr= [].concat(arr.slice(day_request-1, arr.length), arr.slice(0,day_request-1));
                     res.send(arr);
                 }
             })  
