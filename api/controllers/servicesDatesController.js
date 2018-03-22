@@ -81,7 +81,7 @@ module.exports = {
                     
                 }, allDone);
                 function allDone(notAborted, arr) {
-                    console.log("done");    
+                    console.log("done....");    
                     res.send(arr);
                 }
             })  
@@ -153,22 +153,49 @@ module.exports = {
         const op = Sequelize.Op;
         var date_request = req.params.date;      
         var day_request = moment(date_request, "YYYY-MM-DD").format('E');
-        
-        var diff =  moment(date_request).diff( moment(), 'day') ; 
+        var max_number_days_to_show = 3;
+        var diff =  moment(date_request).diff( moment(), 'day') ;
+        var need_next_week =false; 
+        console.log("starting");
         //services_dates.findAll({ where: {product_id: req.params.product_id, day: { [op.gte]: day_request } } } )
-	services_dates.findAll({ where: { product_id: 7722, day: { [op.gte]: day_request } } } )
+	//services_dates.findAll({ where: { product_id: 7722, day: { [op.gte]: day_request } } } )
+    //services_dates.findAll({ where: { product_id: 7722, day: { [op.gte]: day_request } } } )
+    services_dates.findAll({ where: { product_id: 7722 } } )
         .then(function (data){
-            forEach(data, function(item, index, arr) {                                
-                var done = this.async();
+            var more_days = data;//.concat(data);
+            var count = 0;
+            forEach(more_days, function(item, index, arr) {
+                console.log( day_request );
+                console.log( item.day );
+                console.log( need_next_week );
+                //if (item.day >= day_request || need_next_week) {
+                //    if(count <= max_number_days_to_show){
+                        need_next_week = true;
+                        count +=1;
+                    var done = this.async();
+                    var dayINeed = item.day;
                     console.log(item.day);
                     //var date = moment().day( diff + 4 + item.day).format('YYYY-MM-DD');
                     //var day_name = moment().day(diff + 4 + item.day).format('dddd');
                     //var date  = moment(date_request,'YYYY-MM-DD').add(item.day).format('YYYY-MM-DD');
                     //var day_name = moment(date_request,'YYYY-MM-DD').add(item.day).format('dddd');
                     
+                    // if we haven't yet passed the day of the week that I need:
                     var date = moment(date_request,'YYYY-MM-DD').day(item.day).format('YYYY-MM-DD');
                     var day_name = moment(date_request,'YYYY-MM-DD').day(item.day).format('dddd');
-
+                    if (day_request <= dayINeed) { 
+                      // then just give me this week's instance of that day
+                      var date = moment(date_request,'YYYY-MM-DD').day(item.day).format('YYYY-MM-DD');
+                      var day_name = moment(date_request,'YYYY-MM-DD').day(item.day).format('dddd');
+                      //return moment().isoWeekday(dayINeed);
+                    } else {
+                      // otherwise, give me next week's instance of that day
+                      var date = moment(date_request,'YYYY-MM-DD').add(1, 'weeks').day(item.day).format('YYYY-MM-DD');
+                      var day_name = moment(date_request,'YYYY-MM-DD').add(1, 'weeks').day(item.day).format('dddd');
+                      //return moment().add(1, 'weeks').isoWeekday(dayINeed);
+                    }
+                    
+                    
                     arr[index].dataValues.day_name =  day_name; 
                     arr[index].dataValues.date = date; 
 
@@ -188,19 +215,32 @@ module.exports = {
                             `
                             db.query(query)
                             .then(function (all_reservations){
-                                arr[index].dataValues.hours = all_reservations[0];    
+                                arr[index].dataValues.hours = all_reservations[0];                                    
                                 //arr[index].dataValues.pricing = pricing[0];    
                                 done();
                             })
                             .catch((err)=>{
                                 console.error(err.message)
                                 res.send(err)
-                            })
+                            }) 
+                /*}
+                } else {
+                    if(!need_next_week){
+                        //need_next_week = true;
+                    }
+                }*/
+                
+                
                 
             }, allDone);
             function allDone(notAborted, arr) {
-                console.log("done");    
-                res.send(arr);
+                arr= [].concat(arr.slice(day_request-1, arr.length), arr.slice(0,day_request-1));
+                console.log("dones"+day_request);    
+                console.log(arr);
+                setTimeout(function() {
+                        res.send(arr);                                                                
+                }, 100);
+                //res.send(arr);
             }
         })
     },
