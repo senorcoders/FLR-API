@@ -122,7 +122,7 @@ module.exports = {
                     // if we haven't yet passed the day of the week that I need:
                     var date = moment(date_request,'YYYY-MM-DD').day(item.day).format('YYYY-MM-DD');
                     var day_name = moment(date_request,'YYYY-MM-DD').day(item.day).format('dddd');
-                    if (day_request <= dayINeed) { 
+                    if (day_request <= dayINeed || day_request == 7) { 
                       // then just give me this week's instance of that day
                       var date = moment(date_request,'YYYY-MM-DD').day(item.day).format('YYYY-MM-DD');
                       var day_name = moment(date_request,'YYYY-MM-DD').day(item.day).format('dddd');
@@ -215,15 +215,16 @@ module.exports = {
                     // if we haven't yet passed the day of the week that I need:
                     var date = moment(date_request,'YYYY-MM-DD').day(item.day).format('YYYY-MM-DD');
                     var day_name = moment(date_request,'YYYY-MM-DD').day(item.day).format('dddd');
-                    if (day_request <= dayINeed) { 
+                    if (day_request <= dayINeed || day_request == 7) { 
                       // then just give me this week's instance of that day
                       var date = moment(date_request,'YYYY-MM-DD').day(item.day).format('YYYY-MM-DD');
                       var day_name = moment(date_request,'YYYY-MM-DD').day(item.day).format('dddd');
                       //return moment().isoWeekday(dayINeed);
-                    } else {
+                    } else if(day_request > dayINeed ) {
+                        need_next_week = true;
                       // otherwise, give me next week's instance of that day
-                      var date = moment(date_request,'YYYY-MM-DD').add(1, 'weeks').day(item.day).format('YYYY-MM-DD');
-                      var day_name = moment(date_request,'YYYY-MM-DD').add(1, 'weeks').day(item.day).format('dddd');
+                      var date = moment(date_request,'YYYY-MM-DD').add(1, 'week').day(item.day).format('YYYY-MM-DD');
+                      var day_name = moment(date_request,'YYYY-MM-DD').add(1, 'week').day(item.day).format('dddd');
                       //return moment().add(1, 'weeks').isoWeekday(dayINeed);
                     }
                     

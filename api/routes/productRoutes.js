@@ -9,6 +9,9 @@ module.exports = function(app) {
     .post(product.create)
     .get(product.get_all);
 
+  app.route(endpoint + '/:id/location')
+    .get(product.getProductLocation)
+
   app.route(endpoint + '/:id')
     .get(product.get_one)
 
@@ -19,10 +22,11 @@ module.exports = function(app) {
       .get(product.getProductPrice)
 
     app.route(endpoint + '/:page/:number')
-    .get(product.getXPagination) 
+      .get(product.getXPagination) 
+
+    
 
 
   /*  .put(product.update)
     .delete(product.delete);*/
 };
-
