@@ -83,9 +83,11 @@ module.exports = {
                 products.service_type as productServiceType,
                 operator.operator_name as operatorName,
                 locations.name as locationName,
-                locations.address as locationAddress
-                from users, products, locations, operator where users.id = ${req.body.user_id} and products.id = ${req.body.product_id} 
+                locations.address as locationAddress,
+                pricing.timing
+                from users, products, locations, operator, pricing where users.id = ${req.body.user_id} and products.id = ${req.body.product_id} 
                 and locations.id = products.location_id and operator.id = products.operator_id
+                and pricing.product_id = products.id
                 `
             }
             
@@ -105,7 +107,8 @@ module.exports = {
                     locationName: data[0][0].locationName,
                     locationAddress: data[0][0].locationAddress,
                     operatorName: data[0][0].operatorName,
-                    number_activity_reserved: req.body.number_activity_reserved
+                    number_activity_reserved: req.body.number_activity_reserved,
+                    timing: data[0][0].timing
                 }
                 console.log(product);
                 Operator.find({
@@ -219,6 +222,7 @@ module.exports = {
         rs.nbr_in_adult as reservationNbrInAdult,
         rs.nbr_children as reservationNbrChildren,
         rs.misc_trip_name as reservationMiscTripName,
+        rs.number_activity_reserved numberActivityReserved,        
         rs.price as Price,
         op.id as operatorID,
         op.operator_name as operatorName,
@@ -460,7 +464,6 @@ module.exports = {
                     res.send(err)
             })
     },
-
     getAllReview : (req, res)=>{
         let db = require("./../bd")
         let query = String.raw`
