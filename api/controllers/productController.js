@@ -132,13 +132,12 @@ module.exports ={
 		let db = require("./../bd")
 		let query = "";
 		console.log(req.params)
-		if( parseInt(req.params.page) === 1){
+		
 			query = String.raw`
 			select geo.Lat as lat, geo.Long as lon from products
 			inner join locations on products.location_id = locations.id
 			where products.id = ${parseInt(req.params.id)};
 			`
-		}		
 		console.log(query)
 		db.query(query)
 		.then(function(data){

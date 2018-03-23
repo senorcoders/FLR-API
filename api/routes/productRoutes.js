@@ -9,6 +9,9 @@ module.exports = function(app) {
     .post(product.create)
     .get(product.get_all);
 
+  app.route(endpoint + '/:id/location')
+    .get(product.getProductLocation)
+
   app.route(endpoint + '/:id')
     .get(product.get_one)
 
@@ -21,8 +24,7 @@ module.exports = function(app) {
     app.route(endpoint + '/:page/:number')
       .get(product.getXPagination) 
 
-    app.route(endpoint + '/:id/location')
-      .get(product.getProductLocation)
+    
 
 
   /*  .put(product.update)
