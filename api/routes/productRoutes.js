@@ -24,7 +24,7 @@ module.exports = function(app) {
     app.route(endpoint + '/:id/location')
       .get(product.getProductLocation)
 
+
   /*  .put(product.update)
     .delete(product.delete);*/
 };
-

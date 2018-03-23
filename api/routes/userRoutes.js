@@ -35,7 +35,11 @@ module.exports = function(app) {
 
   //get all the comments y stars
   app.route(endpoint+ "/:id/stars-comments")
-  .get(require("./../controllers/starsComments").getAllXUser)
+  .get(require("./../controllers/starsComments").getAllXUserStarComments)
+
+  //get all the comments y stars with more data
+  app.route(endpoint+ "/:id/stars-comments-more")
+  .get(require("./../controllers/starsComments").getAllXUserStarCommentsMoreData)
 
    //get all the comments y stars
    app.route(endpoint+ "/:userId/not-stars-comments")

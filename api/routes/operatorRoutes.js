@@ -15,7 +15,7 @@ module.exports = function(app) {
   
     //For get all starts and comments for operator
     app.route(endpoint+ "/:id/stars-comments")
-    .get(require("../controllers/starsComments").getAllXOperator)
+    .get(require("../controllers/starsComments").getAllXOperatorAverage)
 
     app.route(endpoint+ "/:id/products")
       .get(operator.getAllProductXOperator)

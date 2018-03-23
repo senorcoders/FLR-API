@@ -90,24 +90,28 @@ module.exports = {
             product_id : req.body.product_id
         })
         .then(function(data){
-            console.log(JSON.parse( JSON.stringify(data)) ) 
-            Products.findOne({
-                where : {
-                    id : data.product_id
+            
+            let query = String.raw`
+            SELECT products.*, locations.name as locationName, locations.address as locationAddress
+            from products inner join locations on products.location_id = locations.id
+            where products.id = ${ req.body.product_id }
+            `
+            let bd = require("./../bd")
+            bd.query(query)
+            .then(function(producto){
+                try{
+                    require("../../mailer").sendNoticationInquiry({
+                        email : req.body.email
+                    }, producto[0], data);
+                }catch(e){
+                    console.error(e);
                 }
+                
+                res.send(data)
+
             })
-            .then(function(p){
-                res.send({
-                    inquiry : data,
-                    product: p
-                })
-                require("../../mailer").sendNoticationInquiry({
-                    email : req.body.email
-                }, p)
-            })
-            .catch(function(err){
-                console.error(err)
-                res.send(err)
+            .catch(function(){
+
             })
         })
         .catch(function(err){

@@ -59,12 +59,18 @@ module.exports = {
             var query;
             if( req.body.hasOwnProperty('guest_id') ){
                 query = String.raw`
-                select top(1)
-                guest.email as userEmail,
+                select top(1) 
+                users.name as userName, 
+                users.email as userEmail,
+                users.photo_url,
                 products.operator_id,
                 products.name as productName,
-                products.service_type as productServiceType
-                from guest, products where guest.id = ${req.body.guest_id} and products.id = ${req.body.product_id}
+                products.service_type as productServiceType,
+                operator.operator_name as operatorName,
+                locations.name as locationName,
+                locations.address as locationAddress
+                from guest, products, locations, operator where guest.id = ${req.body.guest_id} and products.id = ${req.body.product_id}
+                and locations.id = products.location_id and operator.id = products.operator_id
                 `
             }else{
                 query = String.raw`
@@ -74,8 +80,12 @@ module.exports = {
                 users.photo_url,
                 products.operator_id,
                 products.name as productName,
-                products.service_type as productServiceType
-                from users, products where users.id = ${req.body.user_id} and products.id = ${req.body.product_id}
+                products.service_type as productServiceType,
+                operator.operator_name as operatorName,
+                locations.name as locationName,
+                locations.address as locationAddress
+                from users, products, locations, operator where users.id = ${req.body.user_id} and products.id = ${req.body.product_id} 
+                and locations.id = products.location_id and operator.id = products.operator_id
                 `
             }
             
@@ -91,7 +101,11 @@ module.exports = {
                 let product = {
                     operator_id: data[0][0].operator_id,
                     name :  data[0][0].productName,
-                    service_type: data[0][0].productServiceType
+                    service_type: data[0][0].productServiceType,
+                    locationName: data[0][0].locationName,
+                    locationAddress: data[0][0].locationAddress,
+                    operatorName: data[0][0].operatorName,
+                    number_activity_reserved: req.body.number_activity_reserved
                 }
                 console.log(product);
                 Operator.find({
@@ -214,6 +228,7 @@ module.exports = {
         op.business_type as operatorBusinessType,
         pds.id as productID,
         pds.name as productName,
+        pds.name_image as nameImage,
         loc.id as locationID,
         loc.lat as locationLatitud,
         loc.lot as locationLongitud,
