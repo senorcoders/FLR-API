@@ -93,8 +93,9 @@ module.exports = {
         let query = "";
         var max_number_days_to_show = 3;    
         var date_request = moment(new Date()).format('YYYY-MM-DD');
-        var day_request = moment(date_request, "YYYY-MM-DD").format('E');
-
+        var day_request  = moment(date_request, "YYYY-MM-DD").format('E');
+        // Get the current date at midnight.
+       
         var need_next_week =false; 
         query = String.raw`
                 select id, product_id, price, price_plan, timing
@@ -189,6 +190,15 @@ module.exports = {
         var diff =  moment(date_request).diff( moment(), 'day') ;
         var need_next_week =false; 
         console.log("starting");
+        var now = new Date();         
+
+        // Compare the two dates by comparing the millisecond
+        // representations.
+        console.log(diff);
+        if (diff < 0){
+            res.send({});
+            return;
+        }
         //services_dates.findAll({ where: {product_id: req.params.product_id, day: { [op.gte]: day_request } } } )
 	//services_dates.findAll({ where: { product_id: 7722, day: { [op.gte]: day_request } } } )
     //services_dates.findAll({ where: { product_id: 7722, day: { [op.gte]: day_request } } } )
