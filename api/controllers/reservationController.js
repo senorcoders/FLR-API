@@ -228,6 +228,7 @@ module.exports = {
         op.business_type as operatorBusinessType,
         pds.id as productID,
         pds.name as productName,
+        pds.name_image as nameImage,
         loc.id as locationID,
         loc.lat as locationLatitud,
         loc.lot as locationLongitud,
