@@ -19,8 +19,10 @@ module.exports = function(app) {
       .get(product.getProductPrice)
 
     app.route(endpoint + '/:page/:number')
-    .get(product.getXPagination) 
+      .get(product.getXPagination) 
 
+    app.route(endpoint + '/:id/location')
+      .get(product.getProductLocation)
 
   /*  .put(product.update)
     .delete(product.delete);*/
