@@ -219,6 +219,7 @@ module.exports = {
         rs.nbr_in_adult as reservationNbrInAdult,
         rs.nbr_children as reservationNbrChildren,
         rs.misc_trip_name as reservationMiscTripName,
+        rs.number_activity_reserved numberActivityReserved,        
         rs.price as Price,
         op.id as operatorID,
         op.operator_name as operatorName,
@@ -460,7 +461,6 @@ module.exports = {
                     res.send(err)
             })
     },
-
     getAllReview : (req, res)=>{
         let db = require("./../bd")
         let query = String.raw`

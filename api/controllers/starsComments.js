@@ -24,7 +24,7 @@ module.exports = {
         let query = String.raw`
         SELECT *
         FROM (
-            select star_operators.id, star_operators.operator_id, star_operators.user_id as userID, star_operators.operator_id as operatorID,
+            select star_operators.id, star_operators.createdAt as date, star_operators.operator_id, star_operators.user_id as userID, star_operators.operator_id as operatorID,
             start as numStars, products.name_image, reservations.ID as bookingID, reservations.transaction_date,
             operator.operator_name, ROW_NUMBER() OVER (PARTITION BY star_operators.id ORDER BY star_operators.id ASC) as rn
             from star_operators inner JOIN products on products.operator_id = star_operators.operator_id
@@ -89,7 +89,7 @@ module.exports = {
         let query = String.raw`
         select id, user_id as userID, operator_id as operatorID, start as numStars from star_operators where user_id = ${ req.params.id }
         `
-
+        console.log();
         bd.query(query)
         .then((data)=>{
 
@@ -142,7 +142,7 @@ module.exports = {
         let query = String.raw`
         SELECT *
         FROM (
-            select star_operators.id, star_operators.operator_id, star_operators.user_id as userID, star_operators.operator_id as operatorID,
+            select star_operators.id, star_operators.createdAt as date, star_operators.operator_id, star_operators.user_id as userID, star_operators.operator_id as operatorID,
             start as numStars, products.name_image, reservations.ID as bookingID, reservations.transaction_date,
             operator.operator_name, ROW_NUMBER() OVER (PARTITION BY star_operators.id ORDER BY star_operators.id ASC) as rn
             from star_operators inner JOIN products on products.operator_id = star_operators.operator_id
