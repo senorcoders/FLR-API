@@ -12,6 +12,6 @@ module.exports = function(app){
         .get(controller.getAll)
         .post(controller.add)
 
-        app.route(endpoint+ "/:id/")
-        .delete(controller.delete)
+    app.route(endpoint+ "/:id/")
+    .delete(controller.delete)
 }

@@ -20,7 +20,8 @@ module.exports = (sequelize, DataTypes)=>{
         nbr_children : { type : Sequelize.TEXT, allowNull : false },
         misc_trip_name : { type : Sequelize.TEXT, allowNull : false },
         price : { type : Sequelize.FLOAT , allowNull : false },
-        payment_id : { type :Sequelize.TEXT, allowNull : true }
+        payment_id : { type :Sequelize.TEXT, allowNull : true },
+        timing: { type: Sequelize.TEXT, allowNull: false }
     }, {
         freezeTableName: true,
         tableName: 'reservations'

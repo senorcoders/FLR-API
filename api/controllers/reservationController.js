@@ -53,7 +53,8 @@ module.exports = {
                                 nbr_children : req.body.nbr_children,
                                 misc_trip_name : req.body.misc_trip_name,
                                 price : req.body.price,
-                                payment_id : req.body.payment_id                                
+                                payment_id : req.body.payment_id,
+                                timing: req.body.timing                                
                             })
         .then((reservation)=>{
             var query;
