@@ -114,9 +114,9 @@ module.exports ={
 		let db = require("./../bd")
 		let query = "";
 		query = String.raw`
-				select id, product_id, price, price_plan, timing
-				from pricing 
-				where product_id = ${parseInt(req.params.id)};
+				select pr.id, pr.product_id, pr.price, pr.price_plan, pr.timing, prod.max_adults from pricing pr
+				inner join products prod on pr.product_id = prod.id
+				where pr.product_id = ${parseInt(req.params.id)};
 			`
 		console.log(query);
 		db.query(query)
