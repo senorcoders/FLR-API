@@ -92,27 +92,43 @@ module.exports = {
         .then(function(data){
             
             let query = String.raw`
-            SELECT products.*, operator.operator_name as operatorName, locations.address as locationAddress
-            from products inner join locations on products.location_id = locations.id
-            inner join operator on products.operator_id = operator.id
+            SELECT products.*, operator.operator_name as operatorName
+            from products inner join operator on products.operator_id = operator.id
             where products.id = ${ req.body.product_id }
             `
             let bd = require("./../bd")
             bd.query(query)
             .then(function(producto){
-                try{
-                    require("../../mailer").sendNoticationInquiry({
-                        email : req.body.email
-                    }, producto[0], data);
-                }catch(e){
-                    console.error(e);
-                }
-                
-                res.send(data)
+
+                let product = producto[0];
+
+                query = String.raw`
+                select locations.address as locationAddress
+                from products inner join locations on products.location_id = locations.id
+                where products.id = ${ req.body.product_id }
+                `
+
+                bd.query(query)
+                .then((location)=>{
+
+                    product.locationAddress = location[0].locationAddress;
+
+                    try{
+                        require("../../mailer").sendNoticationInquiry({
+                            email : req.body.email
+                        }, product, data);
+                    }catch(e){
+                        console.error(e);
+                    }
+                    
+                    res.send(data)
+                })
+                .catch();
 
             })
-            .catch(function(){
-
+            .catch(function(err){
+                console.error(err)
+                res.send(err)
             })
         })
         .catch(function(err){
