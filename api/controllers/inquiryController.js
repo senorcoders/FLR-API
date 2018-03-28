@@ -92,8 +92,9 @@ module.exports = {
         .then(function(data){
             
             let query = String.raw`
-            SELECT products.*, locations.name as locationName, locations.address as locationAddress
+            SELECT products.*, operator.operator_name as operatorName, locations.address as locationAddress
             from products inner join locations on products.location_id = locations.id
+            inner join operator on products.operator_id = operator.id
             where products.id = ${ req.body.product_id }
             `
             let bd = require("./../bd")
