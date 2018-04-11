@@ -106,7 +106,7 @@ module.exports = {
                     name :  data[0][0].productName,
                     service_type: data[0][0].productServiceType,
                     locationName: data[0][0].locationName,
-                    locationAddress: data[0][0].locationAddress,
+                    locationAddress: data[0][0].locationAddress || "",
                     operatorName: data[0][0].operatorName,
                     number_activity_reserved: req.body.number_activity_reserved,
                     timing: data[0][0].timing

@@ -100,7 +100,7 @@ module.exports = {
             bd.query(query)
             .then(function(producto){
 
-                let product = producto[0];
+                let product = producto[0][0];
 
                 query = String.raw`
                 select locations.address as locationAddress
@@ -111,7 +111,8 @@ module.exports = {
                 bd.query(query)
                 .then((location)=>{
 
-                    product.locationAddress = location[0].locationAddress;
+                    product.locationAddress = location[0][0].locationAddress || "";
+                    console.log("1", product, product.locationAddress);
 
                     try{
                         require("../../mailer").sendNoticationInquiry({
