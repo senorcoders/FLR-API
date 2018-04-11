@@ -105,7 +105,7 @@ module.exports = {
         db.query(query)
         .then(function(pricing){
           //services_dates.findAll({ where: {product_id: req.params.product_id} } )
-	  services_dates.findAll({ where : {product_id: req.params.product_id }})
+	  services_dates.findAll({ where : {product_id: 7722}})
             .then(function (data){
                 var more_days = data;//.concat(data);
                 var count = 0;

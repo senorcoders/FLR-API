@@ -9,7 +9,7 @@ module.exports = {
          expire_date = expire_date.replace("/", "");
     }
     let post_data= {
-            "merchid": "000000927996",
+            "merchid": "496237269881",
             "accttype": "",//req.body.acccttype,//"VISA",
             //"orderid": req.body.orderid,//"AB-11-9876",
             "account": req.body.account,//"4111111111111111",
@@ -35,7 +35,7 @@ module.exports = {
       	let _authdata = "testin:testing123";
         var args = {
 				    data: post_string,
-				    headers: { "Content-Type": "application/json", "Authorization": "Basic dGVzdGluZzp0ZXN0aW5nMTIz", "Access-Control-Allow-Origin": "*" }
+				    headers: { "Content-Type": "application/json", "Authorization": "Basic cmVzZXJ2ZWNpbmNhcGk6SzllXnh3MyZnTE0hUHE=", "Access-Control-Allow-Origin": "*" }
 				};
 
         
@@ -49,16 +49,12 @@ module.exports = {
           setTimeout(function () {     
             //res.send(dataPayment);
             if(dataPayment.respstat == "C"){
-		var resp_token = "";
-		if(dataPayment.hasOwnProperty('token')){
-		  resp_token = dataPayment.token;
-		}
                 payment.create({
                     retstat : dataPayment.repstat,
                     retref : dataPayment.retref,
                     account : dataPayment.account,               
                     amount : dataPayment.amount,
-                    token :   resp_token,
+                    token : dataPayment.token,
                     merchid : dataPayment.merchid,
                     respcode : dataPayment.respcode,
                     resptext : dataPayment.resptext,

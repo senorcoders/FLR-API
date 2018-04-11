@@ -3,16 +3,12 @@ const models = require("../models");
 var forEach = require('async-foreach').forEach;
 
 module.exports ={
-	create : function (req, res) {
+/*	create : function (req, res) {
         models.products.findAll({ limit: 1 }).then(function (data) {
 					forEach(data, function(item, index, arr) {
 						var done = this.async();
 //						console.log("each", item, index, arr);
 						console.log("lol");
-							/*models.products.findAll({limit:1}).then(function(other) {																
-								arr[index].dataValues.operato =other;
-								done();		//wait for the results before continue
-							});*/
 					} , allDone);				
 					
 						function allDone(notAborted, arr) {
@@ -22,6 +18,24 @@ module.exports ={
 					}, function(reason) {
 						console.log(reason); // Error!
 					});
+		},
+*/	create : function (req, res) {
+        models.product.create(
+        	{
+        		operator_id: req.body.operator_id, 
+        		location_id : req.body.location_id,
+        		name: req.body.name,
+        		service_type: req.body.service_type,
+        		max_adults: req.body.max_adults,
+        		max_childs: req.body.max_childs,
+        		created_at: moment().format('YYYY-MM-DD'),
+        		updated_at: moment().format('YYYY-MM-DD')
+        	}).then(function (data) {
+        	  res.send(data)
+        })
+        .catch(function (err) {
+            res.send(err.message)
+        })
 		},
 	get_all : function(req, res){
   	models.products.findAll().then(function (data) {
