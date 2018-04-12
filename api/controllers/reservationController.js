@@ -31,7 +31,7 @@ module.exports = {
             res.send(err.message)
         })
     },
-    save : (req, res)=>{
+    save :  (req, res)=>{
         if(!req.body.hasOwnProperty("product_id") ){
             throw new Error("Falta el parametro :: product_id")
             return;
@@ -56,13 +56,13 @@ module.exports = {
                                 payment_id : req.body.payment_id,
                                 timing: req.body.timing                                
                             })
-        .then((reservation)=>{
+        .then(async (reservation)=>{
             var query;
             if( req.body.hasOwnProperty('guest_id') ){
                 query = String.raw`
                 select top(1) 
                 users.name as userName, 
-                users.email as userEmail,
+                guest.email as userEmail,
                 users.photo_url,
                 products.operator_id,
                 products.name as productName,
@@ -86,54 +86,56 @@ module.exports = {
                 locations.name as locationName,
                 locations.address as locationAddress,
                 pricing.timing
-                from users, products, locations, operator, pricing where users.id = ${req.body.user_id} and products.id = ${req.body.product_id} 
+                from users, products, star_operators, locations, operator, pricing where users.id = ${req.body.user_id} and products.id = ${req.body.product_id} 
                 and locations.id = products.location_id and operator.id = products.operator_id
-                and pricing.product_id = products.id
+                and pricing.product_id = products.id and star_operators.operator_id = products.operator_id
                 `
             }
-            
 
-            require("../bd").query(query)
-            .then(data=>{ 
-                let user = {
-                    email : data[0][0].userEmail,
-                    name : data[0][0].userName,
-                    photo_url: data[0][0].photo_url
-                }
+            const bd = require("../bd");
+            try{
+
+            let data = await bd.query(query)
                 
-                let product = {
-                    operator_id: data[0][0].operator_id,
-                    name :  data[0][0].productName,
-                    service_type: data[0][0].productServiceType,
-                    locationName: data[0][0].locationName,
-                    locationAddress: data[0][0].locationAddress || "",
-                    operatorName: data[0][0].operatorName,
-                    number_activity_reserved: req.body.number_activity_reserved,
-                    timing: data[0][0].timing
-                }
-                console.log(product);
-                Operator.find({
-                    where : {
-                        id : product.operator_id
-                    }
-                }).then(function(operator){
-                    Payment.find({
-                        where : {
-                            id: req.body.payment_id
-                        }
-                    }).then(function(payment){
-                        //console.log(operator);
-                        require("../../mailer").sendNotifications(user, reservation, product, operator, payment)
-                    })
-                })
-                
-             })
-            .catch((err)=>{
+            let user = {
+                email : data[0][0].userEmail,
+                name : data[0][0].userName,
+                photo_url: data[0][0].photo_url
+            }
+            
+            let product = {
+                operator_id: data[0][0].operator_id,
+                name :  data[0][0].productName,
+                service_type: data[0][0].productServiceType,
+                locationName: data[0][0].locationName,
+                locationAddress: data[0][0].locationAddress || "",
+                operatorName: data[0][0].operatorName,
+                number_activity_reserved: req.body.number_activity_reserved,
+                timing: data[0][0].timing
+            }
+
+            let stars = await bd.query(String.raw`select [start] as Stars 
+            from star_operators 
+            where user_id = ${req.body.user_id} and operator_id = ${product.operator_id} `)
+            
+            
+            reservation.dataValues.operatorName = product.operatorName;
+            reservation.dataValues.operatorAddress = product.locationAddress;
+            reservation.dataValues.stars = stars[0].length === 0 ? 0 : stars[0][0];
+            //console.log(reservation);
+            res.send(reservation)
+
+            let operator = await Operator.find({ where : { id : product.operator_id } })
+
+            let payment = await Payment.find({ where : { id: req.body.payment_id } })
+
+            //require("../../mailer").sendNotifications(user, reservation, product, operator, payment)
+            
+            }catch(err){
                 console.error(err.message)
                 res.send(err)
-            })
+            }
 
-            res.send(reservation)
         })
         .catch((err)=>{
             console.error(err)
