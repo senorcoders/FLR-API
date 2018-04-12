@@ -54,7 +54,10 @@ module.exports = {
                                 misc_trip_name : req.body.misc_trip_name,
                                 price : req.body.price,
                                 payment_id : req.body.payment_id,
-                                timing: req.body.timing                                
+                                timing: req.body.timing,
+                                name: req.body.name,
+                                email: req.body.email,
+                                mobile: req.body.mobile                             
                             })
         .then(async (reservation)=>{
             var query;

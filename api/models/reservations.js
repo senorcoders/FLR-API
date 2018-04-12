@@ -21,7 +21,10 @@ module.exports = (sequelize, DataTypes)=>{
         misc_trip_name : { type : Sequelize.TEXT, allowNull : false },
         price : { type : Sequelize.FLOAT , allowNull : false },
         payment_id : { type :Sequelize.TEXT, allowNull : true },
-        timing: { type: Sequelize.TEXT, allowNull: false }
+        timing: { type: Sequelize.TEXT, allowNull: false },
+        name: { type: Sequelize.TEXT, allowNull: false },
+        email: { type: Sequelize.TEXT, allowNull: false },
+        mobile: { type: Sequelize.TEXT, allowNull: false }
     }, {
         freezeTableName: true,
         tableName: 'reservations'
