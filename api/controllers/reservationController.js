@@ -35,7 +35,15 @@ module.exports = {
         if(!req.body.hasOwnProperty("product_id") ){
             throw new Error("Falta el parametro :: product_id")
             return;
-        } 
+        }
+        if(!req.body.hasOwnProperty("name") 
+        || !req.body.hasOwnProperty("email") 
+        || !req.body.hasOwnProperty("mobile")){
+            res.statusCode = 400;
+            res.send("name, email, mobile is required!");
+            return;
+        }
+
         reservations.create({ 
                                 user_id : req.body.user_id, 
                                 guest_id : req.body.guest_id,
@@ -66,7 +74,6 @@ module.exports = {
                 select top(1) 
                 users.name as userName, 
                 guest.email as userEmail,
-                users.photo_url,
                 products.operator_id,
                 products.name as productName,
                 products.service_type as productServiceType,
@@ -101,8 +108,8 @@ module.exports = {
             let data = await bd.query(query)
                 
             let user = {
-                email : data[0][0].userEmail,
-                name : data[0][0].userName,
+                email : req.body.email,
+                name : req.body.name,
                 photo_url: data[0][0].photo_url
             }
             
