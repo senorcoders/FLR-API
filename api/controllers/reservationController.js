@@ -36,13 +36,6 @@ module.exports = {
             throw new Error("Falta el parametro :: product_id")
             return;
         }
-        if(!req.body.hasOwnProperty("name") 
-        || !req.body.hasOwnProperty("email") 
-        || !req.body.hasOwnProperty("mobile")){
-            res.statusCode = 400;
-            res.send("name, email, mobile is required!");
-            return;
-        }
 
         if( Object.prototype.toString.call(req.body.mobile) === "[object Number]" ) 
             req.body.mobile = req.body.mobile.toString();
@@ -110,8 +103,8 @@ module.exports = {
             let data = await bd.query(query)
                 
             let user = {
-                email : req.body.email,
-                name : req.body.name,
+                email : req.body.email || "",
+                name : req.body.name || "",
                 photo_url: data[0][0].photo_url
             }
             
