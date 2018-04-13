@@ -39,6 +39,9 @@ module.exports = {
 
         if( Object.prototype.toString.call(req.body.mobile) === "[object Number]" ) 
             req.body.mobile = req.body.mobile.toString();
+        
+        if( Object.prototype.toString.call(req.body.name) === "[object Number]" ) 
+            req.body.name = "";
 
         reservations.create({ 
                                 user_id : req.body.user_id, 
