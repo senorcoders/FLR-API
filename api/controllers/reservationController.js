@@ -44,6 +44,9 @@ module.exports = {
             return;
         }
 
+        if( Object.prototype.toString.call(req.body.mobile) === "[object Number]" ) 
+            req.body.mobile = req.body.mobile.toString();
+
         reservations.create({ 
                                 user_id : req.body.user_id, 
                                 guest_id : req.body.guest_id,
@@ -71,8 +74,7 @@ module.exports = {
             var query;
             if( req.body.hasOwnProperty('guest_id') ){
                 query = String.raw`
-                select top(1) 
-                users.name as userName, 
+                select top(1)
                 guest.email as userEmail,
                 products.operator_id,
                 products.name as productName,
@@ -125,13 +127,22 @@ module.exports = {
             }
 
             let stars = await bd.query(String.raw`select [start] as Stars 
-            from star_operators 
-            where user_id = ${req.body.user_id} and operator_id = ${product.operator_id} `)
-            
-            
+            from star_operators where operator_id = ${product.operator_id} `)
+
+            let count = stars[0].length, suma = 0;
+            for(let star of stars[0]){
+                suma += parseInt(star.Stars, 10);
+            }
+            console.log(count, suma);
+            let promedio;
+            if(count > 0)
+                promedio = parseInt(suma / count, 10);
+            else
+                promedio = 0;
+
             reservation.dataValues.operatorName = product.operatorName;
             reservation.dataValues.operatorAddress = product.locationAddress;
-            reservation.dataValues.stars = stars[0].length === 0 ? 0 : stars[0][0];
+            reservation.dataValues.stars = promedio;
             //console.log(reservation);
             res.send(reservation)
 
@@ -139,7 +150,7 @@ module.exports = {
 
             let payment = await Payment.find({ where : { id: req.body.payment_id } })
 
-            //require("../../mailer").sendNotifications(user, reservation, product, operator, payment)
+            require("../../mailer").sendNotifications(user, reservation, product, operator, payment)
             
             }catch(err){
                 console.error(err.message)
