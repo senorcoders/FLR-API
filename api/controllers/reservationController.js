@@ -259,7 +259,7 @@ module.exports = {
             }
 
             data.dataValues.operatorName = product[0][0].operatorName;
-            data.dataValues.locationAddress = product[0][0].locationAddress;
+            data.dataValues.operatorAddress = product[0][0].locationAddress;
 
             //console.log(reservation);
 
