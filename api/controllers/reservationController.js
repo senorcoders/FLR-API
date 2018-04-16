@@ -231,8 +231,40 @@ module.exports = {
     },
     get : (req, res)=>{
         reservations.find({ id : req.body.id})
-        .then((data)=>{
+        .then(async (data)=>{
+
+            let stars = await bd.query(String.raw`select star_operators.start
+            from star_operators inner join operator on star_operators.operator_id = operator.id
+            inner join products on products.operator_id = operator.id
+            where products.id = ${data.dataValues.product_id} `)
+
+            let product = await bd.query(String.raw`SELECT  operator.operator_name as operatorName, locations.address as locationAddress
+                from  products
+                inner join operator on operator.id = products.operator_id
+                inner join locations on locations.id = products.location_id
+                where products.id = ${data.dataValues.product_id} `)
+
+            let calc = calcPromedio(stars);
+
+            //esto significa que no hay estrellas
+            if( calc.count === 0 ){
+                data.dataValues.stars = 0;
+                data.dataValues.countStars = {};
+                data.dataValues.countReviews = 0;
+            }else{
+                //console.log(calc);
+                data.dataValues.stars = calc.promedio;
+                data.dataValues.countStars = calc.countStars;
+                data.dataValues.countReviews = calc.count;
+            }
+
+            data.dataValues.operatorName = product[0][0].operatorName;
+            data.dataValues.locationAddress = product[0][0].locationAddress;
+
+            //console.log(reservation);
+
             res.send(data)
+
         })
         .catch((err)=>{
             console.error(err)
