@@ -2,6 +2,43 @@
 const reservations = require("./../models").reservations
 const Operator = require("./../models").operator
 const Payment = require("./../models").payment
+const each = require("async-foreach").forEach
+const bd = require("../bd");
+
+function calcPromedio(stars){
+    let count = stars[0].length, suma = 0;
+    let countStars = {};
+    for(let star of stars[0]){
+        suma += parseInt(star.start, 10);
+                
+        if( !countStars.hasOwnProperty(star.start) ){
+            countStars[star.start] = 1;
+        }else{
+            countStars[star.start] += 1;
+        }
+
+    }
+    //console.log(count, suma);
+    let promedio;
+    if(count > 0)
+        promedio = Number( parseFloat(suma / count, 10).toFixed(1) )
+    else
+        promedio = 0;
+
+    let decimal = Math.abs( parseFloat(promedio - (1+Math.floor(promedio)), 10).toFixed(1) ) - 1
+    decimal = Math.abs( parseFloat(decimal, 10).toFixed(1) )
+
+    if(decimal > .5 ){
+        promedio = 1+Math.floor(promedio)
+    }else if( .5 > decimal )
+        promedio = Math.floor(promedio)
+
+    return {
+        count,
+        promedio,
+        countStars
+    }
+}
 
 /*function getComments(req, res, next, data){
     let db = require("./../bd")
@@ -23,8 +60,49 @@ const Payment = require("./../models").payment
 module.exports = {
     get_all : (req, res)=>{
         reservations.findAll()
-        .then((data)=>{
-            res.send(data)
+        .then(async (data)=>{
+            data = await Promise.all(data.map(async function(item){
+                try{
+                    let stars = await bd.query(String.raw`SELECT star_operators.start, operator.operator_name as operatorName, locations.address as locationAddress
+                from  products
+                inner join star_operators on star_operators.operator_id = products.operator_id
+                inner join operator on operator.id = products.operator_id
+                inner join locations on locations.id = products.location_id
+                where products.id = ${item.dataValues.product_id} `)
+
+                let calc = calcPromedio(stars);
+
+                //esto significa que no hay estrellas
+                if( calc.count === 0 ){
+                    stars = await bd.query(String.raw`SELECT  operator.operator_name as operatorName, locations.address as locationAddress
+                    from  products
+                    inner join operator on operator.id = products.operator_id
+                    inner join locations on locations.id = products.location_id
+                    where products.id = ${item.dataValues.product_id} `)
+
+                    item.dataValues.operatorName = stars[0][0].operatorName;
+                    item.dataValues.operatorAddress = stars[0][0].locationAddress;
+                    item.dataValues.stars = 0;
+                    item.dataValues.countStars = {};
+                    item.dataValues.countReviews = 0;
+                    //console.log(item.dataValues);
+                    return item;
+                }
+
+                item.dataValues.operatorName = stars[0][0].operatorName;
+                item.dataValues.operatorAddress = stars[0][0].locationAddress;
+                item.dataValues.stars = calc.promedio;
+                item.dataValues.countStars = calc.countStars;
+                item.dataValues.countReviews = calc.count;
+                //console.log(item.dataValues);
+                return item;
+                }
+                catch(e){
+                    console.error(e);
+                }
+            }));
+            
+            res.send(data);
         })
         .catch((err)=>{
             console.error(err)
@@ -100,7 +178,6 @@ module.exports = {
                 `
             }
 
-            const bd = require("../bd");
             try{
 
             let data = await bd.query(query)
@@ -122,23 +199,16 @@ module.exports = {
                 timing: data[0][0].timing
             }
 
-            let stars = await bd.query(String.raw`select [start] as Stars 
+            let stars = await bd.query(String.raw`select [start] 
             from star_operators where operator_id = ${product.operator_id} `)
 
-            let count = stars[0].length, suma = 0;
-            for(let star of stars[0]){
-                suma += parseInt(star.Stars, 10);
-            }
-            console.log(count, suma);
-            let promedio;
-            if(count > 0)
-                promedio = parseInt(suma / count, 10);
-            else
-                promedio = 0;
-
+            let calc = calcPromedio(stars);
+            //console.log(calc);
             reservation.dataValues.operatorName = product.operatorName;
             reservation.dataValues.operatorAddress = product.locationAddress;
-            reservation.dataValues.stars = promedio;
+            reservation.dataValues.stars = calc.promedio;
+            reservation.dataValues.countStars = calc.countStars;
+            reservation.dataValues.countReviews = calc.count;
             //console.log(reservation);
             res.send(reservation)
 

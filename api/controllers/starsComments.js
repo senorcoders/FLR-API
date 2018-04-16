@@ -10,8 +10,8 @@ function averageStar(reviews){
             average[stars] = parseInt(average[stars]) + 1;
         }else{
             average[stars] = 1;
-            total += 1;
         }
+        total += 1;
     }
     
     average.total = total;
