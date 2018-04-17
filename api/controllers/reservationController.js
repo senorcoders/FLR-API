@@ -373,7 +373,54 @@ module.exports = {
         where rs.user_id = ${ req.params.id }
             `
             db.query(query)
-            .then(data=>{ res.send(data[0]) })
+            .then(async data=>{ 
+                
+                data = await Promise.all(data[0].map(async function(item){
+                    console.log(item);
+                    try{
+                        let stars = await bd.query(String.raw`SELECT star_operators.start, operator.operator_name as operatorName, locations.address as locationAddress
+                    from  products
+                    inner join star_operators on star_operators.operator_id = products.operator_id
+                    inner join operator on operator.id = products.operator_id
+                    inner join locations on locations.id = products.location_id
+                    where products.id = ${item.productID} `)
+    
+                    let calc = calcPromedio(stars);
+    
+                    //esto significa que no hay estrellas
+                    if( calc.count === 0 ){
+                        stars = await bd.query(String.raw`SELECT  operator.operator_name as operatorName, locations.address as locationAddress
+                        from  products
+                        inner join operator on operator.id = products.operator_id
+                        inner join locations on locations.id = products.location_id
+                        where products.id = ${item.productID} `)
+    
+                        item.operatorName = stars[0][0].operatorName;
+                        item.operatorAddress = stars[0][0].locationAddress;
+                        item.stars = 0;
+                        item.countStars = {};
+                        item.countReviews = 0;
+                        //console.log(item);
+                        return item;
+                    }
+    
+                    item.operatorName = stars[0][0].operatorName;
+                    item.operatorAddress = stars[0][0].locationAddress;
+                    item.stars = calc.promedio;
+                    item.countStars = calc.countStars;
+                    item.countReviews = calc.count;
+                    //console.log(item.dataValues);
+                    return item;
+                    }
+                    catch(e){
+                        console.error(e);
+                    }
+
+                }));
+
+                res.send(data) 
+            
+            })
             .catch((err)=>{
                 console.error(err.message)
                 res.send(err)

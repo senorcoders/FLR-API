@@ -3,9 +3,10 @@ const bd = require("../bd")
 
 function averageStar(reviews){
     let average = {};
-    let total = 0;
+    let total = 0, suma = 0;
     for(let review of reviews){
         let stars = review.numStars.toString();
+        suma += parseInt(review.numStars);
         if( average.hasOwnProperty(stars) ){
             average[stars] = parseInt(average[stars]) + 1;
         }else{
@@ -13,8 +14,24 @@ function averageStar(reviews){
         }
         total += 1;
     }
+
+    let count = total;
+    let promedio;
+    if(count > 0)
+        promedio = Number( parseFloat(suma / count, 10).toFixed(1) )
+    else
+        promedio = 0;
+
+    let decimal = Math.abs( parseFloat(promedio - (1+Math.floor(promedio)), 10).toFixed(1) ) - 1
+    decimal = Math.abs( parseFloat(decimal, 10).toFixed(1) )
+
+    if(decimal > .5 ){
+        promedio = 1+Math.floor(promedio)
+    }else if( .5 > decimal )
+        promedio = Math.floor(promedio)
     
     average.total = total;
+    average.promedio = promedio;
     
     return average;
 }
