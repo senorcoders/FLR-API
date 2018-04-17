@@ -148,7 +148,7 @@ module.exports = {
                                     INNER JOIN reservations rs  on pds.id = rs.product_id                         
                                     where CAST('${ arr[index].dataValues.date }' AS DATE) <= rs.transaction_end_date
                                     and transaction_start_time = sh.start_hours
-                                    group by pds.max_adults, pds.max_childs) adult_reserved
+                                    group by transaction_start_time) adult_reserved
                             from service_dates sd 
                             inner join products pdt on sd.product_id = pdt.id
                             inner join service_hours sh on sd.id = sh.service_dates_id 
@@ -250,7 +250,7 @@ module.exports = {
                                     INNER JOIN reservations rs  on pds.id = rs.product_id                         
                                     where CAST('${ arr[index].dataValues.date }' AS DATE) <= rs.transaction_end_date
                                     and transaction_start_time = sh.start_hours
-                                    group by pds.max_adults, pds.max_childs)     adult_reserved
+                                    group by transaction_start_time)     adult_reserved
                             from service_dates sd 
                             inner join products pdt on sd.product_id = pdt.id
                             inner join service_hours sh on sd.id = sh.service_dates_id 
