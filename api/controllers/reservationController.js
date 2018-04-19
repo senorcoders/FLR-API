@@ -520,8 +520,8 @@ module.exports = {
         where CAST('${req.params.dateNow}' AS DATE) > rs.transaction_end_date
         `
         db.query(query)
-            .then(data=>{
-                //getComments(req, res, data[0])
+            .then(async data=>{
+
                 res.send(data[0])
             })
             .catch((err)=>{

@@ -118,7 +118,7 @@ exports.by_distance = function(req, res){
                     locations.lat ,
                     products.id as product_id,
                     products.name,
-		    products.name_image,
+		            products.name_image,
                     products.max_adults,
                     products_types.id as products_types_id,
                     products_types.name as products_types_name,
@@ -132,9 +132,18 @@ exports.by_distance = function(req, res){
                     `
 
                     bd.query(query, { type: bd.QueryTypes.SELECT})
-                    .then((productos)=>{
+                    .then(async (productos)=>{
                         console.log(productos);
                         arrOperator[indexOperator].products = productos
+
+                        //para cargar locationAddress
+                        let location = await bd.query(`SELECT locations.address as locationAddress
+                        from  operator
+                        INNER JOIN products on products.operator_id = operator.id
+                        inner join locations on locations.id = products.location_id
+                        where operator.id =${operator.id }`)
+                        arrOperator[indexOperator].locationAddress = location[0][0].locationAddress;
+
                         listo();
                     })
                     .catch((err)=>{

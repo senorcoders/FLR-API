@@ -70,9 +70,17 @@ module.exports = {
                     from comments_operators comment INNER JOIN users on comment.user_id = users.id where operator_id = ${ req.params.id } and users.id = ${ data[0][i].userID } order by convert(datetime, comment.createdAt) DESC                
                     `
                     bd.query(query)
-                    .then(function(d){
+                    .then(async function(d){
                         if( d[0] !== undefined )
                             data[0][i].comments = d[0]
+                        
+                        //para cargar locationAddress
+                        let location = await bd.query(`SELECT locations.address as locationAddress
+                        from  operator
+                        INNER JOIN products on products.operator_id = operator.id
+                        inner join locations on locations.id = products.location_id
+                        where operator.id =${data[0][i].operatorID}`)
+                        data[0][i].locationAddress = location[0][0].locationAddress;
 
                         console.log(data[0].length)
                         i++
@@ -125,9 +133,17 @@ module.exports = {
                 from comments_operators comment INNER JOIN operator on comment.operator_id = operator.id where user_id = ${ req.params.id } and operator.id = ${ data[0][i].operatorID } order by convert(datetime, comment.createdAt) DESC                
                 `
                 bd.query(query)
-                    .then(function(d){
+                    .then(async function(d){
                         if( d[0] !== undefined )
                             data[0][i].comments = d[0]
+
+                        //para cargar locationAddress
+                        let location = await bd.query(`SELECT locations.address as locationAddress
+                        from  operator
+                        INNER JOIN products on products.operator_id = operator.id
+                        inner join locations on locations.id = products.location_id
+                        where operator.id =${data[0][i].operatorID}`)
+                        data[0][i].locationAddress = location[0][0].locationAddress;
 
                         console.log(data[0].length)
                         i++
@@ -171,8 +187,20 @@ module.exports = {
         `
 
         bd.query(query)
-        .then((data)=>{
-            res.send(data[0])
+        .then(async (data)=>{
+
+            data = await Promise.all(data[0].map(async function(item){
+                let location = await bd.query(`SELECT locations.address as locationAddress
+                    from  operator
+                    INNER JOIN products on products.operator_id = operator.id
+                    inner join locations on locations.id = products.location_id
+                    where operator.id =${item.operatorID}`)
+                item.locationAddress = location[0][0].locationAddress;
+                return item;
+            }));
+
+            res.send(data);
+
             /*if( data[0].length > 0 )
             {
                 function gets(i){
