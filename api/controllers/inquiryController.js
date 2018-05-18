@@ -116,7 +116,9 @@ module.exports = {
 
                     try{
                         require("../../mailer").sendNoticationInquiry({
-                            email : req.body.email
+                            email : req.body.email,
+                            name: req.body.name, 
+                            phone: req.body.phone
                         }, product, data);
                     }catch(e){
                         console.error(e);
